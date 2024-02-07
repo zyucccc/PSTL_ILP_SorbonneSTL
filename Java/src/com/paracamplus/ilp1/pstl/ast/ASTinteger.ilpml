@@ -1,0 +1,7 @@
+class ASTinteger extends ASTconstant
+{
+
+    method getValue ()
+    super;
+
+}

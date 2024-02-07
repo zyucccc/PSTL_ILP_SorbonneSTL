@@ -1,0 +1,18 @@
+class ASTconstant extends ASTexpression
+{
+    var description;
+    var value;
+
+//init: simuler le constructeur
+    method init (desc, val) {
+        self.description = desc;
+        self.value = val;
+    }
+
+    method getDescription ()
+    self.description;
+
+    method getValue ()
+    self.value;
+
+}

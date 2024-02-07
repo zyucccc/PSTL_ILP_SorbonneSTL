@@ -1,0 +1,7 @@
+class ASTboolean extends ASTconstant
+{
+
+    method getValue ()
+    super;
+
+}

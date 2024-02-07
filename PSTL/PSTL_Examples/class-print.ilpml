@@ -1,0 +1,180 @@
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+let point = new Point(11, 22) in
+point.print();
+830
+
+print：<Point:x=11:y=22>
+result：830
+
+-------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method m2 (x)
+    823 + x;
+}
+
+let pc = new PointColore(11, 22, "red") in
+pc.print();
+831
+
+print:<PointColore:x=11:y=22:color=red>
+result：831
+
+-----------------------------
+--重写 print
+
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method print () 832;
+}
+
+(new Point(11, 22)).print()
+
+result: 832
+
+----------------------------
+
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method print () 832;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method print () 833;
+}
+
+(new PointColore(11, 22, "red")).print()
+
+result:833
+
+---------------------------
+----------exception:
+
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method x ()
+    self.x;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method color1 ()
+    self.color;
+}
+
+class PointLarge extends Point
+{
+    var taille;
+
+    method color2 ()
+    self.taille;
+}
+
+let pc = new PointColore(11, 22, "red")
+and pl = new PointLarge(33, 44, 835) in
+(
+  (try pl.color1() catch (e) false);
+  835
+)
+
+result:835
+
+---------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method x ()
+    self.x;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method color1 ()
+    self.color;
+}
+
+class PointLarge extends Point
+{
+    var taille;
+
+    method color2 ()
+    self.taille;
+}
+
+let pc = new PointColore(11, 22, "red")
+and pl = new PointLarge(33, 44, 835) in
+(
+  (try pc.color2() catch (e) false);
+  836
+)
+
+result:836
+
+
+--------------------------------
+
+class Point extends Object
+{
+    var x;
+
+    method m1 ()
+    self.x;
+}
+
+class Point2D extends Point
+{
+    var y;
+
+    method m1 ()
+    (self.y * super);
+}
+
+let pc = new Point2D(10, 84) in
+try pc.m1() catch (e) false
+
+result:840
+
+--------------------------

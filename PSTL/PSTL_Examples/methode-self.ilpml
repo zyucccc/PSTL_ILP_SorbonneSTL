@@ -1,0 +1,67 @@
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+}
+
+let point = new Point(810, 2) in
+point.longueur()
+
+result:812
+
+-------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method m1 (z,t)
+    (z * self.x) + (t * self.y)
+}
+
+let point = new Point(2, 3) in
+point.m1(2, 3)
+
+result:13
+
+---------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+    
+    method m1 (z,t)
+    (z * self.x) + (t * self.y);
+}
+
+let point = new Point(2, 3) in
+point.m1(2, point.longueur())
+
+result:19
+
+--self methode
+-----------------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method m2 (u)
+    self.m1(u, u) + 1;
+
+    method m1 (z,t)
+    (z * self.x) + (t * self.y);
+}
+
+let point = new Point(3, 4) in
+point.m2(2)
+
+result:15
+
+------------------------------------

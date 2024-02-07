@@ -1,0 +1,195 @@
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    (z * self.x) + (t * self.y);
+}
+
+class PointColore extends Point
+{
+    var color;
+}
+
+820
+
+result:820
+
+--------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+}
+
+new PointColore(11, 22, "red");
+821
+
+result:821
+
+---------------------------------
+
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+}
+
+let pc = new PointColore(11, 22, "red") in
+(
+  pc.color = 822;
+  pc.color
+)
+
+result:822
+
+--------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+}
+
+let pc = new PointColore(11, 22, "red") in
+(
+  pc.y = 823;
+  pc.y
+)
+
+
+result:823
+
+---------------------------------
+
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method m2 (x)
+    823 + x;
+}
+
+let pc = new PointColore(11, 22, "red") in
+pc.m2(1)
+
+
+result:824
+
+--------------------------------
+
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method longueur ()
+    self.x + self.y;
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method m2 () 824;
+}
+
+let pc = new PointColore(820, 5, "red") in
+pc.m1(1, 1)
+
+result:825
+
+---------------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+
+    method m2 (u)
+    self.m1(1, u);
+
+    method m1 (z,t)
+    z * self.x + t * self.y;
+}
+
+class PointColore extends Point
+{
+    var color;
+
+    method m1 (z,t)
+    826 + z;
+}
+
+let pc = new PointColore(11, 22, "red") in
+pc.m2(2)
+//这里使用了pointcolore 重写的 m1 方法，而不是 point 的
+result:827
+
+----------------------------------
+
+class Point extends Object
+{
+}
+
+class SousPoint extends Point
+{
+    var sous;
+
+    method m1 ()
+    self.sous;
+}
+
+(new SousPoint(828)).m1()
+
+result：828

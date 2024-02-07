@@ -1,0 +1,56 @@
+class Point extends Object
+{
+    var x;
+    var y;
+}
+
+----------------
+class Point
+{
+    var x;
+    var y;
+}
+
+new Point(11, 22);
+808
+
+result:808
+
+-----------------
+class Point extends Object
+{
+    var x;
+    var y;
+}
+
+let point = new Point(809, 22) in
+point.x
+
+result：809
+
+---------------------
+
+class Point extends Object
+{
+    var x;
+    var y;
+}
+
+let point = new Point(11, 22) in
+(point.x = 810; point.x)
+
+result: 810
+
+------------------------
+class Point extends Object
+{
+    var x;
+    var y;
+}
+
+let point = new Point(11, 22) in
+(point.y = 811; point.y)
+
+result:811
+
+--------------------------

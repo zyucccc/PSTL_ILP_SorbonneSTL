@@ -1,0 +1,90 @@
+class Test { var x; }
+type_of( new Test(x) )
+
+result:Test
+
+------------------------
+class Point extends Object
+{
+    var x_3ax;
+    var y;
+
+    method print () self.x_3ax;
+}
+
+(new Point(8450, 22)).print()
+
+result:8450
+
+-------------------------
+class Po_3aint extends Object
+{
+    var x;
+    var y;
+
+    method print () 8451;
+}
+
+(new Po_3aint(11, 22)).print()
+
+result:8451
+
+-----------------------
+--print
+class Point extends Object
+{
+    var x;
+
+    method print ()
+    (print("print@Point"); super);
+}
+
+let pc = new Point(8490) in
+try (pc.print(); 8490) catch (e) false
+
+print:print@Point<Point:x=8490>
+result:8490
+
+-------------------------
+class Point extends Object
+{
+    var x;
+
+    method print ()
+    (print("print@Point"); super);
+}
+
+class Point2D extends Point
+{
+    var y;
+
+    method print ()
+    (print("print@Point2D"); super);
+}
+
+let pc = new Point2D(8491, 1) in
+try (pc.print(); 8491) catch (e) false
+
+print:print@Point2Dprint@Point<Point2D:x=8491:y=1>
+result:8491
+
+-----------------------------------
+class Point extends Object
+{
+    var x;
+}
+
+class Point2D extends Point
+{
+    var y;
+
+    method print ()
+    (print("print@Point2D"); super);
+
+}
+
+let pc = new Point2D(8492, 1) in
+try (pc.print(); 8492) catch (e) false
+
+print:print@Point2D<Point2D:x=8492:y=1>
+result:8492

@@ -1,4 +1,4 @@
-grammar ILPMLgrammar4;
+grammar ILPMLgrammarPSTL;
 
 @header {
     package antlr4;
@@ -63,8 +63,10 @@ expr returns [com.paracamplus.ilp1.interfaces.IASTexpression node]
 
 //ajouts PSTL
 
-    | 'new' type+IDENT '[' size=INT ']' #ArrayInitialization
-    |  array=expr '[' index=INT ']' #ArrayAccess
+//array
+    | 'new' type=IDENT '[' size=INT ']' #ArrayInitialization
+    |  array=expr '[' index=INT ']' '=' val=expr #ArrayWrite
+    |  array=expr '[' index=INT ']' #ArrayRead
 
     | fun=expr '(' args+=expr? (',' args+=expr)* ')' # Invocation
     | op=('-' | '!') arg=expr # Unary

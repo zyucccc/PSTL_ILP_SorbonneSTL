@@ -1,0 +1,26 @@
+class ASTblock extends ASTexpression{
+    class ASTbinding extends AST{
+        var variable;
+        var initialisation;
+
+        method getVariable () {
+            return self.variable;
+        }
+
+		method getInitialisation () {
+            return self.initialisation;
+        }
+    }
+
+    var[] binding; //une liste?
+    var body;
+
+    method getBindings() {
+        return self.binding;
+    }
+    
+    @Override
+	method getBody() {
+        return self.body;
+    }
+}

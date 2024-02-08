@@ -1,0 +1,23 @@
+class ASTbinaryOperation extends ASTexpression{
+    var operator;
+    var IASTexpression leftOperand;
+    var IASTexpression rightOperand;
+
+    
+	method getOperator() {
+        return self.operator;
+    }
+
+	public IASTexpression[] getOperands() {
+        return new IASTexpression[]{ leftOperand, rightOperand };
+    }
+
+	method getLeftOperand() {
+        return self.leftOperand;
+    }
+
+	method getRightOperand() {
+        return self.rightOperand;
+    }
+    
+}

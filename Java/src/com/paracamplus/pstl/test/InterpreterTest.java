@@ -4,7 +4,7 @@
  * See http://mooc.paracamplus.com/ilp9
  * GPL version 3
  ***************************************************************** */
-package com.paracamplus.ilp1.pstl.test;
+package com.paracamplus.pstl.test;
 
 import java.io.File;
 import java.io.StringWriter;

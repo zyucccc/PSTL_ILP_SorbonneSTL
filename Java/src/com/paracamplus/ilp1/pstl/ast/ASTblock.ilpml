@@ -19,7 +19,6 @@ class ASTblock extends ASTexpression{
         return self.binding;
     }
     
-    @Override
 	method getBody() {
         return self.body;
     }

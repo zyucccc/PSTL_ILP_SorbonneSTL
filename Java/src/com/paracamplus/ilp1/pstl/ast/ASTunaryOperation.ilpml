@@ -1,0 +1,17 @@
+class ASTunaryOperation extends ASTexpression{
+    var operator;
+    var operand;
+
+    method getOperand() {
+        return self.operand;
+    }
+
+    method getOperator() {
+        return self.operator;
+    }
+
+	method getOperands() {
+        return new IASTexpression[]{ getOperand() }; //je sait pas comment exprimer
+    }
+
+}

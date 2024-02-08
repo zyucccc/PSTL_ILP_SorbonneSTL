@@ -1,0 +1,16 @@
+class ASTinvocation extends ASTexpression {
+    var function;
+    var arguments; //list chainee?
+                   //definir comme class 
+                   //ou etendre comme Tme dlp
+
+    method getFunction () {
+        return self.function;
+    }
+
+    method getArguments () {
+        return self.arguments;
+    }
+
+
+}

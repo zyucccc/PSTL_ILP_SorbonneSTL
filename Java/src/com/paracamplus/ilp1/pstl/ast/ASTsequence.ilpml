@@ -1,0 +1,9 @@
+class ASTsequence extends ASTexpression {
+    var expressions; // list chainee?
+
+    method getExpressions () {
+        return self.expressions;
+    }
+
+
+}

@@ -4,4 +4,7 @@ class ASTinteger extends ASTconstant
     method getValue ()
     super;
 
+    method print()
+    self.
+
 }

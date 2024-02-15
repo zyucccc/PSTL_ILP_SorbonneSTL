@@ -1,11 +1,8 @@
 class ASTnamed extends AST {
     var name;
 
-  /*  method init (n) {
-        self.name = n;
-    }
-*/
-    method getName () {
-        return self.name;
-    }
+
+    method getName () 
+      self.name;
+    
 }

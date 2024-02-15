@@ -2,6 +2,7 @@ class ASTboolean extends ASTconstant
 {
 
     method getValue ()
-    super;
+    if type_of(super) == "Boolean" then super
+    ;
 
 }

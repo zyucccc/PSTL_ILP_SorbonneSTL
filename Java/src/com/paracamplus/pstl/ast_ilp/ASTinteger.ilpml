@@ -2,9 +2,6 @@ class ASTinteger extends ASTconstant
 {
 
     method getValue ()
-    super;
-
-    method print()
-    self.
+    if type_of(super) == "Integer" then super;
 
 }

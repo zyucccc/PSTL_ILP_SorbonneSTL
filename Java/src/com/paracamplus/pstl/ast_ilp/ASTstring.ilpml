@@ -2,12 +2,6 @@ class ASTstring extends ASTconstant
 {
 
     method getValue ()
-    super;
-
-//liste：envirnonment
-     method collectVariableInfo (environment) {
-     //   environment.add(self.name);
-        super;
-    }
+    if type_of(super) == "String" then super;
 
 }

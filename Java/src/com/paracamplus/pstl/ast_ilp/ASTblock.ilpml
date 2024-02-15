@@ -3,23 +3,23 @@ class ASTblock extends ASTexpression{
         var variable;
         var initialisation;
 
-        method getVariable () {
-            return self.variable;
-        }
+        method getVariable () 
+         self.variable;
+        
 
-		method getInitialisation () {
-            return self.initialisation;
-        }
+		method getInitialisation () 
+         self.initialisation;
+        
     }
 
-    var[] binding; //une liste?
+    var binding; 
     var body;
 
-    method getBindings() {
-        return self.binding;
-    }
+    method getBindings() 
+        self.binding;
     
-	method getBody() {
-        return self.body;
-    }
+    
+	method getBody() 
+        self.body;
+    
 }

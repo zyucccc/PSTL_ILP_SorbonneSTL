@@ -1,0 +1,3 @@
+//type_of(19.05)
+type_of(true)
+//type_of("abc")

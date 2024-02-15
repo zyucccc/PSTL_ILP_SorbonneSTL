@@ -3,20 +3,22 @@ class ASTalternative extends ASTexpression {
     var consequence;
     var alternant;
 
-    method getCondition () {
-        return self.condition;
-    }
+    method getCondition () 
+    self.condition;
+    
 
-    method getConsequence () {
-        return self.consequence;
-    }
+    method getConsequence () 
+    self.consequence;
+    
 
-    method getAlternant () {
-        return self.alternant;
-    }
+    method getAlternant () 
+    self.alternant;
+    
 
-    method isTernary () {
-        return self.alternant != null;
-    }
-
+    method isTernary () 
+    self.alternant != null;
+    
+    
+    //method collectGlobalVariable()
+    
 }

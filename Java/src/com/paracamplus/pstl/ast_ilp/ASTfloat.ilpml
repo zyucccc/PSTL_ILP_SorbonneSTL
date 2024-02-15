@@ -2,6 +2,7 @@ class ASTfloat extends ASTconstant
 {
 
     method getValue ()
-    super;
-
+    (
+    if type_of(super) == "Float" then super
+    );
 }

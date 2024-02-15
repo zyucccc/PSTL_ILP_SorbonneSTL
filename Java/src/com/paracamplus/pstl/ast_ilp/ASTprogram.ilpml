@@ -1,8 +1,7 @@
 class ASTprogram extends AST {
     var expression;
 
-    method getBody () {
-        return self.expression;
-    }
+    method getBody () 
+     self.expression;
     
 }

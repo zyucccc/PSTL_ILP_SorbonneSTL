@@ -1,0 +1,123 @@
+
+class NULL extends Object {}
+
+
+class ListNode extends Object {
+    var value;  
+    var next;   // pointeur type: ListNode
+
+
+    method getValue() 
+     self.value;
+    
+
+    method getNext() 
+     self.next;
+    
+
+    method setValue(v) 
+        self.value = v;
+    
+
+     method setNext(v) 
+        self.next = v;
+}
+
+
+/*
+class ListNode extends Object {
+    var value;  
+    var next;   // pointeur type: ListNode
+
+
+    method getValue() 
+     if type_of(self.value) == "Integer" then self.value
+     else 999;
+    
+
+    method getNext() 
+     self.next;
+    
+
+    method setValue(v) 
+        self.value = v;
+    
+
+     method setNext(v) 
+        self.next = v;
+}
+
+let node = new ListNode(10,1) in
+    node.getValue()
+*/
+
+//let null = new NULL() in
+//let node = new ListNode(10,null) in node.getValue()
+
+//new ListNode(10,null).value
+
+/*
+let a = 1 in 
+  let b = 
+   while a < 10 do
+    a = a+1
+    in
+a
+*/
+
+/*let node = new ListNode(10,1) in
+    if type_of(node.value) == "Integer" then 10
+    else 5 */
+
+/*let null = new NULL() in
+let node = new ListNode(10,null) in
+    if type_of(node.next) == "NULL" then 10
+    else 5  */
+
+/*let node = new ListNode(10,1) in
+    let a = type_of(node.value) in
+  a */
+
+
+class List extends Object{
+    var head; //pointeur type: ListNode
+
+    // ajouter valeur a la fin du list
+    method add(value) 
+        if  type_of(self.head) == "NULL"  then //? notion null?
+            self.head = new ListNode(value, new NULL())
+         else 
+            let current = self.head in
+            let bloc = 
+            while (type_of(current.getNext()) != "NULL") do
+                current = current.getNext()
+                in
+            current.setNext(new ListNode(value, new NULL()))
+        ;
+
+}
+
+let node = new ListNode(10,new NULL()) in
+  let list = new List(node) in
+      let head = list.head in
+        head.value
+
+// list.add(5);
+let node = new ListNode(10,new NULL()) in
+   list = new List(node) ;
+   list.add(5);
+  list.head.value
+  //list.head.next.value
+
+
+
+
+ // print
+   /* method printList() {
+        var current = self.head;
+        while (current != null) {
+            print(current.getValue());
+            current = current.getNext();
+        }
+    }
+    */

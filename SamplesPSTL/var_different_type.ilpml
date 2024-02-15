@@ -1,0 +1,19 @@
+class PointA extends Object
+{
+    var x;
+
+    method m1 (t)
+    self.x * t;
+}
+
+class PointB extends Object
+{
+    var y;
+
+    method m1 (t)
+    self.y;
+}
+
+let y = new PointA(10) in
+   let point = new PointB(y) in
+   point.y.x

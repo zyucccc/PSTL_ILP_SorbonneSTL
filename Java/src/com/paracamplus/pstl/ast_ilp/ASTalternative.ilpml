@@ -19,6 +19,30 @@ class ASTalternative extends ASTexpression {
     self.alternant != null;
     
     
-    //method collectGlobalVariable()
+    method eval_condition()
+    (
+    if type_of(self.condition) == "ASTboolean" 
+    then self.getValue()
+    );
+    
+    method eval_consequence()
+    (
+    if type_of(self.consequence) == "ASTfloat" 
+    then self.consequence.getValue()
+    else
+    if type_of(self.consequence) == "ASTinteger" 
+    then self.consequence.getValue()
+    else
+    if type_of(self.consequence) == "ASTboolean" 
+    then self.consequence.getValue()
+    else
+    if type_of(self.consequence) == "ASTboolean" 
+    then self.consequence.getValue()
+    // etc
+    
+    );
+    
+    
+    
     
 }

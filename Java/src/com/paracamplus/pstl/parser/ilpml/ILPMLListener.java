@@ -11,8 +11,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import com.paracamplus.ilp1.interfaces.IASTblock;
 import com.paracamplus.ilp1.interfaces.IASTexpression;
 import com.paracamplus.ilp1.interfaces.IASTvariable;
-import com.paracamplus.ilp4.interfaces.IASTfactory;
+
 import com.paracamplus.ilp4.interfaces.IASTmethodDefinition;
+import com.paracamplus.pstl.interfaces.IASTfactory;
 import com.paracamplus.ilp3.interfaces.IASTlambda;
 import com.paracamplus.ilp3.interfaces.IASTnamedLambda;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
@@ -20,9 +21,8 @@ import com.paracamplus.ilp2.interfaces.IASTdeclaration;
 import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
 
 import antlr4.ILPMLgrammarPSTLListener;
-import antlr4.ILPMLgrammarPSTLParser.ArrayInitializationContext;
-import antlr4.ILPMLgrammarPSTLParser.ArrayReadContext;
-import antlr4.ILPMLgrammarPSTLParser.ArrayWriteContext;
+import antlr4.ILPMLgrammarPSTLParser.IncludeDefContext;
+import antlr4.ILPMLgrammarPSTLParser.IncludeDefinitionContext;
 
 import static antlr4.ILPMLgrammarPSTLParser.*;
 
@@ -415,30 +415,29 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 	@Override	public void enterNew(NewContext ctx) {}
 
 	@Override
-	public void enterArrayInitialization(ArrayInitializationContext ctx) {}
-	@Override
-	public void enterArrayRead(ArrayReadContext ctx) {}
-	@Override
-	public void enterArrayWrite(ArrayWriteContext ctx) {}
-
-
-
-	@Override
-	public void exitArrayInitialization(ArrayInitializationContext ctx) {
-		// TODO Auto-generated method stub
-		
+	public void enterIncludeDefinition(IncludeDefinitionContext ctx) {
+		//laisse null
 	}
 
 	@Override
-	public void exitArrayRead(ArrayReadContext ctx) {
-		// TODO Auto-generated method stub
-		
+	public void exitIncludeDefinition(IncludeDefinitionContext ctx) {
+		ctx.node = ctx.def.node;
 	}
 
 	@Override
-	public void exitArrayWrite(ArrayWriteContext ctx) {
-		// TODO Auto-generated method stub
-		
+	public void enterIncludeDef(IncludeDefContext ctx) {
+		//laisse null
 	}
+
+	@Override
+	public void exitIncludeDef(IncludeDefContext ctx) {
+		String filepath = ctx.body.getText();
+	    //on supprime des guillemets" "dans text obtenut
+		//car include work genre: include "path/array.ilpml"
+	    filepath = filepath.substring(1, filepath.length() - 1);
+		ctx.node = factory.newIncludeDefinition(filepath);
+	}
+
+	
 	
 }

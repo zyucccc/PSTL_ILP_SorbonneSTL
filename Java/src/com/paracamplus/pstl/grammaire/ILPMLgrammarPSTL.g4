@@ -8,12 +8,21 @@ grammar ILPMLgrammarPSTL;
 prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node] 
     : (defs+=globalDef ';'?)*  (exprs+=expr ';'?) * EOF
     ;
+//ajout PSTL
 
 // Declarations globales (classes et fonctions)
 globalDef returns [com.paracamplus.ilp2.interfaces.IASTdeclaration node]
-    : def=globalFunDef # GlobalFunctionDefinition
+//ajout PSTL
+    : def=includeDef #IncludeDefinition
+    | def=globalFunDef # GlobalFunctionDefinition
     | def=classDef # ClassDefinition
     ;
+
+//ajout PSTL
+includeDef returns [com.paracamplus.pstl.interfaces.IASTincludeDefinition node]
+    :'include' body = STRING
+    ;
+
     
 // classe
 classDef returns [com.paracamplus.ilp4.interfaces.IASTclassDefinition node]
@@ -62,11 +71,6 @@ expr returns [com.paracamplus.ilp1.interfaces.IASTexpression node]
     | 'new' className=IDENT  '(' args+=expr? (',' args+=expr)* ')' # New   
 
 //ajouts PSTL
-
-//array
-    | 'new' type=IDENT '[' size=INT ']' #ArrayInitialization
-    |  array=expr '[' index=INT ']' '=' val=expr #ArrayWrite
-    |  array=expr '[' index=INT ']' #ArrayRead
 
     | fun=expr '(' args+=expr? (',' args+=expr)* ')' # Invocation
     | op=('-' | '!') arg=expr # Unary

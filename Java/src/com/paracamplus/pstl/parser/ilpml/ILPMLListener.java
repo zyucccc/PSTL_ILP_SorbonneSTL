@@ -432,10 +432,14 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 	@Override
 	public void exitIncludeDef(IncludeDefContext ctx) {
 		String filepath = ctx.body.getText();
+		System.out.println("Test parser "+filepath);
 	    //on supprime des guillemets" "dans text obtenut
 		//car include work genre: include "path/array.ilpml"
 	    filepath = filepath.substring(1, filepath.length() - 1);
+	    System.out.println("Test parser "+filepath);
+	    
 		ctx.node = factory.newIncludeDefinition(filepath);
+//		ctx.node = factory.newIncludeDefinition("abc");
 	}
 
 	

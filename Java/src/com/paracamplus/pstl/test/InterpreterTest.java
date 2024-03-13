@@ -23,12 +23,14 @@ import com.paracamplus.ilp1.interpreter.interfaces.IOperatorEnvironment;
 import com.paracamplus.ilp1.interpreter.test.InterpreterRunner;
 import com.paracamplus.ilp1.parser.xml.IXMLParser;
 import com.paracamplus.ilp4.interpreter.GlobalVariableStuff;
-import com.paracamplus.ilp4.ast.ASTfactory;
-import com.paracamplus.ilp4.interfaces.IASTfactory;
+
+import com.paracamplus.pstl.interfaces.IASTfactory;
+import com.paracamplus.pstl.interpreter.Interpreter;
+import com.paracamplus.pstl.parser.ilpml.ILPMLParser;
+import com.paracamplus.pstl.ast_java.ASTfactory;
+
 import com.paracamplus.ilp4.interpreter.ClassEnvironment;
-import com.paracamplus.ilp4.interpreter.Interpreter;
 import com.paracamplus.ilp4.interpreter.interfaces.IClassEnvironment;
-import com.paracamplus.ilp4.parser.ilpml.ILPMLParser;
 import com.paracamplus.ilp4.parser.xml.XMLParser;
 
 @RunWith(Parameterized.class)

@@ -9,8 +9,8 @@ public class ASTincludeDefinition implements IASTincludeDefinition {
  public ASTincludeDefinition(String filepath) {
      this.filepath = filepath;
  }
- 
- public String getFilename() {
+ @Override
+ public String getFilepath() {
      return filepath;
  }
  

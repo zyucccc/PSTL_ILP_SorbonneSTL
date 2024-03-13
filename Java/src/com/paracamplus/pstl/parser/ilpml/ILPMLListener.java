@@ -21,6 +21,9 @@ import com.paracamplus.ilp2.interfaces.IASTdeclaration;
 import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
 
 import antlr4.ILPMLgrammarPSTLListener;
+import antlr4.ILPMLgrammarPSTLParser.ExprElementContext;
+import antlr4.ILPMLgrammarPSTLParser.GlobalDefContext;
+import antlr4.ILPMLgrammarPSTLParser.GlobalElementContext;
 import antlr4.ILPMLgrammarPSTLParser.IncludeDefContext;
 import antlr4.ILPMLgrammarPSTLParser.IncludeDefinitionContext;
 
@@ -47,13 +50,13 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 
 	@Override 
 	public void exitVariable(VariableContext ctx) { 
-		ctx.node = factory.newVariable(ctx.getText());
+		ctx.node =  factory.newVariable(ctx.getText());
 	}
 
 	@Override 
 	public void exitInvocation(
 			InvocationContext ctx) { 
-		ctx.node = factory.newInvocation(
+		ctx.node =  factory.newInvocation(
 				ctx.fun.node, 
 				toExpressions(ctx.args));
 	}
@@ -72,7 +75,7 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 
 	@Override 
 	public void exitBinding(BindingContext ctx) { 
-		ctx.node = factory.newBlock(
+		ctx.node =  factory.newBlock(
 				toBindings(ctx.vars, ctx.vals),
 				ctx.body.node);
 	}
@@ -89,7 +92,7 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 	@Override 
 	public void exitSequence(
 			SequenceContext ctx) {
-		ctx.node = factory.newSequence(toExpressions(ctx.exprs));
+		ctx.node =  factory.newSequence(toExpressions(ctx.exprs));
 	}
 
 	@Override 
@@ -299,25 +302,82 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 
 	
 	// ILP4
-
+	//ajoute PSTL
+//	@Override 
+//	public void exitProg(ProgContext ctx) { 
+//		// Sépare les définitions de fonctions et de classes
+//		List<IASTfunctionDefinition> f = new ArrayList<>();
+//		List<IASTclassDefinition> c = new ArrayList<>();
+//	    List<IASTexpression> expressions = new ArrayList<>();
+//		for (GlobalDefContext progelement : ctx.elements) {
+//			if(progelement instanceof GlobalDefContext) {
+////				if (progelement.def_prog != null) {  // Check if it's a GlobalDefContext
+//				IASTdeclaration x = (IASTdeclaration) progelement.node;
+//				if (x instanceof IASTfunctionDefinition) 
+//					f.add((IASTfunctionDefinition)x);
+//				else if (x instanceof IASTclassDefinition)
+//					c.add((IASTclassDefinition)x);
+//			}
+////			else if (progelement instanceof ExprContext) {
+//				else if (progelement.expr_prog != null) {  // Check if it's an ExprContext
+//				IASTexpression exp = (IASTexpression) progelement.node;
+//					expressions.add(exp);
+//			}else {System.err.println("exitProg: unknown context");}
+//			
+//		}
+//		
+////		IASTexpression e = factory.newSequence(toExpressions(ctx.exprs));
+//		IASTexpression e = factory.newSequence(expressions.toArray(new IASTexpression[0]));
+//		ctx.node = factory.newProgram(
+//				f.toArray(new IASTfunctionDefinition[0]),
+//				c.toArray(new IASTclassDefinition[0]),
+//				e);
+//	}
+	
 	@Override 
 	public void exitProg(ProgContext ctx) { 
 		// Sépare les définitions de fonctions et de classes
 		List<IASTfunctionDefinition> f = new ArrayList<>();
 		List<IASTclassDefinition> c = new ArrayList<>();
-		for (GlobalDefContext d : ctx.defs) {
-			IASTdeclaration x = d.node;
-			if (x instanceof IASTfunctionDefinition) 
-				f.add((IASTfunctionDefinition)x);
-			else if (x instanceof IASTclassDefinition)
-				c.add((IASTclassDefinition)x);
+	    List<IASTexpression> expressions = new ArrayList<>();
+		for (GlobalDefContext progelement : ctx.elements_globalDef) {
+				IASTdeclaration x = (IASTdeclaration) progelement.node;
+				if (x instanceof IASTfunctionDefinition) 
+					f.add((IASTfunctionDefinition)x);
+				else if (x instanceof IASTclassDefinition)
+					c.add((IASTclassDefinition)x);
 		}
-		IASTexpression e = factory.newSequence(toExpressions(ctx.exprs));
+		for (ExprContext progelement : ctx.elements_expr) {
+			IASTexpression exp = (IASTexpression) progelement.node;
+			expressions.add(exp);
+		}
+		
+//		IASTexpression e = factory.newSequence(toExpressions(ctx.exprs));
+		IASTexpression e = factory.newSequence(expressions.toArray(new IASTexpression[0]));
 		ctx.node = factory.newProgram(
 				f.toArray(new IASTfunctionDefinition[0]),
 				c.toArray(new IASTclassDefinition[0]),
 				e);
 	}
+
+//	@Override 
+//	public void exitProg(ProgContext ctx) { 
+//		// Sépare les définitions de fonctions et de classes
+//		List<IASTfunctionDefinition> f = new ArrayList<>();
+//		List<IASTclassDefinition> c = new ArrayList<>();
+//		for (GlobalDefContext d : ctx.defs) {
+//			IASTdeclaration x = d.node;
+//			if (x instanceof IASTfunctionDefinition) 
+//				f.add((IASTfunctionDefinition)x);
+//			else if (x instanceof IASTclassDefinition)
+//				c.add((IASTclassDefinition)x);
+//		}
+//		IASTexpression e = factory.newSequence(toExpressions(ctx.exprs));
+//		ctx.node = factory.newProgram(
+//				f.toArray(new IASTfunctionDefinition[0]),
+//				c.toArray(new IASTclassDefinition[0]),
+//				e);
+//	}
 
 	@Override
 	public void exitSend(SendContext ctx) {
@@ -439,7 +499,22 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 	    System.out.println("Test parser "+filepath);
 	    
 		ctx.node = factory.newIncludeDefinition(filepath);
-//		ctx.node = factory.newIncludeDefinition("abc");
+	}
+
+	@Override
+	public void enterExprElement(ExprElementContext ctx) {}
+
+	@Override
+	public void exitExprElement(ExprElementContext ctx) {
+		ctx.node = ctx.expr_prog.node;
+	}
+
+	@Override
+	public void enterGlobalElement(GlobalElementContext ctx) {}
+
+	@Override
+	public void exitGlobalElement(GlobalElementContext ctx) {
+		ctx.node = ctx.def_prog.node;
 	}
 
 	

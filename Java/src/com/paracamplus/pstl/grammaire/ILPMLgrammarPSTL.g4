@@ -4,12 +4,24 @@ grammar ILPMLgrammarPSTL;
     package antlr4;
 }
 
+//modification
 // Redéfinition des programmes
+//prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node] 
+//    : (elements+=progElement ';'?)* EOF ;
 prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node] 
-    : (defs+=globalDef ';'?)*  (exprs+=expr ';'?) * EOF
+    : (elements_globalDef+=globalDef ';'? | elements_expr+= expr ';'?)* EOF ;
+    
+//progElement returns [com.paracamplus.pstl.interfaces.IASTelement node]
+progElement returns [com.paracamplus.ilp1.interfaces.IAST node]
+    : def_prog=globalDef     # GlobalElement
+    | expr_prog=expr         # ExprElement
     ;
-//ajout PSTL
+    
+//prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node] 
+//    : (defs+=globalDef ';'?)*  (exprs+=expr ';'?) * EOF
+//    ;
 
+//ajout PSTL
 // Declarations globales (classes et fonctions)
 globalDef returns [com.paracamplus.ilp2.interfaces.IASTdeclaration node]
 //ajout PSTL

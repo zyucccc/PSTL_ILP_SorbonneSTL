@@ -14,6 +14,7 @@ import com.paracamplus.ilp1.interfaces.IASTvariable;
 
 import com.paracamplus.ilp4.interfaces.IASTmethodDefinition;
 import com.paracamplus.pstl.interfaces.IASTfactory;
+import com.paracamplus.pstl.interfaces.IASTincludeDefinition;
 import com.paracamplus.ilp3.interfaces.IASTlambda;
 import com.paracamplus.ilp3.interfaces.IASTnamedLambda;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
@@ -339,6 +340,7 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 		// Sépare les définitions de fonctions et de classes
 		List<IASTfunctionDefinition> f = new ArrayList<>();
 		List<IASTclassDefinition> c = new ArrayList<>();
+		List<IASTincludeDefinition> includes = new ArrayList<>();
 	    List<IASTexpression> expressions = new ArrayList<>();
 		for (GlobalDefContext progelement : ctx.elements_globalDef) {
 				IASTdeclaration x = (IASTdeclaration) progelement.node;
@@ -346,6 +348,8 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 					f.add((IASTfunctionDefinition)x);
 				else if (x instanceof IASTclassDefinition)
 					c.add((IASTclassDefinition)x);
+				else if (x instanceof IASTincludeDefinition)
+					includes.add((IASTincludeDefinition)x);
 		}
 		for (ExprContext progelement : ctx.elements_expr) {
 			IASTexpression exp = (IASTexpression) progelement.node;
@@ -357,7 +361,8 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 		ctx.node = factory.newProgram(
 				f.toArray(new IASTfunctionDefinition[0]),
 				c.toArray(new IASTclassDefinition[0]),
-				e);
+				e,
+				includes.toArray(new IASTincludeDefinition[0]));
 	}
 
 //	@Override 

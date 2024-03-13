@@ -1,5 +1,6 @@
 package com.paracamplus.pstl.interpreter;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
@@ -12,6 +13,7 @@ import com.paracamplus.ilp3.interpreter.primitive.Throw.ThrownException;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
 import com.paracamplus.ilp4.interfaces.IASTmethodDefinition;
 import com.paracamplus.pstl.interfaces.IASTprogram;
+import com.paracamplus.pstl.outil.readFichier;
 import com.paracamplus.ilp4.interfaces.IASTvisitor;
 import com.paracamplus.ilp4.interpreter.ILPClass;
 import com.paracamplus.ilp4.interpreter.interfaces.IClass;
@@ -61,6 +63,16 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 		System.out.println("Test Interpreter");
 		String filepath = iast.getFilepath();
 		System.out.println("Test path:"+filepath);
+		//current working path
+		String currentDir = System.getProperty("user.dir");
+        System.out.println("current path：" + currentDir);
+		try {
+			String content = readFichier.readIncludeFileContent(filepath);
+			System.out.println(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		// to do
 		return null;
 	}

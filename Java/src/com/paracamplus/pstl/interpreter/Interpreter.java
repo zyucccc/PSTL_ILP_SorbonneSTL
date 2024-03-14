@@ -13,12 +13,16 @@ import com.paracamplus.ilp3.interpreter.primitive.Throw.ThrownException;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
 import com.paracamplus.ilp4.interfaces.IASTmethodDefinition;
 import com.paracamplus.pstl.interfaces.IASTprogram;
+import com.paracamplus.pstl.outil.IncludeHandler;
 import com.paracamplus.pstl.outil.readFichier;
+import com.paracamplus.pstl.parser.ilpml.ILPMLParser;
 import com.paracamplus.ilp4.interfaces.IASTvisitor;
 import com.paracamplus.ilp4.interpreter.ILPClass;
 import com.paracamplus.ilp4.interpreter.interfaces.IClass;
 import com.paracamplus.ilp4.interpreter.interfaces.IClassEnvironment;
 import com.paracamplus.ilp4.interpreter.interfaces.IMethod;
+import com.paracamplus.pstl.ast_java.ASTfactory;
+import com.paracamplus.pstl.interfaces.IASTfactory;
 import com.paracamplus.pstl.interfaces.IASTincludeDefinition;
 
 public class Interpreter extends com.paracamplus.ilp4.interpreter.Interpreter
@@ -65,10 +69,17 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 		System.out.println("Test path:"+filepath);
 		//current working path
 		String currentDir = System.getProperty("user.dir");
+		IASTfactory factory = new ASTfactory();
+		IncludeHandler handler = new IncludeHandler(factory);
         System.out.println("current path：" + currentDir);
+        IASTprogram includeProgram;
 		try {
 			String content = readFichier.readIncludeFileContent(filepath);
 			System.out.println(content);
+			//a faire: Antlr
+			includeProgram = (IASTprogram) handler.parseIncludeContent(content);
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

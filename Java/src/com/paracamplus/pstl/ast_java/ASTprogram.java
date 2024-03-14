@@ -1,5 +1,7 @@
 package com.paracamplus.pstl.ast_java;
 
+import java.util.Arrays;
+
 import com.paracamplus.ilp1.interfaces.IASTexpression;
 import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
@@ -21,6 +23,27 @@ implements IASTprogram {
 	@Override
 	public IASTincludeDefinition[] getIncludes() {
 		return includes;
+	}
+	@Override
+	public void addClassDefinition(IASTclassDefinition new_class) {
+	    IASTclassDefinition[] newClasses = new IASTclassDefinition[clazzes.length + 1];
+	    System.arraycopy(clazzes, 0, newClasses, 0, clazzes.length);
+	    newClasses[clazzes.length] = new_class;
+	    this.clazzes = newClasses;
+	}
+
+	@Override
+	public void addFunctionDefinition(IASTfunctionDefinition newFunction) {
+	    IASTfunctionDefinition[] newFunctions = new IASTfunctionDefinition[functions.size() + 1]; 
+	    for (int i = 0; i < functions.size(); i++) {
+	        newFunctions[i] = functions.get(i);
+	    }  
+	    newFunctions[functions.size()] = newFunction;
+	    this.functions = Arrays.asList(newFunctions);
+	}
+	@Override
+	public void updateExpression(IASTexpression new_expr) {
+		this.expression = new_expr;
 	}
     
 //    protected IASTelement[] elements;

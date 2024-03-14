@@ -1,6 +1,7 @@
 package com.paracamplus.pstl.interpreter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,6 +16,7 @@ import com.paracamplus.ilp4.interfaces.IASTmethodDefinition;
 import com.paracamplus.pstl.interfaces.IASTprogram;
 import com.paracamplus.pstl.outil.IncludeHandler;
 import com.paracamplus.pstl.outil.readFichier;
+import com.paracamplus.pstl.outil.MergeProgramme;
 import com.paracamplus.pstl.parser.ilpml.ILPMLParser;
 import com.paracamplus.ilp4.interfaces.IASTvisitor;
 import com.paracamplus.ilp4.interpreter.ILPClass;
@@ -42,9 +44,18 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	  
 	    public Object visit(IASTprogram iast, ILexicalEnvironment lexenv) 
 	            throws EvaluationException {
+	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
 	    	for ( IASTincludeDefinition include : iast.getIncludes() ) {
-	            this.visit(include, lexenv);
+	           IASTprogram program = (IASTprogram) this.visit(include, lexenv);
+	            if(program != null) {
+	            	list_program.add(program);
+	            }
 	        }
+	    	MergeProgramme mergeProgramme = new MergeProgramme();
+	    	IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
+	    	//mise a jour le programme
+//	    	iast = mergedPrograme ;
+	    	
 	        for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
 	            this.visit(cd, lexenv);
 	        }
@@ -72,20 +83,18 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 		IASTfactory factory = new ASTfactory();
 		IncludeHandler handler = new IncludeHandler(factory);
         System.out.println("current path：" + currentDir);
-        IASTprogram includeProgram;
+        IASTprogram includeProgram = null;
 		try {
 			String content = readFichier.readIncludeFileContent(filepath);
 			System.out.println(content);
-			//a faire: Antlr
+			//ANTLR
 			includeProgram = (IASTprogram) handler.parseIncludeContent(content);
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		// to do
-		return null;
+		return includeProgram;
 	}
 	
 	@Override

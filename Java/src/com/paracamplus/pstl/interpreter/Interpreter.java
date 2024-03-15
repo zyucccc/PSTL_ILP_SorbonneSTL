@@ -48,13 +48,18 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	    	for ( IASTincludeDefinition include : iast.getIncludes() ) {
 	           IASTprogram program = (IASTprogram) this.visit(include, lexenv);
 	            if(program != null) {
+	            	System.out.println("Test include: trouve programe non-null:\n" + program);
 	            	list_program.add(program);
 	            }
 	        }
 	    	MergeProgramme mergeProgramme = new MergeProgramme();
 	    	IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
+	    	System.out.println("Test merge: merged programe non-null:" + mergedPrograme);
 	    	//mise a jour le programme
 //	    	iast = mergedPrograme ;
+//	    	System.out.println("Test merge et iast: merged programe non-null:" + mergedPrograme);
+	    	//test MergePrograme
+//	    	System.out.println("avant merge:");
 	    	
 	        for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
 	            this.visit(cd, lexenv);
@@ -71,6 +76,7 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	        } catch (Exception exc) {
 	            return exc;
 	        }
+	        
 	    }
 
 	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv) 

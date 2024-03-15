@@ -46,6 +46,25 @@ implements IASTprogram {
 		this.expression = new_expr;
 	}
     
+	@Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("Classes:\n");
+        for (IASTclassDefinition clazz : clazzes) {
+            sb.append(" - ").append(clazz.getName()).append("\n");
+        }
+        
+        sb.append("Functions:\n");
+        for (IASTfunctionDefinition function : functions) {
+            sb.append(" - ").append(function.getName()).append("\n");
+        }
+        
+         //to_string exprs?
+        sb.append("Expression: ").append(expression).append("\n");
+        
+        return sb.toString();
+    }
 //    protected IASTelement[] elements;
     
 //	@Override

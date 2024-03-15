@@ -23,16 +23,15 @@ public class MergeProgramme {
 	            mergedProgram.addClassDefinition(cd);
 	        }
 
-	        // merge classes
+	        // merge functions
 	        for (IASTfunctionDefinition fd : program.getFunctionDefinitions()) {
 	            mergedProgram.addFunctionDefinition(fd);
 	        }
 
-	        // to do : merge variables?
+	        // to do : merge variables globals?
 	      
 
 	        // to do : merge exprs?
-
 	        allExpressions.add(program.getBody());
 	    }
 

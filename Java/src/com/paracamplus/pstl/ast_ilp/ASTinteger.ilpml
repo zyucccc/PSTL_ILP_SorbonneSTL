@@ -1,7 +1,5 @@
 class ASTinteger extends ASTconstant
 {
 
-    method getValue ()
-    if type_of(super) == "Integer" then super;
 
 }

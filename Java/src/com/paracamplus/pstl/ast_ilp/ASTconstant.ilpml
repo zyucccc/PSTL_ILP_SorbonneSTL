@@ -3,10 +3,4 @@ class ASTconstant extends ASTexpression
     var description;
     var value;
 
-    method getDescription ()
-    self.description;
-
-    method getValue ()
-    self.value;
-
 }

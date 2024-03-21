@@ -3,13 +3,4 @@ class ASTinvocation extends ASTexpression {
     var arguments; 
                    
 
-    method getFunction () 
-     self.function;
-    
-
-    method getArguments () 
-     self.arguments;
-    
-
-
 }

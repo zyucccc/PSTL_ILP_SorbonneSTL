@@ -1,3 +1,5 @@
+class NULL extends Object {}
+
 class ListNode extends Object {
     var value;  
     var next;   // pointeur type: ListNode
@@ -26,9 +28,6 @@ class List extends Object{
     method singleton(value) 
         let node = new ListNode(value, null = new NULL()) in
           new List(node); 
-          
-    method list_vide()
-       new List(new NULL());
 
 
     // ajouter valeur a la fin du list
@@ -46,4 +45,7 @@ class List extends Object{
 
 }
 
-//il manque une constructeur singleton,liste_vide()
+let list = new List(new NULL()).singleton(5) in
+   list.head.value
+
+

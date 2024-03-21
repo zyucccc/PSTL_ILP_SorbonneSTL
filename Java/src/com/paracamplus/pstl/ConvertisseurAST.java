@@ -2,6 +2,10 @@ package com.paracamplus.pstl;
 
 import com.paracamplus.ilp1.ast.ASTnamed;
 import com.paracamplus.ilp1.interfaces.IASTalternative;
+import com.paracamplus.ilp1.interfaces.IASTboolean;
+import com.paracamplus.ilp1.interfaces.IASTfloat;
+import com.paracamplus.ilp1.interfaces.IASTinteger;
+import com.paracamplus.ilp1.interfaces.IASTstring;
 import com.paracamplus.ilp1.interfaces.Inamed;
 import com.paracamplus.ilp1.interpreter.interfaces.ILexicalEnvironment;
 import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
@@ -16,31 +20,33 @@ public class ConvertisseurAST {
     }
 	
 	public String visit(IASTprogram iast) {
-	String ilpCode = "";
-		
+	String ilpCode = "";//tous les copie de texte de bibliotheque: ASTs,liste chainee,NULL
+	
+	String program = "";
+	String classes = "";
+	String functions = "";
+	String exprs = "";
+	
 	//classes:
 	for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
-           ilpCode += this.visit(cd);
+           classes += this.visit(cd);
      }
 	//functions:
 	for ( IASTfunctionDefinition fd : iast.getFunctionDefinitions() ) {
-		ilpCode += this.visit(fd);
+		functions += this.visit(fd);
         String v = fd.getName();
         //mecanisme global variable collector?
         
     }
 	//expressions:
-	       ilpCode += this.visit(iast.getBody());
+	       exprs += this.visit(iast.getBody());
 	       
-	       return ilpCode;
-	}
-	
-	public String visit() {
-		
+	       program = String.format ("new ASTprogram(%s,%s,%s)",classes,functions,exprs);
+	       return ilpCode += program;
 	}
 	
 	
-	
+	//exemple Alternative
 	public String visit(IASTalternative iast) {
 
 	    String conditionCode = visit(iast.getCondition());
@@ -49,12 +55,33 @@ public class ConvertisseurAST {
 
 	    if (iast.isTernary()) {
 	        alternantCode = visit(iast.getAlternant());
-	        return String.format("new ASTalternative", conditionCode, consequenceCode, alternantCode);
+	        return String.format("new ASTalternative(%s,%s,%s)", conditionCode, consequenceCode, alternantCode);
 	    } else {
-	        return String.format("if (%s) then (%s)", conditionCode, consequenceCode);
+	        return String.format("new ASTalternative(%s,%s,new NULL())", conditionCode, consequenceCode);
 	    }
 	}
+	public String visit(IASTboolean iast) {
+        return String.valueOf(iast.getValue());
+    }
+    
+    public String visit(IASTinteger iast) {
 
+        return String.valueOf(iast.getValue());
+    }
+    
+
+    public String visit(IASTfloat iast) {
+        return String.valueOf(iast.getValue());
+    }
+    
+
+    public String visit(IASTstring iast) {
+        return iast.getValue();
+    }
+    
+	public String visit() {
+		
+	}
 	
 	//inutile ici?
 //    public String visit(Inamed javaNode) {

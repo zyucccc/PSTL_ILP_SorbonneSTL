@@ -81,14 +81,14 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 
 	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv) 
             throws EvaluationException {
-		System.out.println("Test Interpreter");
 		String filepath = iast.getFilepath();
 		System.out.println("Test path:"+filepath);
 		//current working path
-		String currentDir = System.getProperty("user.dir");
+//		String currentDir = System.getProperty("user.dir");
+//        System.out.println("current path：" + currentDir);
+		
 		IASTfactory factory = new ASTfactory();
 		IncludeHandler handler = new IncludeHandler(factory);
-        System.out.println("current path：" + currentDir);
         IASTprogram includeProgram = null;
 		try {
 			String content = readFichier.readIncludeFileContent(filepath);

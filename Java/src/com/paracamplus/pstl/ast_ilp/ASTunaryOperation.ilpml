@@ -2,18 +2,8 @@ class ASTunaryOperation extends ASTexpression{
     var operator;
     var operand;
 
-    method getOperand() 
-     self.operand;
-    
-
-    method getOperator() 
-      self.operator;
-    
-
 	method getOperands() 
      let node = new ListNode(self.getOperand(),new NULL()) in
         let list = new List(node) in
         list;
-    
-
 }

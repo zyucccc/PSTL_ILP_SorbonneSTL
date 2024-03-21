@@ -1,17 +1,4 @@
 class ASTblock extends ASTexpression{
-    class ASTbinding extends AST{
-        var variable;
-        var initialisation;
-
-        method getVariable () 
-         self.variable;
-        
-
-		method getInitialisation () 
-         self.initialisation;
-        
-    }
-
     var binding; 
     var body;
 
@@ -23,3 +10,19 @@ class ASTblock extends ASTexpression{
         self.body;
     
 }
+
+class ASTbinding extends AST{
+        var variable;
+        var initialisation;
+
+        method getVariable () 
+         self.variable;
+        
+
+		method getInitialisation () 
+         self.initialisation;
+        
+    }
+    
+//binding: List chainee ASTbinding
+//ajoute dans ASTblock?

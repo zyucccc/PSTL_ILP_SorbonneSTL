@@ -3,46 +3,9 @@ class ASTalternative extends ASTexpression {
     var consequence;
     var alternant;
 
-    method getCondition () 
-    self.condition;
-    
-
-    method getConsequence () 
-    self.consequence;
-    
-
-    method getAlternant () 
-    self.alternant;
-    
-
     method isTernary () 
-    self.alternant != null;
-    
-    
-    method eval_condition()
-    (
-    if type_of(self.condition) == "ASTboolean" 
-    then self.getValue()
-    );
-    
-    method eval_consequence()
-    (
-    if type_of(self.consequence) == "ASTfloat" 
-    then self.consequence.getValue()
-    else
-    if type_of(self.consequence) == "ASTinteger" 
-    then self.consequence.getValue()
-    else
-    if type_of(self.consequence) == "ASTboolean" 
-    then self.consequence.getValue()
-    else
-    if type_of(self.consequence) == "ASTboolean" 
-    then self.consequence.getValue()
-    // etc
-    
-    );
-    
-    
-    
-    
+    type_of(self.alternant) != "NULL";
+         
 }
+
+//function is_null(x) type_of(x) == "NULL"

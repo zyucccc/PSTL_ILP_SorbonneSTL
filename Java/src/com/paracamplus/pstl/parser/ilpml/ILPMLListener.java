@@ -22,9 +22,7 @@ import com.paracamplus.ilp2.interfaces.IASTdeclaration;
 import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
 
 import antlr4.ILPMLgrammarPSTLListener;
-import antlr4.ILPMLgrammarPSTLParser.ExprElementContext;
 import antlr4.ILPMLgrammarPSTLParser.GlobalDefContext;
-import antlr4.ILPMLgrammarPSTLParser.GlobalElementContext;
 import antlr4.ILPMLgrammarPSTLParser.IncludeDefContext;
 import antlr4.ILPMLgrammarPSTLParser.IncludeDefinitionContext;
 
@@ -506,21 +504,21 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 		ctx.node = factory.newIncludeDefinition(filepath);
 	}
 
-	@Override
-	public void enterExprElement(ExprElementContext ctx) {}
-
-	@Override
-	public void exitExprElement(ExprElementContext ctx) {
-		ctx.node = ctx.expr_prog.node;
-	}
-
-	@Override
-	public void enterGlobalElement(GlobalElementContext ctx) {}
-
-	@Override
-	public void exitGlobalElement(GlobalElementContext ctx) {
-		ctx.node = ctx.def_prog.node;
-	}
+//	@Override
+//	public void enterExprElement(ExprElementContext ctx) {}
+//
+//	@Override
+//	public void exitExprElement(ExprElementContext ctx) {
+//		ctx.node = ctx.expr_prog.node;
+//	}
+//
+//	@Override
+//	public void enterGlobalElement(GlobalElementContext ctx) {}
+//
+//	@Override
+//	public void exitGlobalElement(GlobalElementContext ctx) {
+//		ctx.node = ctx.def_prog.node;
+//	}
 
 	
 	

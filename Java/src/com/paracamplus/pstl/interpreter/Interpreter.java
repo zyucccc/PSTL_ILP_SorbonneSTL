@@ -17,8 +17,7 @@ import com.paracamplus.pstl.interfaces.IASTprogram;
 import com.paracamplus.pstl.outil.IncludeHandler;
 import com.paracamplus.pstl.outil.readFichier;
 import com.paracamplus.pstl.outil.MergeProgramme;
-import com.paracamplus.pstl.parser.ilpml.ILPMLParser;
-import com.paracamplus.ilp4.interfaces.IASTvisitor;
+import com.paracamplus.pstl.interfaces.IASTvisitor;
 import com.paracamplus.ilp4.interpreter.ILPClass;
 import com.paracamplus.ilp4.interpreter.interfaces.IClass;
 import com.paracamplus.ilp4.interpreter.interfaces.IClassEnvironment;
@@ -102,8 +101,8 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 		//mise à jour
 		return mergedPrograme;
 	}
-
-	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv) 
+    @Override
+	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)
             throws EvaluationException {
 		String filepath = iast.getFilepath();
 		System.out.println("Test path:"+filepath);

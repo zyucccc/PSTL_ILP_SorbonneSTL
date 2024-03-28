@@ -10,16 +10,7 @@ grammar ILPMLgrammarPSTL;
 //    : (elements+=progElement ';'?)* EOF ;
 prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node] 
     : (elements_globalDef+=globalDef ';'? | elements_expr+= expr ';'?)* EOF ;
-    
-//progElement returns [com.paracamplus.pstl.interfaces.IASTelement node]
-progElement returns [com.paracamplus.ilp1.interfaces.IAST node]
-    : def_prog=globalDef     # GlobalElement
-    | expr_prog=expr         # ExprElement
-    ;
-    
-//prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node] 
-//    : (defs+=globalDef ';'?)*  (exprs+=expr ';'?) * EOF
-//    ;
+
 
 //ajout PSTL
 // Declarations globales (classes et fonctions)

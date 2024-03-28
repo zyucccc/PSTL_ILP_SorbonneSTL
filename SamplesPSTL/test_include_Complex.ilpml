@@ -1,0 +1,5 @@
+include "./SamplesPSTL/import/premierInclude.ilpml"
+
+let list = new List(new NULL()).singleton(5) in
+   list.head.value
+

@@ -44,29 +44,28 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	  
 	    public Object visit(IASTprogram iast, ILexicalEnvironment lexenv) 
 	            throws EvaluationException {
-	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
-			//ajoute le programme courant dans la liste
+
+            iast = (IASTprogram)this.visitIncludeProgram(iast, lexenv);
+
+//	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
+//			//traiter tous les includes,ajoute les programmes de "Include" dans la liste
+//	    	for ( IASTincludeDefinition include : iast.getIncludes() ) {
+//	           IASTprogram program = (IASTprogram) this.visit(include, lexenv);
+//               this.visitIncludeProgram(program, lexenv);
+//	            if(program != null) {
+//	            	list_program.add(program);
+//	            }
+//	        }
+//			//ajoute le programme courant dans la liste
 //			list_program.add(iast);
-			//traiter tous les includes,ajoute les programmes de "Include" dans la liste
-	    	for ( IASTincludeDefinition include : iast.getIncludes() ) {
-	           IASTprogram program = (IASTprogram) this.visit(include, lexenv);
-	            if(program != null) {
-	            	System.out.println("Test include: trouve programe non-null:\n" + program);
-	            	list_program.add(program);
-	            }
-	        }
-			//ajoute le programme courant dans la liste
-			list_program.add(iast);
-			//merge les programmes
-	    	MergeProgramme mergeProgramme = new MergeProgramme();
-	    	IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
-	    	System.out.println("Test merge: merged programe non-null:" + mergedPrograme);
-	    	//mise a jour le programme
-	    	iast = mergedPrograme ;
-//	    	System.out.println("Test merge et iast: merged programe non-null:" + mergedPrograme);
-	    	//test MergePrograme
-//	    	System.out.println("avant merge:");
-	    	
+//			//merge les programmes
+//	    	MergeProgramme mergeProgramme = new MergeProgramme();
+//	    	IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
+//	    	//mise a jour le programme
+//	    	iast = mergedPrograme ;
+
+
+
 	        for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
 	            this.visit(cd, lexenv);
 	        }
@@ -84,6 +83,25 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	        }
 	        
 	    }
+
+	public Object visitIncludeProgram(IASTprogram iast, ILexicalEnvironment lexenv)
+			throws EvaluationException {
+		ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
+		//traiter tous les include recursivement
+		for (IASTincludeDefinition include : iast.getIncludes()) {
+			IASTprogram includedProgram = (IASTprogram) this.visit(include, lexenv);
+			includedProgram = (IASTprogram)this.visitIncludeProgram(includedProgram, lexenv);
+			if (includedProgram != null) {
+				list_program.add(includedProgram);
+			}
+		}
+		list_program.add(iast);
+		//merge programs
+		MergeProgramme mergeProgramme = new MergeProgramme();
+		IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
+		//mise à jour
+		return mergedPrograme;
+	}
 
 	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv) 
             throws EvaluationException {

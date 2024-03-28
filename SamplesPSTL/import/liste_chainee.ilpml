@@ -22,18 +22,28 @@ class ListNode extends Object {
 
 class List extends Object{
     var head; //pointeur type: ListNode
+    
+    method singleton(value) 
+        let node = new ListNode(value, null = new NULL()) in
+          new List(node); 
+          
+    method list_vide()
+       new List(new NULL());
+
 
     // ajouter valeur a la fin du list
     method add(value) 
-        if  type_of(self.head) == "NULL"  then //? notion null?
-            self.head = new ListNode(value, new NULL())
+        if  type_of(self.head) == "NULL"  then 
+            self.head = new ListNode(value, null = new NULL())
          else 
             let current = self.head in
             let bloc = 
             while (type_of(current.getNext()) != "NULL") do
                 current = current.getNext()
                 in
-            current.setNext(new ListNode(value, new NULL()))
+            current.setNext(new ListNode(value, null))
         ;
 
 }
+
+//il manque une constructeur singleton,liste_vide()

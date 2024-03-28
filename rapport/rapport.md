@@ -234,12 +234,18 @@ Finalement, nous avons réussi à construire tous les nœuds AST basés du ILP1 
 L'exemple AST et ASTexpression
 
 ```
-class AST { }
+class AST { 
+    method collecterVarGlobal()
+}
 ```
 ```
 class ASTexpression extends AST { }
 ```
-Dans cet exemple, "ast" et "ast expression" sont deux classes vides, mais elles sont extrêmement importantes car elles servent de point de départ et de base pour la construction de l'ensemble de l'arbre syntaxique abstrait (AST). De nombreuses autres classes AST suivantes, telles que "ast alternative" et "ast block", par exemple : `(if expression else expression) = expression`, sont toutes basées sur "ast expression".
+Dans cet exemple, "ast" et "ast expression" sont deux classes vides(abstrait), mais elles sont extrêmement importantes car elles servent de point de départ et de base pour la construction de l'ensemble de l'arbre syntaxique abstrait (AST). 
+De nombreuses autres classes AST suivantes, telles que "ast alternative" et "ast block", par exemple : `(if expression else expression) = expression`, sont toutes basées sur "ast expression".
+
+Evidemment, dans les développements ultérieurs, nous pouvons ajouter quelques méthodes génériques dans AST et ASTexpression pour simuler des __interfaces__ ou des __classes abstraites__. Par exemple, nous pouvons utiliser la méthode __collecterVarGlobal()__ pour collecter les variables globales, ce qui est très important. Ici, nous n'avons pas besoin de implanter directement la logique de cette méthode, nous la laissons vide. Dans les AST qui étendent ultérieurement l'AST, nous pouvons utiliser le mot-clé __"super"__ pour réécrire la logique spécifique de la méthode.
+
 
 Voici quelques exemples d'AST que nous avons implantés en ILPML:
 Exemple de AST (if_else_)
@@ -336,13 +342,15 @@ public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)  {
 	}
 ```
 ##### 4.2.5 À completer
-Cependant, notre travail n'est pas encore terminé. Comme mentionné dans l'introduction, notre tâche consiste à réécrire l'implémentation en utilisant le langage ILPML lui-même, c'est-à-dire que nous devons encore convertir l'implémentation actuelle en Java pour la mettre en ILPML. C'est ce que nous devrons réaliser dans les projets suivants.
+Cependant, notre travail n'est pas encore terminé. Comme mentionné dans l'introduction, notre tâche consiste à réécrire l'implémentation en utilisant le langage ILPML lui-même.
+Pour l'instant, ce que nous devons faire est de fusionner la liste d'ASTProgram obtenue en parcourant les nœuds "include" dans Java en un seul ASTProgram, puis d'utiliser le convertisseur pour convertir ce ASTProgram en un ASTProgram sous ILP.
+C'est ce que nous devrons réaliser dans les projets suivants.
 
 <div style="page-break-after: always;"></div>
 
 ## 5 Tâches restantes + Re-tro Planning
 #### 5.1 Appliquer l'implementation de Notion include et mecanisme de compiler multiple fichier en ILPML
- Comme nous l'avons introduit dans la troisième partie, nous devons appliquer la logique d'inclusion dans ILPML. Nous n'allons pas répéter l'explication ici.
+Nous avons besoin d'une méthode de fusion complète pour fusionner la liste d'ASTProgram obtenue en parcourant les nœuds "include" en un seul ASTProgram. En d'autres termes, notre mécanisme d'inclusion sera traité dans la partie Java. Ensuite, pour ce ASTProgram unique obtenu, nous développerons un convertisseur dans la section 5.2 pour convertir l'AST Java en AST ILP. En appliquant ce convertisseur à cet ASTProgram, nous pouvons obtenir la structure AST ILP pour le code ILPML.
   
 #### 5.2 Développer une méthode d’analyse syntaxique permettant de convertir un code source texte à la syntaxe ILPML en AST représenté en ILP.
  Pour mettre en œuvre une méthode d'analyse syntaxique permettant de convertir un code source texte en syntaxe ILPML en AST représenté en ILP, nous avions initialement trois options: 

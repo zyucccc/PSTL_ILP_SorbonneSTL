@@ -45,6 +45,9 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	    public Object visit(IASTprogram iast, ILexicalEnvironment lexenv) 
 	            throws EvaluationException {
 	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
+			//ajoute le programme courant dans la liste
+//			list_program.add(iast);
+			//traiter tous les includes,ajoute les programmes de "Include" dans la liste
 	    	for ( IASTincludeDefinition include : iast.getIncludes() ) {
 	           IASTprogram program = (IASTprogram) this.visit(include, lexenv);
 	            if(program != null) {
@@ -52,11 +55,14 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	            	list_program.add(program);
 	            }
 	        }
+			//ajoute le programme courant dans la liste
+			list_program.add(iast);
+			//merge les programmes
 	    	MergeProgramme mergeProgramme = new MergeProgramme();
 	    	IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
 	    	System.out.println("Test merge: merged programe non-null:" + mergedPrograme);
 	    	//mise a jour le programme
-//	    	iast = mergedPrograme ;
+	    	iast = mergedPrograme ;
 //	    	System.out.println("Test merge et iast: merged programe non-null:" + mergedPrograme);
 	    	//test MergePrograme
 //	    	System.out.println("avant merge:");
@@ -84,7 +90,7 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 		String filepath = iast.getFilepath();
 		System.out.println("Test path:"+filepath);
 		//current working path
-//		String currentDir = System.getProperty("user.dir");
+//		  String currentDir = System.getProperty("user.dir");
 //        System.out.println("current path：" + currentDir);
 		
 		IASTfactory factory = new ASTfactory();
@@ -95,7 +101,8 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 			System.out.println(content);
 			//ANTLR
 			includeProgram = (IASTprogram) handler.parseIncludeContent(content);
-			
+
+			//this.visit(includeProgram, lexenv);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

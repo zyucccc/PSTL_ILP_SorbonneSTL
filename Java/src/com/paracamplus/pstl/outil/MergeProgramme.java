@@ -14,9 +14,14 @@ import com.paracamplus.pstl.interfaces.IASTfactory;
 public class MergeProgramme {
 	public IASTprogram mergePrograms(ArrayList<IASTprogram> programs) {
 	    IASTfactory factory = new ASTfactory();
-	   IASTprogram mergedProgram = factory.newProgram(new IASTfunctionDefinition[0], new IASTclassDefinition[0], factory.newSequence(new IASTexpression[0]),null);
-
-	   List<IASTexpression> allExpressions = new ArrayList<>();
+		//change-
+	   IASTprogram mergedProgram = factory.newProgram(new IASTfunctionDefinition[0], new IASTclassDefinition[0], factory.newSequence(new
+//			   com.paracamplus.pstl.interfaces.ilp1.
+					   IASTexpression[0]),null);
+		//change-
+	   List<
+//			   com.paracamplus.pstl.interfaces.ilp1.
+					   IASTexpression> allExpressions = new ArrayList<>();
 	    for (IASTprogram program : programs) {
 	        // merge classes
 	        for (IASTclassDefinition cd : program.getClassDefinitions()) {
@@ -35,8 +40,11 @@ public class MergeProgramme {
 	        allExpressions.add(program.getBody());
 	    }
 
-
-        IASTexpression mergedExpression = factory.newSequence(allExpressions.toArray(new IASTexpression[0]));
+//change-
+//		com.paracamplus.pstl.interfaces.ilp1.
+				IASTexpression mergedExpression = factory.newSequence(allExpressions.toArray(new
+//						com.paracamplus.pstl.interfaces.ilp1.
+								IASTexpression[0]));
         mergedProgram.updateExpression(mergedExpression);
 
 	    return mergedProgram;

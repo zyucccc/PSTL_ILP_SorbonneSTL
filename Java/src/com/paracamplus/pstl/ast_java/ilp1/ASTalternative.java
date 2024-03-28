@@ -1,7 +1,7 @@
 package com.paracamplus.pstl.ast_java.ilp1;
 
 import com.paracamplus.ilp1.annotation.OrNull;
-import com.paracamplus.pstl.interfaces.ilp1.IASTexpression
+import com.paracamplus.pstl.interfaces.ilp1.IASTexpression;
 import com.paracamplus.pstl.interfaces.IASTvisitor_Convert;
 import com.paracamplus.pstl.interfaces.ilp1.IASTalternative;
 

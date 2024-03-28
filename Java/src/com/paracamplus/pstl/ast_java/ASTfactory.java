@@ -69,13 +69,15 @@ public class ASTfactory extends com.paracamplus.ilp4.ast.ASTfactory implements I
 	public IASTincludeDefinition newIncludeDefinition(String filepath) {
 		return new ASTincludeDefinition(filepath);
 	}
-	
+
+	//change-
 	@Override
 	public IASTprogram newProgram(IASTfunctionDefinition[] functions,
                                   IASTclassDefinition[] clazzes, 
-                                  IASTexpression expression,
+//                                  com.paracamplus.pstl.interfaces.ilp1.
+											  IASTexpression expression,
                                   IASTincludeDefinition[] includes) {
-        return new ASTprogram(functions, clazzes, expression,includes);
+        return new ASTprogram(functions, clazzes,expression,includes);
     }
 	//ilp4
 	 @Override
@@ -215,9 +217,16 @@ public class ASTfactory extends com.paracamplus.ilp4.ast.ASTfactory implements I
 	        return new ASToperator(name);
 	    }
 
+		//change
 	    @Override
-		public IASTsequence newSequence(IASTexpression[] asts) {
-	        return new ASTsequence(asts);
+		public
+//		com.paracamplus.pstl.interfaces.ilp1.
+				IASTsequence newSequence(
+//						com.paracamplus.pstl.interfaces.ilp1.
+								IASTexpression[] asts) {
+	        return new
+//					com.paracamplus.pstl.ast_java.ilp1.
+							ASTsequence(asts);
 	    }
 
 	    @Override

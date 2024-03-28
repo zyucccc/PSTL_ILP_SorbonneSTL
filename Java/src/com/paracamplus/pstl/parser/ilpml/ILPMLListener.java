@@ -359,6 +359,7 @@ public class ILPMLListener implements ILPMLgrammarPSTLListener {
 		ctx.node = factory.newProgram(
 				f.toArray(new IASTfunctionDefinition[0]),
 				c.toArray(new IASTclassDefinition[0]),
+				//change-
 				e,
 				includes.toArray(new IASTincludeDefinition[0]));
 	}

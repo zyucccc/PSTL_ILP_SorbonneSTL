@@ -13,10 +13,12 @@ import com.paracamplus.ilp1.interfaces.IASTexpression;
 
 public interface IASTfactory  extends com.paracamplus.ilp4.interfaces.IASTfactory {
    IASTincludeDefinition newIncludeDefinition(String filepath);
-   
+
+   //change-
    IASTprogram newProgram(IASTfunctionDefinition[] functions,
 	   		IASTclassDefinition[] clazzes,
-	           IASTexpression expression,
+//                          com.paracamplus.pstl.interfaces.ilp1.
+                                  IASTexpression expression,
 	           IASTincludeDefinition[] includes);
    
    //ilp4
@@ -96,8 +98,13 @@ public interface IASTfactory  extends com.paracamplus.ilp4.interfaces.IASTfactor
       //ilp1
       com.paracamplus.ilp1.interfaces.IASTprogram newProgram(
               IASTexpression expression);
-      
-      IASTexpression newSequence(IASTexpression[] asts);
+
+
+      //change-
+//      com.paracamplus.pstl.interfaces.ilp1.
+              IASTexpression newSequence(
+//                      com.paracamplus.pstl.interfaces.ilp1.
+                              IASTexpression[] asts);
 
       IASTexpression newAlternative(
               IASTexpression condition,

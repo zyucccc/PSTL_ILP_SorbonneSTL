@@ -7,18 +7,27 @@ import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
 import com.paracamplus.pstl.interfaces.IASTincludeDefinition;
 import com.paracamplus.pstl.interfaces.IASTprogram;
+//import com.paracamplus.pstl.interfaces.ilp1.IASTexpression;
 
 public class ASTprogram extends com.paracamplus.ilp4.ast.ASTprogram
 implements IASTprogram {
+	//change-
     public ASTprogram(IASTfunctionDefinition[] functions,
                       IASTclassDefinition[] clazzes,
-                      IASTexpression expression,
+//					  com.paracamplus.pstl.interfaces.ilp1.
+							  IASTexpression expression,
                       IASTincludeDefinition[] includes) {
     	super(functions,clazzes,expression);
     	this.includes = includes;
+		this.expression = expression;
     }
     
     protected IASTincludeDefinition[] includes;
+
+	//change-
+	protected
+//	com.paracamplus.pstl.interfaces.ilp1.
+			IASTexpression expression;
     
 	@Override
 	public IASTincludeDefinition[] getIncludes() {
@@ -41,11 +50,20 @@ implements IASTprogram {
 	    newFunctions[functions.size()] = newFunction;
 	    this.functions = Arrays.asList(newFunctions);
 	}
+	//change-
 	@Override
-	public void updateExpression(IASTexpression new_expr) {
+	public void updateExpression(
+//			com.paracamplus.pstl.interfaces.ilp1.
+					IASTexpression new_expr) {
 		this.expression = new_expr;
 	}
-    
+
+	//change-
+	public
+//	com.paracamplus.pstl.interfaces.ilp1.
+			IASTexpression getBody() {
+		return this.expression;
+	}
 	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -65,11 +83,14 @@ implements IASTprogram {
         
         return sb.toString();
     }
-//    protected IASTelement[] elements;
-    
+
 //	@Override
-//	public IASTelement[] getElements() {
-//		return elements;
+//	public <Result, Anomaly extends Throwable> Result accept(com.paracamplus.pstl.interfaces.IASTvisitor_Convert<Result, Anomaly> visitor) throws Anomaly {
+//		return ((com.paracamplus.pstl.interfaces.IASTvisitor_Convert<Result, Anomaly>) visitor).visit(this);
 //	}
-  
+//
+//	@Override
+//	public <Result, Data, Anomaly extends Throwable> Result accept(IASTvisitor<Result, Data, Anomaly> visitor, Data data) throws Anomaly {
+//		return com.paracamplus.pstl.interfaces.IASTvisitor.visit(this, data);
+//	}
 }

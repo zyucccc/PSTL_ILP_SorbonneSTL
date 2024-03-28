@@ -13,6 +13,7 @@ import com.paracamplus.ilp2.interfaces.IASTfunctionDefinition;
 import com.paracamplus.ilp3.interpreter.primitive.Throw.ThrownException;
 import com.paracamplus.ilp4.interfaces.IASTclassDefinition;
 import com.paracamplus.ilp4.interfaces.IASTmethodDefinition;
+import com.paracamplus.pstl.ConvertisseurAST;
 import com.paracamplus.pstl.interfaces.IASTprogram;
 import com.paracamplus.pstl.outil.IncludeHandler;
 import com.paracamplus.pstl.outil.readFichier;
@@ -45,6 +46,11 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	            throws EvaluationException {
 
             iast = (IASTprogram)this.visitIncludeProgram(iast, lexenv);
+
+//			System.out.println("Test Convertisseur:>>>>>>>>");
+//			ConvertisseurAST convertisseur = new ConvertisseurAST();
+//			Object result = convertisseur.visit(iast);
+
 
 //	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
 //			//traiter tous les includes,ajoute les programmes de "Include" dans la liste

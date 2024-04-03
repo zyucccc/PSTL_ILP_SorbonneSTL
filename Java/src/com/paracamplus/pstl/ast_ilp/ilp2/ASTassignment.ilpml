@@ -1,0 +1,7 @@
+class ASTassignment
+{
+    //ASTvariable
+    var variable;
+    //ASTexpression
+    var expression;
+}

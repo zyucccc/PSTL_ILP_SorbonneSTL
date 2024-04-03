@@ -47,9 +47,9 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 
             iast = (IASTprogram)this.visitIncludeProgram(iast, lexenv);
 
-//			System.out.println("Test Convertisseur:>>>>>>>>");
-//			ConvertisseurAST convertisseur = new ConvertisseurAST();
-//			Object result = convertisseur.visit(iast);
+			System.out.println("Test Convertisseur:>>>>>>>>");
+			ConvertisseurAST convertisseur = new ConvertisseurAST();
+			Object result = convertisseur.visit(iast);
 
 
 //	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
@@ -111,7 +111,7 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)
             throws EvaluationException {
 		String filepath = iast.getFilepath();
-		System.out.println("Test path:"+filepath);
+//		System.out.println("Test path:"+filepath);
 		//current working path
 //		  String currentDir = System.getProperty("user.dir");
 //        System.out.println("current path：" + currentDir);
@@ -121,7 +121,7 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
         IASTprogram includeProgram = null;
 		try {
 			String content = readFichier.readIncludeFileContent(filepath);
-			System.out.println(content);
+//			System.out.println(content);
 			//ANTLR
 			includeProgram = (IASTprogram) handler.parseIncludeContent(content);
 
@@ -129,7 +129,7 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("Bibliotheque de :"+filepath+ " est bien chargé");
 		return includeProgram;
 	}
 	

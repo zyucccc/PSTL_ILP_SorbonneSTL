@@ -52,7 +52,8 @@ class List extends Object{
 let node = new ListNode(10,new NULL()) in
    list = new List(node) ;
    list.add(5);
-  list.head.next.value
+   list.add(99);
+  list.head.next.next.value
 
 
 

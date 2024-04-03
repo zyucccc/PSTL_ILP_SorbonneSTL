@@ -10,12 +10,12 @@ public class ASTincludeDefinition implements IASTincludeDefinition, IASTvisitabl
  
  public ASTincludeDefinition(String filepath) {
      this.filepath = filepath;
-     System.out.println("AST creer avec "+filepath);
+//     System.out.println("AST creer avec "+filepath);
  }
  
  @Override
  public String getFilepath() {
-	 System.out.println("AST getFilepath "+filepath);
+//	 System.out.println("AST getFilepath "+filepath);
      return filepath;
  }
 

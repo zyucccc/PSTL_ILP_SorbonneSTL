@@ -3,11 +3,6 @@ class ASTbinaryOperation extends ASTexpression{
     var leftOperand;
     var rightOperand;
 
-    
-	method getOperator() 
-    self.operator;
-
-
 	 method getOperands()
 	 (
      init = new List(new NULL());
@@ -15,14 +10,5 @@ class ASTbinaryOperation extends ASTexpression{
      init.add(rightOperand);
      )
      ;
-    
-
-	method getLeftOperand()
-     self.leftOperand;
-    
-
-	method getRightOperand() 
-     self.rightOperand;
-    
-    
+       
 }

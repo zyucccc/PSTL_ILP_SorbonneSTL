@@ -65,20 +65,15 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 	//ILP1
 	@Override
 	public Object visit(IASTalternative iast,ILexicalEnvironment lexenv) throws EvaluationException {
-	    String conditionCode = iast.getCondition().accept(this,null).toString();
-	    String consequenceCode = iast.getConsequence().accept(this,null).toString();
-
 		sb.append("new ASTalternative(");
-		sb.append(conditionCode);
+		iast.getCondition().accept(this,null);
 		sb.append(",");
-		sb.append(consequenceCode);
-
+		iast.getConsequence().accept(this,null);
+		sb.append(",");
 	    if (iast.isTernary()) {
-	        String alternantCode = iast.getAlternant().accept(this,null).toString();
-			sb.append(",");
-			sb.append(alternantCode);
+			iast.getAlternant().accept(this,null);
 	    } else {
-			sb.append(",new NULL()");
+			sb.append("new NULL()");
 	    }
 		sb.append(")");
 		return null;
@@ -86,6 +81,13 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 
 	@Override
 	public Object visit(IASTbinaryOperation iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
+		sb.append("new ASTbinaryOperation(");
+		sb.append(iast.getOperator().getName().toString());
+		sb.append(",");
+		iast.getLeftOperand().accept(this,null);
+		sb.append(",");
+		iast.getRightOperand().accept(this,null);
+		sb.append(")");
 		return null;
 	}
 
@@ -98,17 +100,24 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 
 		String list_str = "list"+compteur_list;
 		String binding_str = "";
-		String bindings_str = "";
+
 		IASTblock.IASTbinding[] bindings = iast.getBindings();
-		bindings_str = list_str + "=" + "new List(new NULL());";
+		sb.append("(");
+		sb.append(list_str).append("=").append("new List(new NULL());");
+
 		for ( IASTblock.IASTbinding binding : bindings ) {
-			binding_str = "new ASTbinding(" + binding.getVariable().accept(this,null) + "," + binding.getInitialisation().accept(this,null) + ")";
-			bindings_str = bindings_str + list_str + ".add(" + binding_str + ");";
+				sb.append(list_str).append(".add(").append("new ASTbinding(");
+				binding.getVariable().accept(this, null);
+				sb.append(",");
+				binding.getInitialisation().accept(this, null);
+				sb.append("));");
 		}
 
-		sb.append(bindings_str);
+		sb.append(list_str);
+        sb.append(")");
 		sb.append(",");
 		iast.getBody().accept(this,null);
+		sb.append(")");
 		return null;
 	}
 
@@ -117,26 +126,33 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append("new ASTboolean(");
 		sb.append(iast.getValue());
 		sb.append(")");
-		sb.append(";");
 		return null;
-//		String str = "";
-//		str = "new ASTboolean(" + iast.getValue() + ")";
-//		return str;
     }
     @Override
     public Object visit(IASTinteger iast,ILexicalEnvironment lexenv) {
 		sb.append("new ASTinteger(");
 		sb.append(iast.getValue());
 		sb.append(")");
-		sb.append(";");
 		return null;
-//		String str = "";
-//		str = "new ASTinteger(" + iast.getValue() + ")";
-//		return str;
     }
 
 	@Override
 	public Object visit(IASTinvocation iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
+		sb.append("new ASTinvocation(");
+		compteur_list ++;
+		String list_str = "list"+compteur_list;
+		iast.getFunction().accept(this,null);
+		sb.append(",");
+		IASTexpression[] expressions = iast.getArguments();
+		sb.append("(");
+		sb.append(list_str).append("=").append("new List(new NULL());");
+		for ( IASTexpression e : expressions ) {
+			sb.append(list_str).append(".add(");
+			e.accept(this, null);
+			sb.append(");");
+		}
+		sb.append(list_str);
+		sb.append(")");
 		return null;
 	}
 
@@ -145,11 +161,7 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append("new ASTfloat(");
 		sb.append(iast.getValue());
 		sb.append(")");
-		sb.append(";");
 		return null;
-//		String str = "";
-//		str = "new ASTfloat(" + iast.getValue() + ")";
-//		return str;
     }
 
 	@Override
@@ -157,31 +169,34 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append("new ASTstring(");
 		sb.append(iast.getValue());
 		sb.append(")");
-		sb.append(";");
 		return null;
-//		String str = "";
-//		str = "new ASTstring(" + iast.getValue() + ")";
-//		return str;
 	}
 
 	@Override
 	public Object visit(IASTsequence iast,ILexicalEnvironment lexenv) throws EvaluationException {
 		compteur_list++;
 		sb.append("new ASTsequence(");
+		sb.append("(");
 		String list_str = "list"+compteur_list;
 		sb.append(list_str).append("=").append("new List(new NULL());");
 		IASTexpression[] expressions = iast.getExpressions();
 		for ( IASTexpression e : expressions ) {
 			sb.append(list_str).append(".add(");
 			e.accept(this, null);
-
 			sb.append(");");
 		}
-		sb.append(");");
+		sb.append(list_str);
+		sb.append(")");
+		sb.append(")");
 		return null;
 	}
 	@Override
 	public Object visit(IASTunaryOperation iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
+		sb.append("new ASTunaryOperation(");
+		sb.append(iast.getOperator().getName().toString());
+		sb.append(",");
+		sb.append(iast.getOperand().accept(this,null));
+		sb.append(")");
 		return null;
 	}
 
@@ -190,11 +205,7 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append("new ASTvariable(");
 		sb.append(iast.getName());
 		sb.append(")");
-		sb.append(";");
 		return null;
-//		String str = "";
-//		str = "new ASTvariable(" + iast.getName() + ")";
-//		return str;
 	}
 
 	//ILP2
@@ -205,7 +216,6 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append(",");
 		iast.getExpression().accept(this,null);
 		sb.append(")");
-		sb.append(";");
 		return null;
 	}
 

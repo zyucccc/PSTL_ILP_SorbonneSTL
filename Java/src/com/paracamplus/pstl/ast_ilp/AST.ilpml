@@ -1,4 +1,4 @@
-class AST
+class AST extends Object
 {
     
 }

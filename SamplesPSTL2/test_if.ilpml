@@ -4,14 +4,15 @@ let x = 5 in if x == 5 then 6
 
 /*
 new ASTprogram(
-    new ASTsequence(
-        (list1=new List(new NULL());list1.add(
-            new ASTblock((list2=new List(new NULL());list2.add(
-                new ASTbinding(new ASTvariable(x),new ASTinteger(5)););
-                list2),
-                new ASTalternative(
-                    new ASTbinaryOperation(==,new ASTvariable(x),new ASTinteger(5)),
-                    new ASTinteger(6),
-                    new NULL())));
-                    list1)));
+      new ASTsequence(
+          (list1=new List(new NULL());list1.add(
+               new ASTblock(
+                    (list2=new List(new NULL());
+                    list2.add(new ASTbinding(new ASTvariable(x),new ASTinteger(5)));
+                    list2),
+                    new ASTalternative(
+                        new ASTbinaryOperation("==",new ASTvariable(x),new ASTinteger(5)),
+                        new ASTinteger(6),
+                        new NULL())));
+           list1)));
 */

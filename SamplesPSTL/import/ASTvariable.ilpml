@@ -1,0 +1,4 @@
+class ASTvariable extends ASTnamed{
+ 
+
+}

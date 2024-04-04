@@ -1,0 +1,6 @@
+class ASTconstant extends ASTexpression
+{
+//    var description;
+    var value;
+
+}

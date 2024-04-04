@@ -1,0 +1,8 @@
+class ASTfloat extends ASTconstant
+{
+
+    method getValue ()
+    (
+    if type_of(super) == "Float" then super
+    );
+}

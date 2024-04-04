@@ -1,0 +1,17 @@
+class ASTbinding extends AST{
+        //IASTbinding
+        var variable;
+        //IASTexpression
+        var initialisation;
+    }
+
+ class ASTblock extends ASTexpression{
+     //ASTbinding[]
+     var binding;
+     //ASTexpression
+     var body;
+
+ }
+    
+//binding: List chainee ASTbinding
+//ajoute dans ASTblock?

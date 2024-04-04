@@ -82,7 +82,9 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 	@Override
 	public Object visit(IASTbinaryOperation iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
 		sb.append("new ASTbinaryOperation(");
-		sb.append(iast.getOperator().getName().toString());
+		sb.append("\"");
+		sb.append(iast.getOperator().getName());
+		sb.append("\"");
 		sb.append(",");
 		iast.getLeftOperand().accept(this,null);
 		sb.append(",");
@@ -193,7 +195,9 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 	@Override
 	public Object visit(IASTunaryOperation iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
 		sb.append("new ASTunaryOperation(");
-		sb.append(iast.getOperator().getName().toString());
+		sb.append("\"");
+		sb.append(iast.getOperator().getName());
+		sb.append("\"");
 		sb.append(",");
 		sb.append(iast.getOperand().accept(this,null));
 		sb.append(")");

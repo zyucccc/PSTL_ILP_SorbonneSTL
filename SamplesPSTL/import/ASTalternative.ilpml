@@ -1,0 +1,11 @@
+class ASTalternative extends ASTexpression {
+    var condition;
+    var consequence;
+    var alternant;
+
+    method isTernary () 
+    type_of(self.alternant) != "NULL";
+         
+}
+
+//function is_null(x) type_of(x) == "NULL"

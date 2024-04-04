@@ -1,0 +1,5 @@
+class ASTboolean extends ASTconstant
+{
+
+
+}

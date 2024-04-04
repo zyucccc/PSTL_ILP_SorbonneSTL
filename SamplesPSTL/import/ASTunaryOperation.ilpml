@@ -1,0 +1,4 @@
+class ASTunaryOperation extends ASTexpression{
+    var operator;
+    var operand;
+}

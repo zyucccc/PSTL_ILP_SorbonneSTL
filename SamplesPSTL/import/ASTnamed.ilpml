@@ -1,0 +1,3 @@
+class ASTnamed extends AST {
+    var name;
+}

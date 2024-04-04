@@ -1,0 +1,14 @@
+class ASTbinaryOperation extends ASTexpression{
+    var operator;
+    var leftOperand;
+    var rightOperand;
+
+	 method getOperands()
+	 (
+     init = new List(new NULL());
+     init.add(leftOperand);
+     init.add(rightOperand);
+     )
+     ;
+       
+}

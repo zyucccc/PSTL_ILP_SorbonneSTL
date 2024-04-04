@@ -10,13 +10,8 @@ public interface IASTprogram extends com.paracamplus.ilp4.interfaces.IASTprogram
 	public IASTincludeDefinition[] getIncludes();
 	public void addClassDefinition(IASTclassDefinition new_class);
 	public void addFunctionDefinition(IASTfunctionDefinition new_func);
-	//change-
-	public
-//	com.paracamplus.pstl.interfaces.ilp1.
-			IASTexpression getBody();
-	//change-
-	public void updateExpression(
-//			com.paracamplus.pstl.interfaces.ilp1.
-					IASTexpression new_expr);
-//	IASTelement[] getElements();
+	public IASTexpression getBody();
+
+	public void updateExpression(IASTexpression new_expr);
+
 }

@@ -46,9 +46,9 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		   //expressions:
 //		   expr = iast.getBody().toString();
 //		   System.out.println(expr);
-		   String expr = ((IASTexpression)iast.getBody()).accept(this,null).toString();
-           sb.append(expr);
+		   iast.getBody().accept(this,null);
 		   sb.append(")");
+		   sb.append(";");
 		   //Test
 		   System.out.println(sb.toString());
 
@@ -108,27 +108,31 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 
 		sb.append(bindings_str);
 		sb.append(",");
-		sb.append(iast.getBody().accept(this,null));
+		iast.getBody().accept(this,null);
 		return null;
 	}
 
 	@Override
 	public Object visit(IASTboolean iast,ILexicalEnvironment lexenv) {
-//		sb.append("new ASTboolean(");
-//		sb.append(iast.getValue());
-//		sb.append(")");
-		String str = "";
-		str = "new ASTboolean(" + iast.getValue() + ")";
-		return str;
+		sb.append("new ASTboolean(");
+		sb.append(iast.getValue());
+		sb.append(")");
+		sb.append(";");
+		return null;
+//		String str = "";
+//		str = "new ASTboolean(" + iast.getValue() + ")";
+//		return str;
     }
     @Override
     public Object visit(IASTinteger iast,ILexicalEnvironment lexenv) {
-//		sb.append("new ASTinteger(");
-//		sb.append(iast.getValue());
-//		sb.append(")");
-		String str = "";
-		str = "new ASTinteger(" + iast.getValue() + ")";
-		return str;
+		sb.append("new ASTinteger(");
+		sb.append(iast.getValue());
+		sb.append(")");
+		sb.append(";");
+		return null;
+//		String str = "";
+//		str = "new ASTinteger(" + iast.getValue() + ")";
+//		return str;
     }
 
 	@Override
@@ -138,32 +142,43 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 
 	@Override
     public Object visit(IASTfloat iast,ILexicalEnvironment lexenv) {
-//		sb.append("new ASTfloat(");
-//		sb.append(iast.getValue());
-//		sb.append(")");
-		String str = "";
-		str = "new ASTfloat(" + iast.getValue() + ")";
-		return str;
+		sb.append("new ASTfloat(");
+		sb.append(iast.getValue());
+		sb.append(")");
+		sb.append(";");
+		return null;
+//		String str = "";
+//		str = "new ASTfloat(" + iast.getValue() + ")";
+//		return str;
     }
 
 	@Override
     public Object visit(IASTstring iast,ILexicalEnvironment lexenv) {
-//		sb.append("new ASTstring(");
-//		sb.append(iast.getValue());
-//		sb.append(")");
-		String str = "";
-		str = "new ASTstring(" + iast.getValue() + ")";
-		return str;
+		sb.append("new ASTstring(");
+		sb.append(iast.getValue());
+		sb.append(")");
+		sb.append(";");
+		return null;
+//		String str = "";
+//		str = "new ASTstring(" + iast.getValue() + ")";
+//		return str;
 	}
 
 	@Override
 	public Object visit(IASTsequence iast,ILexicalEnvironment lexenv) throws EvaluationException {
+		compteur_list++;
+		sb.append("new ASTsequence(");
+		String list_str = "list"+compteur_list;
+		sb.append(list_str).append("=").append("new List(new NULL());");
 		IASTexpression[] expressions = iast.getExpressions();
-		Object lastValue = null;
 		for ( IASTexpression e : expressions ) {
-			lastValue = e.accept(this, null);
+			sb.append(list_str).append(".add(");
+			e.accept(this, null);
+
+			sb.append(");");
 		}
-		return lastValue;
+		sb.append(");");
+		return null;
 	}
 	@Override
 	public Object visit(IASTunaryOperation iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
@@ -172,21 +187,23 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 
 	@Override
 	public Object visit(IASTvariable iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
-//		sb.append("new ASTvariable(");
-//		sb.append(iast.getName());
-//		sb.append(")");
-		String str = "";
-		str = "new ASTvariable(" + iast.getName() + ")";
-		return str;
+		sb.append("new ASTvariable(");
+		sb.append(iast.getName());
+		sb.append(")");
+		sb.append(";");
+		return null;
+//		String str = "";
+//		str = "new ASTvariable(" + iast.getName() + ")";
+//		return str;
 	}
 
 	//ILP2
 	@Override
 	public Object visit(IASTassignment iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
         sb.append("new ASTassignment(");
-		sb.append(iast.getVariable().accept(this,null));
+		iast.getVariable().accept(this,null);
 		sb.append(",");
-		sb.append(iast.getExpression().accept(this,null));
+		iast.getExpression().accept(this,null);
 		sb.append(")");
 		sb.append(";");
 		return null;

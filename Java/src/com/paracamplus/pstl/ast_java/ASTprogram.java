@@ -50,11 +50,9 @@ implements IASTprogram {
 	    newFunctions[functions.size()] = newFunction;
 	    this.functions = Arrays.asList(newFunctions);
 	}
-	//change-
+
 	@Override
-	public void updateExpression(
-//			com.paracamplus.pstl.interfaces.ilp1.
-					IASTexpression new_expr) {
+	public void updateExpression(IASTexpression new_expr) {
 		this.expression = new_expr;
 	}
 

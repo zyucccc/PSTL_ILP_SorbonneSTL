@@ -22,7 +22,7 @@ program = new ASTprogram(
 
 context = new Context(noDestination);
 
-program.eval(context);
+//program.eval(context);
 
 
 99

@@ -1,0 +1,17 @@
+include "./Java/src/com/paracamplus/pstl/NULL.ilpml"
+include "./Java/src/com/paracamplus/pstl/liste_chainee.ilpml"
+include "./Java/src/com/paracamplus/pstl/compiler.ilpml"
+include "./Java/src/com/paracamplus/pstl/bibliotheque_AST.ilpml"
+
+
+
+//if true then 1
+
+program = new ASTprogram(new ASTsequence((list1=new List(new NULL());list1.add(new ASTalternative(new ASTboolean(true),new ASTinteger(1),new NULL()));list1)));
+
+context = new Context(noDestination);
+
+program.eval(context);
+
+
+99

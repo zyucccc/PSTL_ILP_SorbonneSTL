@@ -5,6 +5,40 @@ class ASTalternative extends ASTexpression {
 
     method isTernary () 
     type_of(self.alternant) != "NULL";
+
+    method eval(context)
+    (
+      let valTmp = incrementAndGet() in
+      let ilp_tmp = to_string("ilptmp"+valTmp) in
+      let assignDestination = to_string(ilp_tmp+" = ") in
+      let c = new Context(assignDestination) in
+        (
+          print("{");
+          newline();
+          print("ILP_Object "+ilp_tmp+";");
+          newline();
+          self.condition.eval(c);
+          print("  if ( ILP_isEquivalentToTrue(");
+          print(ilp_tmp);
+          print(") ) {");
+          newline();
+
+          self.consequence.eval(context);
+
+          if (self.isTernary()) then (
+          newline();
+          print("  } else {");
+          newline();
+          self.alternant.eval(context);
+          )
+
+          newline();
+          print("  }");
+          newline();
+          print("}");
+          newline();
+        )
+    )
          
 }
 

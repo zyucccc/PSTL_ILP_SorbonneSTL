@@ -1,3 +1,28 @@
 class ASTprogram extends AST {
     var expression;
+
+   method eval(context)
+   //prefix
+    (print("#include <stdio.h>");
+     newline();
+     print("#include <stdlib.h>");
+     newline();
+     print("#include \"ilp.h\"");
+     newline();
+     newline();
+
+   //Body
+     print("ILP_Object ilp_program ()");
+     newline();
+     print("{");
+     newline();
+
+     c = new Context(returnDestination);
+
+     self.expression.eval(c);
+     newline();
+     print("}");
+     )
+
+
 }

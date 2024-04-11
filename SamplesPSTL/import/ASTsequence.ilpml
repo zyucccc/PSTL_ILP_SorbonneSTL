@@ -1,4 +1,33 @@
 class ASTsequence extends ASTexpression {
-    var expressions; 
+    var expressions;
+
+    method eval(context)
+    (
+    print("{");
+    newline();
+
+    let valTmp = incrementAndGet() in
+    let ilp_tmp = to_string("ilptmp"+valTmp) in
+    let assignDestination = to_string(ilp_tmp+" = ") in
+    let c = new Context(assignDestination) in
+    (
+
+    print("ILP_Object  ");
+    print(ilp_tmp);
+    print(";");
+    newline();
+
+    //self.expressions.eval(c);
+
+    print(context.destination);
+    print(ilp_tmp);
+
+    )
+
+    print(";");
+    newline();
+    newline();
+    print("}");
+    )
 
 }

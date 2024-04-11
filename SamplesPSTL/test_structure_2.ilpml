@@ -1,0 +1,18 @@
+include "./SamplesPSTL/import/bibliotheque.ilpml"
+include "./SamplesPSTL/import/bibliotheque_AST.ilpml"
+
+
+new ASTprogram(
+    new ASTsequence(
+        (list1=new List(new NULL());list1.add(
+            new ASTblock(
+                (list2=new List(new NULL());list2.add(
+                    new ASTbinding(new ASTvariable(x),new ASTinteger(5)));list2),
+                    new ASTalternative(
+                        new ASTbinaryOperation("==",new ASTvariable(x),new ASTinteger(5)),
+                        new ASTstring(abc),new ASTinteger(6))));list1)));
+                        
+
+list = new List(new NULL());
+list.add(99);
+list.head.value

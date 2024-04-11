@@ -51,26 +51,6 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 			ConvertisseurAST convertisseur = new ConvertisseurAST();
 			Object result = convertisseur.visit(iast);
 
-
-//	    	ArrayList<IASTprogram> list_program = new ArrayList<IASTprogram>();
-//			//traiter tous les includes,ajoute les programmes de "Include" dans la liste
-//	    	for ( IASTincludeDefinition include : iast.getIncludes() ) {
-//	           IASTprogram program = (IASTprogram) this.visit(include, lexenv);
-//               this.visitIncludeProgram(program, lexenv);
-//	            if(program != null) {
-//	            	list_program.add(program);
-//	            }
-//	        }
-//			//ajoute le programme courant dans la liste
-//			list_program.add(iast);
-//			//merge les programmes
-//	    	MergeProgramme mergeProgramme = new MergeProgramme();
-//	    	IASTprogram mergedPrograme = mergeProgramme.mergePrograms(list_program);
-//	    	//mise a jour le programme
-//	    	iast = mergedPrograme ;
-
-
-
 	        for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
 	            this.visit(cd, lexenv);
 	        }
@@ -111,7 +91,6 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)
             throws EvaluationException {
 		String filepath = iast.getFilepath();
-//		System.out.println("Test path:"+filepath);
 		//current working path
 //		  String currentDir = System.getProperty("user.dir");
 //        System.out.println("current path：" + currentDir);
@@ -125,7 +104,6 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 			//ANTLR
 			includeProgram = (IASTprogram) handler.parseIncludeContent(content);
 
-			//this.visit(includeProgram, lexenv);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -136,7 +114,7 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 	@Override
 	 public IClass visit(IASTclassDefinition iast, ILexicalEnvironment lexenv) 
 	            throws EvaluationException {
-//		System.out.println("Test Interpreter class");
+
 	        List<IMethod> methods = new Vector<>();
 	        for ( IASTmethodDefinition md : iast.getProperMethodDefinitions() ) {
 	            IMethod m = visit(md, lexenv);

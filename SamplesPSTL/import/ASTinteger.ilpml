@@ -1,5 +1,14 @@
 class ASTinteger extends ASTconstant
 {
 
+ method eval(context)
+ (
+  print(context.destination);
+  print("ILP_Integer2ILP(");
+  //print(self.value);
+  print(");");
+  newline();
+ )
+
 
 }

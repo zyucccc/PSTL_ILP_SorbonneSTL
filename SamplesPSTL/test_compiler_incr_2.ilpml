@@ -1,0 +1,11 @@
+var i = 1;
+function incrementAndGet()
+(i=i+1;i)
+
+
+//function newtmpvariable ()
+
+
+val = incrementAndGet();
+val;
+val;

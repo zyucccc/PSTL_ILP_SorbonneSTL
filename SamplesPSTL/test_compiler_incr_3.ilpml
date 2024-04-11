@@ -1,0 +1,16 @@
+var i = 1;
+function incrementAndGet()
+(i=i+1;i)
+
+
+function newtmpvariable()
+(
+print("ilptmp"+incrementAndGet());
+//print(incrementAndGet());
+)
+
+val = incrementAndGet();
+val = incrementAndGet();
+val = incrementAndGet();
+val = incrementAndGet();
+val

@@ -1,0 +1,22 @@
+include "./Java/src/com/paracamplus/pstl/bibliotheque_outil.ilpml"
+include "./Java/src/com/paracamplus/pstl/bibliotheque_AST.ilpml"
+
+
+
+//to_string(1)
+
+program = new ASTprogram(
+    new ASTsequence(
+        (list1=new List(new NULL());
+        list1.add(
+            new ASTinvocation(
+                new ASTvariable("to_string"),
+                (list2=new List(new NULL());list2.add(new ASTinteger(1));list2)));
+                list1)));
+
+context = new Context(noDestination);
+
+program.eval(context);
+
+
+99

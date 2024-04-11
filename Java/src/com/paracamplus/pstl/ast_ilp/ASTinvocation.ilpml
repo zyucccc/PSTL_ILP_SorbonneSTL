@@ -1,5 +1,86 @@
 class ASTinvocation extends ASTexpression {
     var functionz;
     var arguments; 
-                   
+
+    method eval(context)
+    (
+        //if globalVariables.contains(to_string(self.functionz.name))
+        //then
+       //global
+       (
+          print("{");
+          newline();
+          let tmps = new List(null) in
+          (
+              let current = self.arguments.head in
+              (
+                while (type_of(current) != "NULL") do
+                (
+                    let valTmp = incrementAndGet() in
+                    let ilp_tmp = to_string("ilptmp"+valTmp) in
+                    (
+                    print("ILP_Object "+ilp_tmp+";");
+                    newline();
+
+                    tmps.add(ilp_tmp);
+                    current = current.next;
+                    )
+                )
+              )
+
+              let current = self.arguments.head in
+              (
+                  let current_tmp = tmps.head in
+                   (
+                        while (type_of(current) != "NULL") do
+                         (
+                          let assignDestination = to_string(current_tmp.value + " = ") in
+                          let c = new Context(assignDestination) in
+
+                          current.value.eval(c);
+
+                          current = current.next;
+                          current_tmp = current_tmp.next
+                         )
+                    )
+              )
+
+              print(context.destination);
+              //print(" test = "+to_string(self.functionz));
+              if globalFunctions_env.contains(to_string(self.functionz.name))
+               then
+               (
+                 let primitive = globalFunctions_env.search(to_string(self.functionz.name)) in
+                 (
+                   print(primitive.cName);
+                   print("(");
+                   let current = self.arguments.head in
+                         (
+                            let current_tmp = tmps.head in
+                               (
+                                  while (type_of(current) != "NULL") do
+                                   (
+                                    print(current_tmp.value);
+                                    if type_of(current.next) != "NULL" then print(", ");
+
+                                    current = current.next;
+                                    current_tmp = current_tmp.next
+                                   )
+                               )
+                         )
+
+                 )
+
+              )
+          )
+           //tmps
+            print(");");
+            newline();
+            print("}");
+            newline();
+       )
+       //global
+
+    )
+
 }

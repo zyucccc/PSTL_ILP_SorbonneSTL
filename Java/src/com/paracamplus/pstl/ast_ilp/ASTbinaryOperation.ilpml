@@ -3,12 +3,39 @@ class ASTbinaryOperation extends ASTexpression{
     var leftOperand;
     var rightOperand;
 
-	 method getOperands()
+	 method eval(context)
 	 (
-     init = new List(new NULL());
-     init.add(leftOperand);
-     init.add(rightOperand);
-     )
-     ;
+      let valTmp1 = incrementAndGet() in
+      let ilp_tmp1 = to_string("ilptmp"+valTmp1) in
+      let assignDestination1 = to_string(ilp_tmp1+" = ") in
+      let c1 = new Context(assignDestination1) in
+
+      let cName = binaryOperators.search(self.operator) in
+
+      let valTmp2 = incrementAndGet() in
+      let ilp_tmp2 = to_string("ilptmp"+valTmp2) in
+      let assignDestination2 = to_string(ilp_tmp2+" = ") in
+      let c2 = new Context(assignDestination2) in
+           (
+             print("{");
+             newline();
+             print("ILP_Object "+ilp_tmp1+";");
+             newline();
+             print("ILP_Object "+ilp_tmp2+";");
+             newline();
+             self.leftOperand.eval(c1);
+             self.rightOperand.eval(c2);
+             print(context.destination);
+             print(cName);
+             print("(");
+             print(ilp_tmp1);
+             print(",");
+             print(ilp_tmp2);
+             print(");");
+             newline();
+             print("}");
+             newline();
+           )
+	 )
        
 }

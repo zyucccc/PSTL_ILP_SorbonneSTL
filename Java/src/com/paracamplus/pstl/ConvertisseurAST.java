@@ -155,6 +155,7 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		}
 		sb.append(list_str);
 		sb.append(")");
+		sb.append(")");
 		return null;
 	}
 
@@ -199,7 +200,7 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append(iast.getOperator().getName());
 		sb.append("\"");
 		sb.append(",");
-		sb.append(iast.getOperand().accept(this,null));
+		iast.getOperand().accept(this,null);
 		sb.append(")");
 		return null;
 	}

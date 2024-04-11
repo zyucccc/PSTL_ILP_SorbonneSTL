@@ -11,8 +11,47 @@ class Context{
      var destination;
 }
 
-function newtmpvariable()
-(
-print("ilptmp");
-print(incrementAndGet());
-)
+//env operators
+
+unaryOperators = new Map(null);
+unaryOperators.add("-","ILP_Opposite");
+unaryOperators.add("!","ILP_Not");
+
+binaryOperators = new Map(null);
+binaryOperators.add("+","ILP_Plus");
+binaryOperators.add("*", "ILP_Times");
+binaryOperators.add("/", "ILP_Divide");
+binaryOperators.add("%", "ILP_Modulo");
+binaryOperators.add("-", "ILP_Minus");
+binaryOperators.add("<", "ILP_LessThan");
+binaryOperators.add("<=", "ILP_LessThanOrEqual");
+binaryOperators.add("==", "ILP_Equal");
+binaryOperators.add("!=", "ILP_NotEqual");
+binaryOperators.add("<>", "ILP_NotEqual");
+binaryOperators.add(">", "ILP_GreaterThan");
+binaryOperators.add(">=", "ILP_GreaterThanOrEqual");
+binaryOperators.add("&", "ILP_And");
+binaryOperators.add("|", "ILP_Or");
+binaryOperators.add("^", "ILP_Xor");
+
+class Primitive{
+    var name;
+    var cName;
+    var arity;
+}
+
+//env global
+globalVariables_env = new Map(null);
+globalVariables_env.add("pi", "ILP_PI");
+
+globalFunctions_env = new Map(null);
+globalFunctions_env.add("print", new Primitive("print", "ILP_print", 1));
+globalFunctions_env.add("newline", new Primitive("newline", "ILP_newline", 0));
+globalFunctions_env.add("to_string", new Primitive("to_string", "ILP_to_string", 1));
+globalFunctions_env.add("type_of", new Primitive("type_of", "ILP_type_of", 1));
+
+// normalization variables (renaming)
+normalizationVariables = new Map(null);
+
+// variables globales
+globalVariables = new List(null);

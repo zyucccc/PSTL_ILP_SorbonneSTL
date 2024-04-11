@@ -2,12 +2,24 @@ class ASTvariable extends ASTnamed{
  
    method eval(context)
        (
+       //search in NormalizationVariables
+       let old_name = to_string(self.name) in
+       let new_name = normalizationVariables.search(old_name) in
+       (
         print(context.destination);
-        //print("ILP_Box2Value(");
+        //renaming::Normalization
+        //add global variable
+        if type_of(new_name) == "NULL"
+        then
+        (
+        globalVariables.add(to_string(self.name));
         print(self.name);
-       // print(");");
+        )
+        else print(new_name);
+
         print(";");
         newline();
+        )
        )
 
 }

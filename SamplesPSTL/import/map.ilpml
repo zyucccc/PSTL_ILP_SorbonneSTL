@@ -1,0 +1,64 @@
+null = new NULL();
+
+class MapNode extends Object {
+    var key;
+    var value;  
+    var next;   // pointeur type: ListNodexw
+
+     method setNext(v) 
+        self.next = v;
+}
+
+
+class Map extends Object{
+    var head; //pointeur type: ListNode
+    
+
+    // ajouter valeur a la fin du map
+    method add(key,value) 
+        if  type_of(self.head) == "NULL"  then 
+            self.head = new MapNode(key,value, null)
+         else 
+            let current = self.head in
+            let bloc = 
+            while (type_of(current.next) != "NULL") do
+                current = current.next
+                in
+            current.setNext(new MapNode(key,value,null))
+        ;
+
+    method search(key)
+    (
+        let res = new NULL() in
+        let current = self.head in
+        (
+            while (type_of(current) != "NULL") do
+            (
+                if(current.key == key)  then res = current.value;
+                current = current.next
+            );
+            res;
+        )
+        
+    )
+
+    method update(key,value)
+    (
+        let res = false in
+        let current = self.head in
+        (
+            while (type_of(current) != "NULL") do
+            (
+                if(current.key == key)  then (current.value = value;res=true;)
+                current = current.next
+            );
+            res;
+        )
+    )
+
+    method contains(key)
+    (
+    if (type_of(self.search(key)) != "NULL") then true else false
+    )
+
+}

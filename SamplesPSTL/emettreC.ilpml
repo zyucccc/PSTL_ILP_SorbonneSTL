@@ -1,6 +1,4 @@
-include "./Java/src/com/paracamplus/pstl/NULL.ilpml"
-include "./Java/src/com/paracamplus/pstl/liste_chainee.ilpml"
-include "./Java/src/com/paracamplus/pstl/compiler.ilpml"
+include "./Java/src/com/paracamplus/pstl/bibliotheque_outil.ilpml"
 include "./Java/src/com/paracamplus/pstl/bibliotheque_AST.ilpml"
 
 program = new ASTprogram(new ASTsequence((list1=new List(new NULL());list1.add(new ASTinteger(5));list1.add(new ASTinteger(6));list1)));

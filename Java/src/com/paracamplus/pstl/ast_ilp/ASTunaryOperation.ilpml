@@ -1,4 +1,28 @@
 class ASTunaryOperation extends ASTexpression{
     var operator;
     var operand;
+
+    method eval(context)
+    (
+      let valTmp = incrementAndGet() in
+      let ilp_tmp = to_string("ilptmp"+valTmp) in
+      let assignDestination = to_string(ilp_tmp+" = ") in
+      let c = new Context(assignDestination) in
+      let cName = unaryOperators.search(self.operator) in
+          (
+            print("{");
+            newline();
+            print("ILP_Object "+ilp_tmp+";");
+            newline();
+            self.operand.eval(c);
+            print(context.destination);
+            print(cName);
+            print("(");
+            print(ilp_tmp);
+            print(");");
+            newline();
+            print("}");
+            newline();
+          )
+    )
 }

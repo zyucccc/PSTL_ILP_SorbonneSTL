@@ -1,3 +1,6 @@
+
+class NULL extends Object {}
+
 null = new NULL();
 
 class ListNode extends Object {
@@ -52,4 +55,13 @@ class List extends Object{
     )
 
 }
+
+   list = new List(null);
+   list.add(5);
+   list.add(98);
+   list.contains(98)
+  //list.head.next.next.getValue()
+
+
+
 

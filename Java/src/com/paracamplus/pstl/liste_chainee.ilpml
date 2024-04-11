@@ -4,15 +4,6 @@ class ListNode extends Object {
     var value;  
     var next;   // pointeur type: ListNode
 
-
-    method getValue() 
-     self.value;
-    
-
-    method getNext() 
-     self.next;
-    
-
     method setValue(v) 
         self.value = v;
     
@@ -40,11 +31,25 @@ class List extends Object{
          else 
             let current = self.head in
             let bloc = 
-            while (type_of(current.getNext()) != "NULL") do
-                current = current.getNext()
+            while (type_of(current.next) != "NULL") do
+                current = current.next
                 in
             current.setNext(new ListNode(value, null))
         ;
+
+    method contains(value)
+    (
+        let res = new NULL() in
+        let current = self.head in
+        (
+            while (type_of(current) != "NULL") do
+            (
+                if(current.value == value)  then res = current.value;
+                current = current.next
+            );
+           if type_of(res) == "NULL" then false else true
+        )
+    )
 
 }
 

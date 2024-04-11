@@ -3,26 +3,63 @@ class ASTprogram extends AST {
 
    method eval(context)
    //prefix
-    (print("#include <stdio.h>");
-     newline();
-     print("#include <stdlib.h>");
-     newline();
-     print("#include \"ilp.h\"");
-     newline();
-     newline();
+    (
+    print("#include <stdio.h>");
+    newline();
+    print("#include <stdlib.h>");
+    newline();
+    print("#include \"ilp.h\"");
+    newline();
+    newline();
 
    //Body
-     print("ILP_Object ilp_program ()");
-     newline();
-     print("{");
-     newline();
+    print("ILP_Object ilp_program ()");
+    newline();
+    print("{");
+    newline();
 
-     c = new Context(returnDestination);
+    c = new Context(returnDestination);
 
-     self.expression.eval(c);
-     newline();
-     print("}");
-     )
+    self.expression.eval(c);
+    newline();
+    print("}");
+    newline();
 
 
+   //Suffix
+    print("static ILP_Object ilp_caught_program () {");
+    newline();
+    print("  struct ILP_catcher* current_catcher = ILP_current_catcher;");
+    newline();
+    print("  struct ILP_catcher new_catcher;");
+    newline();
+    newline();
+    print("  if ( 0 == setjmp(new_catcher._jmp_buf) ) {");
+    newline();
+    print("    ILP_establish_catcher(&new_catcher);");
+    newline();
+    print("    return ilp_program();");
+    newline();
+    print("  };");
+    newline();
+    print("  return ILP_current_exception;");
+    newline();
+    print("}");
+    newline();
+    newline();
+    print("int main (int argc, char *argv[]) ");
+    newline();
+    print("{");
+    newline();
+    print("  ILP_START_GC; ")
+    newline();
+    print("  ILP_print(ilp_caught_program()); ");
+    newline();
+    print("  ILP_newline(); ");
+    newline();
+    print("  return EXIT_SUCCESS; ");
+    newline();
+    print("}");
+
+    )
 }

@@ -11,7 +11,150 @@ class ASTbinding extends AST{
      //ASTexpression
      var body;
 
+     method eval(context)
+     (
+        print("{");
+        newline();
+       let tmps = new List(new NULL()) in
+       (
+          let current = self.binding.head in
+            (
+            while (type_of(current) != "NULL") do
+                (
+                    let valTmp = incrementAndGet() in
+                    let ilp_tmp = to_string("ilptmp"+valTmp) in
+                    (
+                    print("ILP_Object "+ilp_tmp+";");
+                    newline();
+
+                    tmps.add(ilp_tmp);
+                    current = current.next;
+                    )
+                )
+            )
+
+          let current = self.binding.head in
+            (
+              let current_tmp = tmps.head in
+              (
+                  while (type_of(current) != "NULL") do
+                  (
+                      let assignDestination = to_string(current_tmp.value + " = ") in
+                      let c = new Context(assignDestination) in
+
+                      current.value.initialisation.eval(c);
+
+                      current = current.next;
+                      current_tmp = current_tmp.next
+                  )
+              )
+            )
+
+           newline();
+           print("{");
+           newline();
+
+          let current = self.binding.head in
+           (
+             let current_tmp = tmps.head in
+             (
+                 while (type_of(current) != "NULL") do
+                 (
+                     print("ILP_Object ");
+                     print(current.value.variable.name);
+                     print(" = ");
+                     print(current_tmp.value);
+
+                     print(";");
+                     newline();
+                     current = current.next;
+                     current_tmp = current_tmp.next
+                 )
+             )
+           )
+
+
+       )
+       //tmps
+
+                 self.body.eval(context);
+                 newline();
+                 print("}");
+                 newline();
+                 print("}");
+                 newline();
+
+     )
+     //eval
+
  }
     
 //binding: List chainee ASTbinding
-//ajoute dans ASTblock?
+/*
+      let tmps = new List(new NULL()) in
+       (
+          let current = self.binding.head in
+            (
+            while (type_of(current) != "NULL") do
+                (
+                    let valTmp = incrementAndGet() in
+                    let ilp_tmp = to_string("ilptmp"+valTmp) in
+                    (
+                    print("  ILP_Object "+ilp_tmp+";");
+                    newline();
+
+                    tmps.add(ilp_tmp);
+                    )
+                )
+          )
+
+          let current = self.binding.head in
+            (
+              let current_tmp = tmps.head in
+              (
+                  while (type_of(current) != "NULL") do
+                  (
+                      let assignDestination = to_string(current_tmp.value + " = ") in
+                      let c = new Context(assignDestination) in
+
+                      current.value.initialisation.eval(c);
+
+                      current = current.next;
+                      current_tmp = current_tmp.next
+                  )
+              )
+            )
+
+           newline();
+           print("{");
+           newline();
+
+          let current = self.binding.head in
+           (
+             let current_tmp = tmps.head in
+             (
+                 while (type_of(current) != "NULL") do
+                 (
+                     print("    ILP_Object ");
+                     print(current.value.variable.name);
+                     print(" = ");
+                     print(current_tmp.value);
+
+                     print(";");
+                     current = current.next;
+                     current_tmp = current_tmp.next
+                 )
+             )
+           )
+
+
+       )
+       //tmps
+
+         //self.body.eval(context);
+         newline();
+         print("}");
+         newline();
+         print("}");
+         newline();
+*/

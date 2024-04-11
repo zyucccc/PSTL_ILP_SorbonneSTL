@@ -207,7 +207,9 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 	@Override
 	public Object visit(IASTvariable iast, ILexicalEnvironment iLexicalEnvironment) throws EvaluationException {
 		sb.append("new ASTvariable(");
+		sb.append("\"");
 		sb.append(iast.getName());
+		sb.append("\"");
 		sb.append(")");
 		return null;
 	}

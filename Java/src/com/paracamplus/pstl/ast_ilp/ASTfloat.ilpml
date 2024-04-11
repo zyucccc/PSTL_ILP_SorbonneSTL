@@ -1,8 +1,12 @@
 class ASTfloat extends ASTconstant
 {
 
-    method getValue ()
+    method eval(context)
     (
-    if type_of(super) == "Float" then super
-    );
+     print(context.destination);
+     print("ILP_Float2ILP(");
+     print(self.value);
+     print(");");
+     newline();
+    )
 }

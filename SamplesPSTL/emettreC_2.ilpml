@@ -3,13 +3,29 @@ include "./Java/src/com/paracamplus/pstl/liste_chainee.ilpml"
 include "./Java/src/com/paracamplus/pstl/compiler.ilpml"
 include "./Java/src/com/paracamplus/pstl/bibliotheque_AST.ilpml"
 
-program = new ASTprogram(new ASTsequence((list1=new List(new NULL());list1.add(new ASTinteger(5));list1.add(new ASTinteger(6));list1)));
+
+
+
+
+program = new ASTprogram(
+    new ASTsequence(
+        (list1=new List(new NULL());
+        list1.add(
+            new ASTblock(
+                (list2=new List(new NULL());
+                list2.add(new ASTbinding(new ASTvariable("x"),new ASTinteger(1)));list2)
+                ,
+                new ASTvariable("x")
+                )
+                );list1)
+                ));
+
 context = new Context(noDestination);
 
-//program.eval(context);
+program.eval(context);
 
 
-98
+99
 
 //list1=new List(new NULL());list1.add(new ASTinteger(5));list1.add(new ASTinteger(6));
 //list1.head.value

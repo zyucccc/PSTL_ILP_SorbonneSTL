@@ -5,7 +5,7 @@ class ASTinteger extends ASTconstant
  (
   print(context.destination);
   print("ILP_Integer2ILP(");
-  //print(self.value);
+  print(self.value);
   print(");");
   newline();
  )

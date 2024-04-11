@@ -1,4 +1,13 @@
 class ASTvariable extends ASTnamed{
  
+   method eval(context)
+       (
+        print(context.destination);
+        //print("ILP_Box2Value(");
+        print(self.name);
+       // print(");");
+        print(";");
+        newline();
+       )
 
 }

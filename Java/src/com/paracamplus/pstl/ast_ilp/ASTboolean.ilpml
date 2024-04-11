@@ -1,5 +1,12 @@
 class ASTboolean extends ASTconstant
 {
-
+    method eval(context)
+    (
+     print(context.destination);
+     if (self.value) print("ILP_TRUE");
+     else print("ILP_FALSE");
+     print(";");
+     newline();
+    )
 
 }

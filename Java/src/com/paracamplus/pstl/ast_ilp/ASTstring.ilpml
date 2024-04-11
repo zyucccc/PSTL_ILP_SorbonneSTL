@@ -1,7 +1,13 @@
 class ASTstring extends ASTconstant
 {
 
-    method getValue ()
-    if type_of(super) == "String" then super;
+    method eval(context)
+        (
+         print(context.destination);
+         print("ILP_String2ILP(");
+         print(self.value);
+         print(");");
+         newline();
+        )
 
 }

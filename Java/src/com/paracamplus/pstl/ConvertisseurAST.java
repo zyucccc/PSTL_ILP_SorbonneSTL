@@ -17,49 +17,24 @@ import com.paracamplus.ilp1.interpreter.interfaces.ILexicalEnvironment;
 import com.paracamplus.pstl.interfaces.IASTprogram;
 
 public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
-	StringBuilder sb = new StringBuilder();
-	int compteur_list = 0;
+	private StringBuilder sb = new StringBuilder();
+	private int compteur_list = 0;
 
-	//ast expression
-	//definir des methodes pour collecter var globals
-	//blabla
+	public StringBuilder getSb() {
+		return this.sb;
+	}
+
 
 	public Object visit(IASTprogram iast) throws EvaluationException {
-		sb.append("new ASTprogram(");
-	//classes:
-//	for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
-//           classes += this.visit(cd);
-//     }
-	//functions:
-//	for ( IASTfunctionDefinition fd : iast.getFunctionDefinitions() ) {
-//		functions += this.visit(fd);
-//        String v = fd.getName();
-//        //mecanisme global variable collector?
-//
-//    }
+		   sb.append("new ASTprogram(");
 
-	//collecter les var global
-	// function global stocker une liste des var globals
-
-
-		//print in ilpml: mecanisme de interpreterTest,(rediriger Sortie Standard vers une chaine de caractere)
-		   //expressions:
-//		   expr = iast.getBody().toString();
-//		   System.out.println(expr);
 		   iast.getBody().accept(this,null);
 		   sb.append(")");
 		   sb.append(";");
-		   //Test
+
 		   System.out.println(sb.toString());
 
 	       return sb;
-	}
-	public Object visit(IASTclassDefinition iast) {
-		//cast
-		iast = (IASTclassDefinition) iast;
-
-	// A completer
-		return null;
 	}
 
 	//ILP1

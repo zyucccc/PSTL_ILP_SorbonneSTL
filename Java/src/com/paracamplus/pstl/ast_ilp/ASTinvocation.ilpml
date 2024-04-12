@@ -4,8 +4,8 @@ class ASTinvocation extends ASTexpression {
 
     method eval(context)
     (
-        //if globalVariables.contains(to_string(self.functionz.name))
-        //then
+        if globalVariables.contains(to_string(self.functionz.name))
+        then
        //global
        (
           print("{");
@@ -81,6 +81,85 @@ class ASTinvocation extends ASTexpression {
        )
        //global
 
+       else
+       //general
+       (
+            print("{");
+            newline();
+            let tmps = new List(null) in
+            let valTmpf = incrementAndGet() in
+            let tmpf = to_string("ilptmp"+valTmpf) in
+            let assignDestination = to_string(tmpf + " = ") in
+            let cf = new Context(assignDestination) in
+            (
+                print("ILP_Object "+tmpf+";");
+                newline();
+
+                let current = self.arguments.head in
+                  (
+                    while (type_of(current) != "NULL") do
+                    (
+                        let valTmp = incrementAndGet() in
+                        let ilp_tmp = to_string("ilptmp"+valTmp) in
+                        (
+                        print("ILP_Object "+ilp_tmp+";");
+                        newline();
+
+                        tmps.add(ilp_tmp);
+                        current = current.next;
+                        )
+                    )
+                  )
+
+                  self.functionz.eval(cf);
+
+                 let current = self.arguments.head in
+                    (
+                        let current_tmp = tmps.head in
+                         (
+                              while (type_of(current) != "NULL") do
+                               (
+                                let assignDestination = to_string(current_tmp.value + " = ") in
+                                let c = new Context(assignDestination) in
+
+                                current.value.eval(c);
+
+                                current = current.next;
+                                current_tmp = current_tmp.next
+                               )
+                          )
+                    )
+
+                    print(context.destination);
+                    print("ILP_invoke(");
+                    print(tmpf);
+                    print(", ");
+                    print(to_string(self.arguments.length()));
+
+                     let current = self.arguments.head in
+                     (
+                        let current_tmp = tmps.head in
+                           (
+                              while (type_of(current) != "NULL") do
+                               (
+                                print(",");
+                                print(current_tmp.value);
+
+                                current = current.next;
+                                current_tmp = current_tmp.next
+                               )
+                           )
+                     )
+
+             )
+            //tmps
+             print(");");
+             newline();
+             print("}");
+             newline();
+       );
+       //general
     )
+    //eval
 
 }

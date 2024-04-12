@@ -55,3 +55,7 @@ normalizationVariables = new Map(null);
 
 // variables globales
 globalVariables = new List(null);
+globalVariables.add("print");
+globalVariables.add("newline");
+globalVariables.add("to_string");
+globalVariables.add("type_of");

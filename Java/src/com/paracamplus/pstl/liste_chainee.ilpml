@@ -51,5 +51,20 @@ class List extends Object{
         )
     )
 
+    method length()
+    (
+        let length = 0 in
+        let current = self.head in
+        (
+            while (type_of(current) != "NULL") do
+            (
+                length = length + 1;
+                current = current.next
+            );
+            length
+        )
+
+    )
+
 }
 

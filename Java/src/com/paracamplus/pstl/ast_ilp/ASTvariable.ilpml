@@ -1,9 +1,12 @@
 class ASTvariable extends ASTnamed{
  
    method eval(context)
-       (
+   let old_name = to_string(self.name) in
+   let global_name = globalVariables_env.search(old_name) in
+   (
+       if type_of(global_name) == "NULL"  then
+       (//local variable
        //search in NormalizationVariables
-       let old_name = to_string(self.name) in
        let new_name = normalizationVariables.search(old_name) in
        (
         print(context.destination);
@@ -20,6 +23,14 @@ class ASTvariable extends ASTnamed{
         print(";");
         newline();
         )
-       )
+       )//local variable
+       else(//global variable
+       print(context.destination);
+       print(global_name);
+       print(";");
+       newline();
+       )//global variable
+
+    )//eval
 
 }

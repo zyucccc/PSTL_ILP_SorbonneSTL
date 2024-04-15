@@ -29,7 +29,8 @@ import com.paracamplus.ilp4.parser.xml.XMLParser;
 @RunWith(Parameterized.class)
 public class CompilerTest extends com.paracamplus.ilp3.compiler.test.CompilerTest {
 
-    protected static String[] samplesDirName = { "SamplesPSTL_compiler" };
+//    protected static String[] samplesDirName = { "SamplesPSTL_compiler" };
+    protected static String[] samplesDirName = { "SamplesILP1" };
     protected static String pattern = ".*\\.ilpml";
     protected static String scriptCommand = "C/compileThenRun.sh +gc";
     protected static String XMLgrammarFile = "XMLGrammars/grammar4.rng";

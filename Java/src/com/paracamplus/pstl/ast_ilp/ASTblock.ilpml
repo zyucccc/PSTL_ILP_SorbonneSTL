@@ -57,13 +57,16 @@ class ASTbinding extends AST{
           let current = self.binding.head in
           //Nomalizer variable
           let valTmp = incrementAndGet() in
-          let old_varName = to_string(current.value.variable.name) in
-          let new_varName = to_string(old_varName+valTmp) in
+          //let old_varName = to_string(current.value.variable.name) in
+          //let new_varName = to_string(old_varName+valTmp) in
            (
              let current_tmp = tmps.head in
              (
                  while (type_of(current) != "NULL") do
                  (
+              let old_varName = to_string(current.value.variable.name) in
+              let new_varName = to_string(old_varName+valTmp) in
+                     (
                      print("ILP_Object ");
                      //Normalization
                      normalizationVariables.add(old_varName,new_varName);
@@ -74,8 +77,10 @@ class ASTbinding extends AST{
 
                      print(";");
                      newline();
+
                      current = current.next;
-                     current_tmp = current_tmp.next
+                     current_tmp = current_tmp.next;
+                     )
                  )
              )
            )

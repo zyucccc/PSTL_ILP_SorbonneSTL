@@ -5,7 +5,9 @@ class ASTstring extends ASTconstant
         (
          print(context.destination);
          print("ILP_String2ILP(");
+         print("\"");
          print(self.value);
+         print("\"");
          print(");");
          newline();
         )

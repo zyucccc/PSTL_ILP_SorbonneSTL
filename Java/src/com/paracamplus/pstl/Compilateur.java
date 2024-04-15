@@ -1,15 +1,13 @@
 package com.paracamplus.pstl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Collection;
 import java.util.Vector;
 
-import antlr4.ILPMLgrammar1Lexer;
-import antlr4.ILPMLgrammar1Parser;
 import antlr4.ILPMLgrammarPSTLLexer;
 import antlr4.ILPMLgrammarPSTLParser;
+import com.paracamplus.ilp1.interpreter.EmptyLexicalEnvironment;
+import com.paracamplus.ilp1.interpreter.interfaces.ILexicalEnvironment;
 import com.paracamplus.ilp1.parser.ParseException;
 import com.paracamplus.ilp1.parser.Parser;
 import com.paracamplus.ilp1.tools.FileTool;
@@ -52,6 +50,7 @@ public class Compilateur {
     protected Interpreter interpreter;
     protected ConvertisseurAST convertisseur;
     protected IASTfactory factory;
+    protected StringWriter stdout;
 
     public Compilateur(final File file) {
         this.file = file;
@@ -61,6 +60,7 @@ public class Compilateur {
         this.factory = new ASTfactory();
         parser.setILPMLParser(new ILPMLParser(factory));
 
+        this.stdout = new StringWriter();
         //convertisseur
         this.convertisseur = new ConvertisseurAST();
     }
@@ -72,7 +72,7 @@ public class Compilateur {
         com.paracamplus.ilp1.interfaces.IASTprogram program = parser.parse(file);
 
         //interpreteur
-        StringWriter stdout = new StringWriter();
+
         IGlobalVariableEnvironment gve = new GlobalVariableEnvironment();
         GlobalVariableStuff.fillGlobalVariables(gve, stdout);
         IOperatorEnvironment oe = new OperatorEnvironment();
@@ -95,23 +95,32 @@ public class Compilateur {
         StringBuilder sb_biblio = new StringBuilder();
         sb_biblio.append("include \"./Java/src/com/paracamplus/pstl/bibliotheque_outil.ilpml\";\n");
         sb_biblio.append("include \"./Java/src/com/paracamplus/pstl/bibliotheque_AST.ilpml\";\n");
+        //emettre Code C
+        StringBuilder sb_eval = new StringBuilder();
+        sb_eval.append("context = new Context(noDestination);\n" +
+                   "program.eval(context);\n");
         //melanger bibliotheque et Program AST ilp
         sb.append(sb_biblio);
+        sb.append("program =");
         sb.append(sb_ast);
+        sb.append(sb_eval);
 
-        System.out.println("Test: ");
-        System.out.println(sb.toString());
+//        System.out.println("Test: ");
+//        System.out.println(sb.toString());
 
         //2ieme traitement
         process_prog_ilp(sb);
 
-        System.out.println("Test: ");
-        System.out.println(sb.toString());
     }
 
-    public void process_prog_ilp(StringBuilder sb) throws ParseException {
+    public void process_prog_ilp(StringBuilder sb) throws ParseException, EvaluationException {
         IASTprogram program = (IASTprogram) this.getProgram(sb);
-        
+        ILexicalEnvironment lexenv = new EmptyLexicalEnvironment();
+        interpreter.visit(program, lexenv);
+        String printing = stdout.toString();
+//        System.out.println("Value: " + result);
+        //Code C
+        System.out.println("Printing: " + printing);
     }
 
 
@@ -125,26 +134,6 @@ public class Compilateur {
         return result;
     }
 
-//    public com.paracamplus.ilp1.interfaces.IASTprogram getProgram(StringBuilder sb) throws ParseException {
-//        try {
-//            ANTLRInputStream in = new ANTLRInputStream(sb.toString());
-//            // flux de caractères -> analyseur lexical
-//            ILPMLgrammar1Lexer lexer = new ILPMLgrammar1Lexer(in);
-//            // analyseur lexical -> flux de tokens
-//            CommonTokenStream tokens =	new CommonTokenStream(lexer);
-//            // flux tokens -> analyseur syntaxique
-//            ILPMLgrammar1Parser parser =	new ILPMLgrammar1Parser(tokens);
-//            // démarage de l'analyse syntaxique
-//            ILPMLgrammar1Parser.ProgContext tree = parser.prog();
-//            // parcours de l'arbre syntaxique et appels du Listener
-//            ParseTreeWalker walker = new ParseTreeWalker();
-//            ILPMLListener extractor = new ILPMLListener(this.factory);
-//            walker.walk(extractor, tree);
-//            return tree.node;
-//        } catch (Exception e) {
-//            throw new ParseException(e);
-//        }
-//    }
 public com.paracamplus.ilp4.interfaces.IASTprogram getProgram(StringBuilder sb) throws ParseException {
     try {
         ANTLRInputStream in = new ANTLRInputStream(sb.toString());

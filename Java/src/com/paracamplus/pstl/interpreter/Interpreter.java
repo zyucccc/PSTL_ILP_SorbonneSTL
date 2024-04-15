@@ -47,9 +47,10 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
 
             iast = (IASTprogram)this.visitIncludeProgram(iast, lexenv);
 
-			System.out.println("Test Convertisseur:>>>>>>>>");
-			ConvertisseurAST convertisseur = new ConvertisseurAST();
-			Object result = convertisseur.visit(iast);
+//			System.out.println("Convertisseur:>>>>>>>>>>>>>>>");
+//			ConvertisseurAST convertisseur = new ConvertisseurAST();
+//			Object result = convertisseur.visit(iast);
+//			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
 	        for ( IASTclassDefinition cd : iast.getClassDefinitions() ) {
 	            this.visit(cd, lexenv);

@@ -60,6 +60,5 @@ class ASTprogram extends AST {
     print("  return EXIT_SUCCESS; ");
     newline();
     print("}");
-
     )
 }

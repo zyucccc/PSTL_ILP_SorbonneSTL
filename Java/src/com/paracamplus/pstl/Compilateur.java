@@ -6,11 +6,13 @@ import java.util.Vector;
 
 import antlr4.ILPMLgrammarPSTLLexer;
 import antlr4.ILPMLgrammarPSTLParser;
+import com.paracamplus.ilp1.compiler.CompilationException;
 import com.paracamplus.ilp1.interpreter.EmptyLexicalEnvironment;
 import com.paracamplus.ilp1.interpreter.interfaces.ILexicalEnvironment;
 import com.paracamplus.ilp1.parser.ParseException;
 import com.paracamplus.ilp1.parser.Parser;
 import com.paracamplus.ilp1.tools.FileTool;
+import com.paracamplus.ilp1.tools.ProgramCaller;
 import com.paracamplus.pstl.interfaces.IASTprogram;
 import com.paracamplus.pstl.parser.ilpml.ILPMLListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -38,12 +40,16 @@ import com.paracamplus.pstl.ast_java.ASTfactory;
 import com.paracamplus.ilp4.interpreter.ClassEnvironment;
 import com.paracamplus.ilp4.interpreter.interfaces.IClassEnvironment;
 
+import static org.junit.Assert.assertEquals;
+
 
 @RunWith(Parameterized.class)
 public class Compilateur {
 
-    protected static String[] samplesDirName = { "SamplesPSTL_Compilateur" };
+//    protected static String[] samplesDirName = { "SamplesPSTL_Compilateur" };
+    protected static String[] samplesDirName = { "SamplesILP1" };
     protected static String pattern = ".*\\.ilpml";
+    protected static String scriptCommand = "C/compileThenRun.sh +gc";
 
     protected File file;
     protected Parser parser;
@@ -67,7 +73,7 @@ public class Compilateur {
 
 
     @Test
-    public void processFile() throws EvaluationException, ParseException, IOException {
+    public void processFile() throws EvaluationException, ParseException, IOException, CompilationException {
 
         com.paracamplus.ilp1.interfaces.IASTprogram program = parser.parse(file);
 
@@ -113,14 +119,47 @@ public class Compilateur {
 
     }
 
-    public void process_prog_ilp(StringBuilder sb) throws ParseException, EvaluationException {
+    public void process_prog_ilp(StringBuilder sb) throws ParseException, EvaluationException, IOException, CompilationException {
         IASTprogram program = (IASTprogram) this.getProgram(sb);
         ILexicalEnvironment lexenv = new EmptyLexicalEnvironment();
         interpreter.visit(program, lexenv);
         String printing = stdout.toString();
 //        System.out.println("Value: " + result);
         //Code C
-        System.out.println("Printing: " + printing);
+//        System.out.println("Test code: >>>>>>>>>>>>");
+//        System.out.println("Printing: " + printing);
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>");
+        //rediriger vers fichier.c
+        File cFile = FileTool.changeSuffix(file, "c");
+        FileTool.stuffFile(cFile, printing);
+
+        // detection de Windows
+        boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
+
+        String cPath =  cFile.getAbsolutePath();
+        if (isWindows) {
+            // sous Windows, adaptation du chemin du fichier
+            cPath = "\"/mnt/" + cPath.substring(0,1).toLowerCase() + cPath.replace('\\', '/').substring(2) + "\"";
+        }
+
+        // pretty-print du C généré et affichage
+//        try {
+//            String indentProgram = "indent " + cPath;
+//            ProgramCaller pcindent = new ProgramCaller(indentProgram);
+//            pcindent.run();
+//        } catch (Exception exc) {
+//        }
+//        System.out.println(FileTool.slurpFile(cFile));
+
+        // lancement du script de compilation et d'exécution
+        if (scriptCommand == null) {
+            throw new CompilationException("runtime script not set");
+        }
+        String compileProgram = "bash " + scriptCommand + " " + cPath;
+        ProgramCaller pc = new ProgramCaller(compileProgram);
+        pc.setVerbose();
+        pc.run();
+        assertEquals("Comparing return code", 0, pc.getExitValue());
     }
 
 

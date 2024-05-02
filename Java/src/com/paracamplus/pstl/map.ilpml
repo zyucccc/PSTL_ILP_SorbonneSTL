@@ -3,7 +3,7 @@ null = new NULL();
 class MapNode extends Object {
     var key;
     var value;  
-    var next;   // pointeur type: ListNodexw
+    var next;  
 
      method setNext(v) 
         self.next = v;
@@ -11,7 +11,7 @@ class MapNode extends Object {
 
 
 class Map extends Object{
-    var head; //pointeur type: ListNode
+    var head; 
     
 
     // ajouter valeur a la fin du map

@@ -42,6 +42,25 @@ import com.paracamplus.ilp4.interpreter.interfaces.IClassEnvironment;
 
 import static org.junit.Assert.assertEquals;
 
+// gestion exception
+// definir exception throws exception
+// rendre l'exception plus lisible(numero de ligne)
+//numero de ligne stocke dans ANTLR
+
+// /"
+
+// etindre les erreurs
+
+//rapport :
+//schema compilation
+//future de rapport
+//montrer quelques exemples de COde C
+// partie de test : nb,2 parties: 1 partie pour au fur au mesure, 2 partie pour les tests existants
+// explication pour 2ieme partie , au but ,ca marche pas,et apres on corrige.....
+
+//les choses interessantes
+
+//la notion bootstrap
 
 @RunWith(Parameterized.class)
 public class Compilateur {
@@ -123,7 +142,7 @@ public class Compilateur {
         IASTprogram program = (IASTprogram) this.getProgram(sb);
         ILexicalEnvironment lexenv = new EmptyLexicalEnvironment();
         interpreter.visit(program, lexenv);
-        String printing = stdout.toString();
+        String codeC = stdout.toString();
 //        System.out.println("Value: " + result);
         //Code C
 //        System.out.println("Test code: >>>>>>>>>>>>");
@@ -131,7 +150,7 @@ public class Compilateur {
 //        System.out.println(">>>>>>>>>>>>>>>>>>>>>");
         //rediriger vers fichier.c
         File cFile = FileTool.changeSuffix(file, "c");
-        FileTool.stuffFile(cFile, printing);
+        FileTool.stuffFile(cFile, codeC);
 
         // detection de Windows
         boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
@@ -173,6 +192,7 @@ public class Compilateur {
         return result;
     }
 
+  //Parse
 public com.paracamplus.ilp4.interfaces.IASTprogram getProgram(StringBuilder sb) throws ParseException {
     try {
         ANTLRInputStream in = new ANTLRInputStream(sb.toString());

@@ -147,10 +147,6 @@ public class ConvertisseurAST implements IASTvisitor<Object, ILexicalEnvironment
 		sb.append("new ASTstring(");
 		sb.append("\"");
 		String converti_str = iast.getValue().replace("\"", "");
-//		String converti_str2 = iast.getValue().replace("\"", "\\\"");
-		System.out.println("Test123: ");
-		System.out.println(converti_str);
-//		sb.append(iast.getValue());
 		sb.append(converti_str);
 		sb.append("\"");
 		sb.append(")");

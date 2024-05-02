@@ -80,6 +80,7 @@ ILP possède un interpréteur écrit en Java, et un compilateur également écri
 
 Notre projet vise à réimplémenter partiellement le langage ILP en utilisant ILP lui-même pour la réécriture. Par exemple, réécrire l'interpréteur ILP ou le compilateur qui compile ILP en C en utilisant le langage ILP. De plus, bien qu'ILP offre des fonctionnalités avancées, il est imparfait à certains égards, comme l'absence de structures de données complètes, un manque de mécanisme de gestion de fichiers, et des fonctionnalités de sortie plutôt limitées. Ainsi, l'un de nos objectifs est également de compléter autant que possible ces aspects.
 </div>
+<img src="./image/ILP.png" alt="sorbonne" style="width:400px;height:400px;">
 
 <br/>
 <br/>
@@ -119,7 +120,7 @@ En mettant en place ces mesures, nous pouvons améliorer la coordination et l'ef
 
 <div STYLE="page-break-after: always;"></div>
 
-## 4 Presentation des tâches réalisées
+## 4 Tâches réalisées et additionnelles
 #### 4.1 Départ du Projet
 <div style="text-indent: 2em;">
 
@@ -171,95 +172,35 @@ public class ASTsequence extends ASTexpression implements IASTsequence {
 ```
 La structure de liste chaînée que nous avons implémentée dans ILP :
 ```
-null = new NULL();
 
 class ListNode extends Object {
     var value;  
-    var next;   // pointeur: ListNode
-
-    method setValue(v) 
-        self.value = v;
-    
-     method setNext(v) 
-        self.next = v;
+    var next;   
+    ...
 }
 ```
 ```
 class List extends Object{
-    var head; //pointeur type: ListNode
-    
-    method singleton(value) 
-        let node = new ListNode(value,new NULL()) in
-          new List(node); 
-          
-    method list_vide()
-       new List(new NULL());
+    var head;
 
     // ajouter valeur a la fin du list
     method add(value) 
-        if  type_of(self.head) == "NULL"  then 
-            self.head = new ListNode(value, null)
-         else 
-            let current = self.head in
-            let bloc = 
-            while (type_of(current.next) != "NULL") do
-                current = current.next
-                in
-            current.setNext(new ListNode(value, null))
-        ;
+    ...
+
     method contains(value)
-    (
-        let res = new NULL() in
-        let current = self.head in
-        (
-            while (type_of(current) != "NULL") do
-            (
-                if(current.value == value)  then res = current.value;
-                current = current.next
-            );
-           if type_of(res) == "NULL" then false else true
-        )
-    )
+    ...
+
     method length()
-    (
-        let length = 0 in
-        let current = self.head in
-        (
-            while (type_of(current) != "NULL") do
-            (
-                length = length + 1;
-                current = current.next
-            );
-            length
-        )
-    )
-}
+    ...
 }
 ```
 Nous avons également écrit quelques tests pour vérifier si la liste chaînée fonctionne correctement pour ces ASTs:
 
 ```
-
-
-class NULL extends Object {}
-
-class ListNode extends Object {
-    var value;  
-    var next;   // pointeur type: ListNode
-    ........
-}
-
-class List extends Object{
-    var head; //pointeur type: ListNode
-    .....
-}
-
 let node = new ListNode(10,new NULL()) in
    list = new List(node) ;
    list.add(5);
-  //list.head.value
   list.head.next.value
-
 ```
 
 ##### AST implanté en ILPML
@@ -272,9 +213,7 @@ Finalement, nous avons réussi à construire tous les nœuds AST basés du ILP1 
 L'exemple AST et ASTexpression
 
 ```
-class AST { 
-    method collecterVarGlobal()
-}
+class AST { }
 ```
 ```
 class ASTexpression extends AST { }
@@ -370,17 +309,7 @@ includeDef returns [com.paracamplus.pstl.interfaces.IASTincludeDefinition node]
     :'include' body = STRING
     ;
 ```
-Un aperçu de parser des AST:
-```
-@Override
-public void exitIncludeDef(IncludeDefContext ctx) {
-String filepath = ctx.body.getText();
-filepath = filepath.substring(1, filepath.length() - 1);
-ctx.node = factory.newIncludeDefinition(filepath);
-}
-```
 Un aperçu de implementation en JAVA:
-
 ```
 public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)  {
 		String filepath = iast.getFilepath();
@@ -549,9 +478,7 @@ class MapNode extends Object {
     var key;
     var value;  
     var next;   
-
-     method setNext(v) 
-        self.next = v;
+    ...
 }
 
 class Map extends Object{
@@ -574,18 +501,12 @@ class Map extends Object{
 ##### 4.4.4.1 Bibliotheque de compilation : Environnement Global
 Ainsi, dans notre bibliothèque de compilation, nous pourrons gérer de manière flexible les informations telles que les variables globales et les primitives. Par exemple :
 ```
-unaryOperators = new Map(null);
-unaryOperators.add("-","ILP_Opposite");
-unaryOperators.add("!","ILP_Not");
-
 binaryOperators = new Map(null);
 binaryOperators.add("+","ILP_Plus");
 binaryOperators.add("*", "ILP_Times");
 
 class Primitive{
-    var name;
-    var cName;
-    var arity;
+     ...
 }
 
 //env global
@@ -633,37 +554,28 @@ class ASTprogram extends AST {
     var expression;
 
    method eval(context)
-   //prefix
     (
     print("#include <stdio.h>");
     newline();
     print("#include <stdlib.h>");
     newline();
     print("#include \"ilp.h\"");
-    newline();
-    newline();
+    ...
 
-   //Body
     print("ILP_Object ilp_program ()");
     newline();
     print("{");
-    newline();
-
     c = new Context(returnDestination);
-
     self.expression.eval(c);
-    newline();
-    print("}");
-    newline();
 
-   //Suffix
-    print("static ILP_Object ilp_caught_program () {");
-    newline();
     ...
 ```
 l'ASTprogram est la structure la plus haute de l'arbre AST. Étant donné que ILP manque de fonctionnalités de langage plus avancées, notre code semble quelque peu lourd, par exemple, nous devons utiliser de nombreux newline() pour simuler les caractères de retour à la ligne (__\n__).
 
 Le point le plus intéressant ici, que nous voulons mettre en avant, est la ligne "__self.expression.eval(c)__". __Cela représente le processus récursif de l'appel de la méthode eval depuis le haut de l'arbre vers le bas.__ Pendant ce processus, nous transmettons le __contexte__ pour sauvegarder l'environnement contextuel lors du passage, utilisé pour déterminer la "destination" finale du résultat.
+
+Exemple de Code C génére Pour le code ILP ( false ):
+<img src="./image/codeC.png" alt="test2" style="width:200px;height:200px;">
 
 ##### 4.4.4.2 Visiteur en ILP : Normalizer
 Au cours du processus de compilation, nous devons également gérer le processus de "normalisation". En fait, la normalisation est une étape très importante lors de la compilation. Par exemple :
@@ -677,30 +589,19 @@ ASTblock (qui represente le bloc du code):
 ```
 
  class ASTblock extends ASTexpression{
-     //ASTbinding[]
-     var binding;
-     //ASTexpression
-     var body;
-
+      ...
      method eval(context)
      (
-          ......
-
-              let old_varName = to_string(current.value.variable.name) in
-              let new_varName = to_string(old_varName+valTmp) in
-                     (
-                     print("ILP_Object ");
-                     //Normalization
-                     normalizationVariables.add(old_varName,new_varName);
-                     //print(current.value.variable.name);
-                  
-                 ...... 
-
-                 self.body.eval(context);
-                 newline();
-                 print("}");
-
-                 .......
+            ......
+        let old_varName = to_string(current.value.variable.name) in
+        let new_varName = to_string(old_varName+valTmp) in
+          
+                print("ILP_Object ");
+                //Normalization
+                normalizationVariables.add(old_varName,new_varName);
+            ...... 
+            self.body.eval(context);
+            .......
 
 ```
 On peut voir ici que pour chaque variable locale dans les blocs de code, nous avons généré un nouveau nom unique, et nous avons stocké cette correspondance dans normalizationVariables, qui est une HashMap globale stockée dans le compilateur, utilisée pour gérer les informations globales.
@@ -722,21 +623,41 @@ __Finalement, nous avons réussi à développer un compilateur capable de compil
 
 <div style="page-break-after: always;"></div>
 
-## 5 Tâches restantes + Re-tro Planning
-  
+## 5 Validation du projet : Test
 
-__À completer avant la fin de la Semaine de Rentreé__
+#### 5.1 Les tests au fur et à mesure
+Pour assurer une progression correcte du projet, nous avons continuellement écrit des tests tout au long du processus de développement pour tester les fonctionnalités que nous avons développées. 
+Par exemple, comme nous vous l'avons montré précédemment, nous avons écrit plusieurs tests pour vérifier les structures telles que la liste chaînée.
+À chaque fois que nous avons développé une nouvelle structure ou finalisé une méthode AST, nous avons écrit plusieurs tests pour vérifier si les fonctionnalités associées fonctionnaient correctement.
 
-#### 5.4 Développer des tests pour valider la correction de  compilateur ou interprète
+De même, pour certaines syntaxes/grammaires présentes dans ILP4 qui pourraient être ambiguës, nous avons également écrit des tests simples pour vérifier la validité de la syntaxe ILP4.
 
-##### 5.4 Planning
-Nous prévoyons d'utiliser deux semaines pour tester l'ensemble du projet.
+La méthode de validation de ces tests repose principalement sur les tests d'interprétation et de compilation déjà existants pour ILP. Le critère de réussite de ces tests est de vérifier si le code ILP que nous avons entré génère des erreurs.
 
-__À completer avant la semaine de examen__
+<img src="./image/test2.png" alt="test2" style="width:250px;height:150px;">
+<img src="./image/test1.png" alt="test1" style="width:150px;height:50px;">
 
-#### 5.5 Rapport final et preparation de la soutenance
-##### 5.5 Planning
-Enfin,nous prévoyons d'utiliser le temps restant pour compléter le rapport final et preparer notre soutenance
-__À completer avant le rendu final et soutenance__
+
+#### 5.2 Validation du projet
+Pour valider notre projet, c'est-à-dire pour valider le compilateur que nous avons développé, nous avons utilisé des échantillons de tests ILP1. Il y a un total de 76 tests. Si le code C généré par notre compilateur pour ces 76 tests peut être compilé avec succès, cela prouve que nous avons réussi à développer un compilateur écrit en ILP pour compiler ILP1.
+
+En fait, au début, seulement environ la moitié des tests ont réussi. En examinant les messages d'erreur de compilation, nous avons analysé les raisons et corrigé le code. Finalement, nous avons réussi à compiler les 76 tests ILP1.
+<img src="./image/test3.png" alt="test2" style="width:350px;height:150px;">
+
+## 6 Les tâches non réalisées 
+Nous avons déjà atteint l'objectif de base de ce projet, qui est de compléter la compilation complète de ILP1. Cependant, en réalité, si le temps le permet, le projet pourrait envisager des extensions de la cible vers des versions supérieures d'ILP. 
+#### 6.1 Conclusion du projet: Bootstrap 
+Le concept introduit ici est celui de __"bootstrap"__, c'est-à-dire que si nous voulons développer un compilateur pour ILP écrit en ILP lui-même, capable de compiler ILP, nous devons d'abord utiliser un autre langage de programmation de haut niveau existant pour aider au développement du fichier exécutable du compilateur initial, ici nous avons utilisé le langage C. 
+
+__Le langage C a joué le rôle de "pont" dans le développement du compilateur ILP__, c'est-à-dire que pour la version initiale du compilateur, le processus interne est le suivant : 
+- nous recevons du code ILP que nous transformons en code C, 
+- puis nous compilons le code C pour obtenir le résultat de la compilation. 
+
+Une fois que nous obtenons le fichier exécutable de cette première version du compilateur, nous n'avons plus besoin du langage C, car nous disposons désormais d'un fichier exécutable qui accepte le code ILP et produit un résultat. 
+
+Ensuite, nous pouvons utiliser ce compilateur initial pour écrire un compilateur entièrement en langage ILP, que nous appelons la deuxième version du compilateur. 
+
+__Et une fois que nous obtenons un compilateur écrit purement en langage ILP, nous pouvons alors utiliser davantage de fonctionnalités ILP pour l'améliorer, en développant de nouvelles versions de compilateurs sur la base du compilateur précédent, et ce processus est appelé "bootstrap"__. Ce processus est reflété dans notre projet, où nous continuons à améliorer les fonctionnalités de ILP2, ILP3, ILP4 sur la base du compilateur ILP1. C'est aussi l'objectif le plus idéal et le plus intéressant de notre projet.
+
 
 Merci de votre attention!

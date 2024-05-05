@@ -40,7 +40,7 @@ Shiyao Chen
   - [1 Introduction](#1-introduction)
   - [2 Travail attendu](#2-travail-attendu)
   - [3 Méthode  de Travail en Collaboration](#3-méthode--de-travail-en-collaboration)
-  - [4 Presentation des tâches déjà réalisées](#4-presentation-des-tâches-déjà-réalisées)
+  - [4 Tâches réalisées et additionnelles](#4-tâches-réalisées-et-additionnelles)
       - [4.1 Départ du Projet](#41-départ-du-projet)
         - [4.1.1 AST](#411-ast)
         - [4.1.2 Tâche initiale](#412-tâche-initiale)
@@ -49,27 +49,30 @@ Shiyao Chen
         - [Bibliothèque List Chainée](#bibliothèque-list-chainée)
         - [List Chainée implanté](#list-chainée-implanté)
         - [AST implanté en ILPML](#ast-implanté-en-ilpml)
-      - [4.2 Tâche actuellement : un mécanisme capable de compiler plusieurs fichiers](#42-tâche-actuellement--un-mécanisme-capable-de-compiler-plusieurs-fichiers)
+      - [4.2 Un mécanisme capable de compiler plusieurs fichiers](#42-un-mécanisme-capable-de-compiler-plusieurs-fichiers)
         - [4.2.1 Notion "Include"](#421-notion-include)
         - [4.2.2 Notre solution Pour "Include"](#422-notre-solution-pour-include)
         - [4.2.3 Avant de implementation](#423-avant-de-implementation)
         - [4.2.4 L'implementation de "Include"](#424-limplementation-de-include)
-        - [4.2.5 À completer](#425-à-completer)
-  - [5 Tâches restantes + Re-tro Planning](#5-tâches-restantes--re-tro-planning)
-      - [5.1 Appliquer l'implementation de Notion include et mecanisme de compiler multiple fichier en ILPML](#51-appliquer-limplementation-de-notion-include-et-mecanisme-de-compiler-multiple-fichier-en-ilpml)
-      - [5.2 Développer une méthode d’analyse syntaxique permettant de convertir un code source texte à la syntaxe ILPML en AST représenté en ILP.](#52-développer-une-méthode-danalyse-syntaxique-permettant-de-convertir-un-code-source-texte-à-la-syntaxe-ilpml-en-ast-représenté-en-ilp)
-        - [5.2 Planning](#52-planning)
-      - [5.3 Développer, au choix, un compilateur d’ILP vers C ou un interprète d’ILP, en ILP](#53-développer-au-choix-un-compilateur-dilp-vers-c-ou-un-interprète-dilp-en-ilp)
-        - [5.3 Planning](#53-planning)
-      - [5.4 Développer des tests pour valider la correction de  compilateur ou interprète](#54-développer-des-tests-pour-valider-la-correction-de--compilateur-ou-interprète)
-        - [5.4 Planning](#54-planning)
-      - [5.5 Rapport final et preparation de la soutenance](#55-rapport-final-et-preparation-de-la-soutenance)
-        - [5.5 Planning](#55-planning)
+        - [4.2.5 Pour aller plus loin](#425-pour-aller-plus-loin)
+      - [4.3 Convertisseur de JAVA AST à ILP AST](#43-convertisseur-de-java-ast-à-ilp-ast)
+        - [4.3.1 Implementation du convertisseur](#431-implementation-du-convertisseur)
+        - [4.3.2 Difficultés rencontrées](#432-difficultés-rencontrées)
+      - [4.4 Compilateur](#44-compilateur)
+        - [4.4.1 Notre choix](#441-notre-choix)
+        - [4.4.2 Idée principale](#442-idée-principale)
+        - [4.4.3 Processus de développment](#443-processus-de-développment)
+        - [4.4.4 Implementation en ILP](#444-implementation-en-ilp)
+        - [4.4.4.1 Bibliotheque de compilation : HashMap,Contexte...](#4441-bibliotheque-de-compilation)
+        - [4.4.4.2 Visiteur en ILP : ( Eval( ),Normalizer...)](#4442-visiteur-en-ilp)
+        - [4.4.4.3 La premiere version du Compilateur en ILP](#4443-la-premiere-version-du-compilateur-en-ilp)
+        - [4.4.5 Extensions interessant : Exception](#445-extensions-interessant--exception)
+  - [5 Validation du projet : Test](#5-validation-du-projet--test)
+      - [5.1 Les tests au fur et à mesure](#51-les-tests-au-fur-et-à-mesure)
+      - [5.2 Validation du projet](#52-validation-du-projet)
+  - [6 Les tâches non réalisées](#6-les-tâches-non-réalisées)
+      - [6.1 Conclusion du projet: Bootstrap](#61-conclusion-du-projet-bootstrap)
 
-
-
-
-<div STYLE="page-break-after: always;"></div>
 
 ## 1 Introduction  
 <div style="text-indent: 2em;">
@@ -97,16 +100,13 @@ Notre projet vise à réimplémenter partiellement le langage ILP en utilisant I
 
 - Développer, au choix, un compilateur d’ILP vers C ou un interprète d’ILP, en ILP
 
-- Développer un mécanisme de gestion de programmes
-multi-fichiers en ILP
+- Développer un mécanisme de gestion de programmes multi-fichiers en ILP
 
 - Développer des tests pour valider la correction du compilateur ou d l'interprète
 
 <br/>
 <br/>
 <br/>
-
-<div STYLE="page-break-after: always;"></div>
 
 ## 3 Méthode  de Travail en Collaboration
 Pour mieux coordonner notre travail d'équipe et progresser plus efficacement dans notre projet, nous avons pris les mesures suivantes :
@@ -121,7 +121,7 @@ En mettant en place ces mesures, nous pouvons améliorer la coordination et l'ef
 <div STYLE="page-break-after: always;"></div>
 
 ## 4 Tâches réalisées et additionnelles
-#### 4.1 Départ du Projet
+### 4.1 Départ du Projet
 <div style="text-indent: 2em;">
 
 ##### 4.1.1 AST
@@ -177,7 +177,6 @@ class ListNode extends Object {
     var value;  
     var next;   
     ...
-}
 ```
 ```
 class List extends Object{
@@ -185,14 +184,9 @@ class List extends Object{
 
     // ajouter valeur a la fin du list
     method add(value) 
-    ...
-
+    //verifier si la liste contient value
     method contains(value)
-    ...
-
     method length()
-    ...
-}
 ```
 Nous avons également écrit quelques tests pour vérifier si la liste chaînée fonctionne correctement pour ces ASTs:
 
@@ -224,7 +218,7 @@ De nombreuses autres classes AST suivantes, telles que "ast alternative" et "ast
 Evidemment, dans les développements ultérieurs, nous pouvons ajouter quelques méthodes génériques dans AST et ASTexpression pour simuler des __interfaces__ ou des __classes abstraites__. Par exemple, nous pouvons utiliser la méthode __collecterVarGlobal()__ pour collecter les variables globales, ce qui est très important. Ici, nous n'avons pas besoin de implanter directement la logique de cette méthode, nous la laissons vide. Dans les AST qui étendent ultérieurement l'AST, nous pouvons utiliser le mot-clé __"super"__ pour réécrire la logique spécifique de la méthode.
 
 
-Voici quelques exemples d'AST que nous avons implantés en ILPML:
+Voici une autre exemple d'AST que nous avons implantés en ILPML:
 Exemple de AST (if_else_)
 ```
 ASTalternative:
@@ -234,23 +228,10 @@ class ASTalternative extends ASTexpression {
     var alternant;
 
     method isTernary () 
-    type_of(self.alternant) != "NULL";
-}
-```
-Exemple de AST (operation d'arité 1)
-```
-class ASTunaryOperation extends ASTexpression{
-    var operator;
-    var operand;
-
-	method getOperands() 
-     let node = new ListNode(self.getOperand(),new NULL()) in
-        let list = new List(node) in
-        list;
 }
 ```
 
-#### 4.2 Un mécanisme capable de compiler plusieurs fichiers 
+### 4.2 Un mécanisme capable de compiler plusieurs fichiers 
 <div style="text-indent: 2em;">
 
 Maintenant que nous avons la structure de liste chaînée,la class NULL,des structures AST.  Mais nous ne voulons pas mettre tout le code dans un unique fichier,c'est lourd.Nous voulons le séparer en plusieurs fichiers.Cela rend le code plus maintenable et plus réutilisable.
@@ -326,7 +307,8 @@ public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)  {
 Mais nous ne nous contentons pas de simplement implémenter un mécanisme d'inclusion. Finalement, nous avons réussi à mettre en œuvre un mécanisme d'inclusion imbriquée, ce qui signifie que notre inclusion finale peut s'appliquer aux inclusions des fichiers inclus. En d'autres termes, des inclusions multiples.
 </div>
 
-#### 4.3 Convertisseur de JAVA AST à ILP AST
+
+### 4.3 Convertisseur de JAVA AST à ILP AST
 <div style="text-indent: 2em;">
 Maintenant la prochaine etape de projet est de rechercher une méthode d’analyse syntaxique permettant de convertir un code source texte à la syntaxe ILPML en AST représenté en ILP.  
 </div>
@@ -440,7 +422,7 @@ Par conséquent, dans le convertisseur, nous introduisons un compteur : __compte
 
 <div style="page-break-after: always;"></div>
 
-#### 4.4 Compilateur
+### 4.4 Compilateur
 <div style="text-indent: 2em;">
 Ensuite, vient l'étape la plus importante et l'objectif principal de tout le projet, qui est de développer, au choix, un compilateur d'ILP vers C ou un interprète d'ILP, en ILP, en s'inspirant de la structure du code Java.
 </div>
@@ -479,8 +461,8 @@ class MapNode extends Object {
     var value;  
     var next;   
     ...
-}
-
+```
+```
 class Map extends Object{
     var head; 
 
@@ -495,8 +477,6 @@ class Map extends Object{
 
     //verifier si le map contient le key
     method contains(key)
-
-}
 ```
 ##### 4.4.4.1 Bibliotheque de compilation : Environnement Global
 Ainsi, dans notre bibliothèque de compilation, nous pourrons gérer de manière flexible les informations telles que les variables globales et les primitives. Par exemple :
@@ -505,11 +485,9 @@ binaryOperators = new Map(null);
 binaryOperators.add("+","ILP_Plus");
 binaryOperators.add("*", "ILP_Times");
 
-class Primitive{
-     ...
-}
+class Primitive{...}
 
-//env global
+//environnement global
 globalVariables_env = new Map(null);
 globalVariables_env.add("pi", "ILP_PI");
 
@@ -621,6 +599,19 @@ Voici le processus de compilation du code ILP :
    
 __Finalement, nous avons réussi à développer un compilateur capable de compiler du code ILP1 écrit en ILP.__
 
+### 4.5 Extensions interessant : Exception
+Au cours du développement du compilateur, nous avons découvert un autre aspect intéressant qui pourrait être utilisé pour l'extension, à savoir __"throws l'exception"__. Il est très courant pour un compilateur de détecter des erreurs et de les signaler en lançant des exceptions, mais pour notre première version du compilateur actuellement implémentée, en raison de contraintes de temps, nous n'avons pas ajouté de gestion des exceptions. Cependant, il reste très pertinent de réfléchir à l'ajout d'un mécanisme de lancement d'exceptions.
+
+La pratique de base spécifique est similaire à :
+Pendant la compilation, nous définissons différents types d'Exception, par exemple:
+__Exception : variable non définie__.
+Ou encore: 
+__Exception : erreur d'index pour Liste chaînée__.
+Une fois qu'une erreur est détectée lors de la compilation, nous pouvons renvoyer un type spécifique d'Exception pour informer de l'erreur.
+
+Un second point de réflexion plus profond et plus intéressant est de savoir où l'erreur se produit, c'est-à-dire que nous devons informer de __le numero de la ligne__ spécifique du code où l'erreur se produit lorsque nous lançons l'Exception.
+C'est un aspect très intéressant, spécifiquement pour notre projet actuel, le langage ILP. ANTLR, lors de l'analyse du code, dispose d'un compteur intégré pour calculer les numéros de ligne des différents codes. Si nous voulons implémenter cette fonctionnalité, nous devons explorer les fonctionnalités d'ANTLR pour récupérer ces informations internes.
+
 <div style="page-break-after: always;"></div>
 
 ## 5 Validation du projet : Test
@@ -642,7 +633,7 @@ La méthode de validation de ces tests repose principalement sur les tests d'int
 Pour valider notre projet, c'est-à-dire pour valider le compilateur que nous avons développé, nous avons utilisé des échantillons de tests ILP1. Il y a un total de 76 tests. Si le code C généré par notre compilateur pour ces 76 tests peut être compilé avec succès, cela prouve que nous avons réussi à développer un compilateur écrit en ILP pour compiler ILP1.
 
 En fait, au début, seulement environ la moitié des tests ont réussi. En examinant les messages d'erreur de compilation, nous avons analysé les raisons et corrigé le code. Finalement, nous avons réussi à compiler les 76 tests ILP1.
-<img src="./image/test3.png" alt="test2" style="width:350px;height:150px;">
+<img src="./image/test3.png" alt="test3" style="width:700px;height:30px;">
 
 ## 6 Les tâches non réalisées 
 Nous avons déjà atteint l'objectif de base de ce projet, qui est de compléter la compilation complète de ILP1. Cependant, en réalité, si le temps le permet, le projet pourrait envisager des extensions de la cible vers des versions supérieures d'ILP. 
@@ -659,5 +650,4 @@ Ensuite, nous pouvons utiliser ce compilateur initial pour écrire un compilateu
 
 __Et une fois que nous obtenons un compilateur écrit purement en langage ILP, nous pouvons alors utiliser davantage de fonctionnalités ILP pour l'améliorer, en développant de nouvelles versions de compilateurs sur la base du compilateur précédent, et ce processus est appelé "bootstrap"__. Ce processus est reflété dans notre projet, où nous continuons à améliorer les fonctionnalités de ILP2, ILP3, ILP4 sur la base du compilateur ILP1. C'est aussi l'objectif le plus idéal et le plus intéressant de notre projet.
 
-
-Merci de votre attention!
+__Merci de votre attention!__

@@ -478,31 +478,33 @@ Ensuite, vient l'étape la plus importante et l'objectif principal de tout le pr
 </div>
 
 ##### 4.4.1 Notre choix 
-Après mûre réflexion, ainsi qu'une période préliminaire de réflexion et d'apprentissage sur ce projet, nous avons finalement décidé d'utiliser le langage ILP pour ré-implementer un compilateur. Voici nos raisons :
+Après mûre réflexion, ainsi qu'une période préliminaire de réflexion et d'apprentissage sur ce projet, nous avons finalement décidé d'utiliser le langage ILP pour ré-implementer un compilateur vers le C. Voici nos raisons :
 
 - Dans l'ILP existant, il existe déjà une bibliothèque C pertinente, nous pouvons donc réutiliser directement ce code.
 - Comme pour la tâche 4.3, nous avons déjà une idée préliminaire, à savoir un visiteur supplémentaire pour émettre le code C.
 - De plus,la cible de compilation est le langage C ici,qui est de relativement plus haut niveau que l'assembleur,ce qui facilite beaucoup la generation de code.C'est donc notre meilleur choix.
 
 ##### 4.4.2 Idée principale
-L'idée de base de notre compilateur est la suivante :
-Pour réaliser un compilateur développé en langage ILP capable de compiler lui-même, nous devons d'abord utiliser un langage de programmation de haut niveau existant pour développer la première version exécutable du compilateur. Ici, nous avons choisi le langage C. En effet, il existe déjà une bibliothèque C complète dans la bibliothèque ILP, ce qui a grandement accéléré notre processus de développement.
+Le __but ultime__ du projet est de réaliser un compilateur développé en langage ILP capable de se compiler lui-même(cependant ce n'est pas encore possible à l'herure actuelle).
+
+Donc la démarche du compilateur est de réaliser d'abord une premiere version qui support langage ILP1.
 
 ##### 4.4.3 Processus de développment
 
 Notre processus est le suivant : 
-nous devons d'abord mettre en œuvre un visiteur similaire à notre convertisseur, capable de recevoir du code ILP et de produire du code C. Ensuite, nous compilons le code C pour obtenir le résultat final de la compilation.
+nous devons d'abord mettre en œuvre un visiteur comme notre convertisseur(génération du code), capable de recevoir du code ILP et de produire du code C. Ensuite, nous compilons le code C pour obtenir le résultat final de la compilation.
 C'est-à-dire que pour la version initiale du compilateur, le langage C sert de tremplin pour nous aider à générer le premier fichier exécutable.
 
 Dans ce processus, nos principales tâches se concentrent sur plusieurs parties : 
-- la première partie concerne le perfectionnement de la section bibliothèque, car lors de la compilation, nous devons être capables de traiter les primitives, de collecter les variables globales, de gérer le contexte de compilation, ainsi que la partie normalisation durant la compilation. 
+- la première partie concerne le perfectionnement de la section bibliothèque(la structure d'AST et de ses méthodes), car lors de la compilation, nous devons être capables de traiter les primitives, de collecter les variables globales, de gérer le contexte de compilation, ainsi que la partie normalisation durant la compilation. 
 - La deuxième partie concerne le développement de la section visiteur qui produit le code C. 
 - La troisième partie est l'intégration finale du compilateur, qui est basée sur Java, nécessitant d'intégrer et d'encapsuler toute une série d'opérations allant de la réception du code ILP normal à la génération de l'AST Java, puis à la transformation en AST ILP, et enfin à la compilation en code C pour compiler le code C généré.
 
 ##### 4.4.4 Implementation en ILP
-##### 4.4.4.1 Bibliotheque de compilation
-##### 4.4.4.1 Bibliotheque de compilation : HashMap
-Pour pouvoir gérer des informations telles que les primitives, les variables globales et les fonctions globales, nous avons besoin d'une structure capable de stocker des paires clé-valeur. Le Hashmap est une telle structure, où les données sont stockées sous la forme clé-valeur. Chaque clé individuelle correspond à une valeur unique.
+##### 4.4.4.1 Bibliotheque de compilation : Map
+Pour pouvoir gérer des informations telles que les primitives, les variables globales et les fonctions globales, nous avons besoin d'une structure capable de stocker des paires clé-valeur. La structure de Map est une telle structure, où les données sont stockées sous la forme clé-valeur. Chaque clé individuelle correspond à une valeur unique.
+
+Ici,nous avons implementé une structure d'une liste d'association qui implante les bonnes opérations pour nos besoins et c'est simple à implanter.
 
 Cependant, le langage ILP manque d'une telle structure, donc nous avons développé une telle structure basée sur les listes chaînées :
 ```
@@ -531,11 +533,24 @@ class Map extends Object{
 ##### 4.4.4.1 Bibliotheque de compilation : Environnement Global
 Ainsi, dans notre bibliothèque de compilation, nous pourrons gérer de manière flexible les informations telles que les variables globales et les primitives. Par exemple :
 ```
+null = new NULL();
+
+//Clé: +,*,print,etc correspondent à des noms d'opérateurs et de primitives utilisables dans le code ILP
+//Value: "ILP_Plus", "ILP_moin", "ILP_print" etc correspondent au nom des fonctions C qui les implantent dans la bibliothèque d'exécution.
+
 binaryOperators = new Map(null);
 binaryOperators.add("+","ILP_Plus");
 binaryOperators.add("*", "ILP_Times");
+...
 
-class Primitive{...}
+class Primitive{
+    //le nom ILP
+    var name;
+    //le nom C
+    var cName;
+    //nombre de argument(0 indique c'est un constant)
+    var arity;
+}
 
 //environnement global
 globalVariables_env = new Map(null);
@@ -544,10 +559,11 @@ globalVariables_env.add("pi", "ILP_PI");
 globalFunctions_env = new Map(null);
 globalFunctions_env.add("print", new Primitive("print", "ILP_print", 1));
 globalFunctions_env.add("newline", new Primitive("newline", "ILP_newline", 0));
+...
 ```
 
 
-Grâce à HashMap, nous pouvons facilement relier ILP aux bibliothèques C déjà définies, par exemple en associant pi à ILP_PI dans la bibliothèque C.
+Grâce à Map, nous pouvons facilement relier ILP aux bibliothèques C déjà définies, par exemple en associant pi à ILP_PI dans la bibliothèque C.
 
 ##### 4.4.4.1 Bibliotheque de compilation : Contexte
 
@@ -556,7 +572,7 @@ Par exemple, dans l'expression __x = 1+2__, lors du processus de compilation, ce
 - une variable temporaire tmp1 = 1, 
 - une variable temporaire tmp2 = 2, 
 - une variable temporaire tmp3 = tmp1 + tmp2 = 3. 
-- Ainsi, la "destination" de 3 dans ce cas serait x.'
+- Ainsi, la "destination" de 3 dans ce cas serait x.
 
 Nous avons défini une classe pour simuler le contexte, qui est utilisée pour collecter des informations:
 ```
@@ -569,9 +585,14 @@ class Context{
      var destination;
 }
 ```
+Plus precisement,en raison des limitations du C, il n'est pas toujours possible de traduire directement une expression ILP en expressions C (car le C ne supporte pas les structures if-then-else, les blocs de code et les boucles). 
+
+Par conséquent, une expression ILP est compilée en une séquence d'instructions C. Lors de la génération du code, il est nécessaire d'indiquer où doit être stockée la valeur d'une sous-expression, généralement dans une variable temporaire, afin que le code qui utilise la valeur de cette sous-expression puisse y accéder.__C'est le contexte.__
+
+Ceci est un choix déjà fait par le compilateur de notre cours DLP, et nous avons décidé de réutiliser ce choix pour notre compilateur ILP.
 
 ##### 4.4.4.2 Visiteur en ILP
-Bien que la logique du visiteur du compilateur soit similaire à celle du convertisseur, où le convertisseur prend du code Java en entrée et produit du code ILP en sortie, cette fois-ci le visiteur du compilateur devrait accepter du code ILP en entrée et produire du code C en sortie. Cependant, il n'est pas facile de simuler en ILP un visiteur similaire à celui en Java.
+Bien que la logique du visiteur du compilateur soit similaire à celle du convertisseur d'AST Java en AST ILP, où le convertisseur prend du code Java en entrée et produit du code ILP en sortie, cette fois-ci le visiteur du compilateur devrait accepter du code ILP en entrée et produire du code C en sortie. Cependant, ce serait surtout assez lourd d'écrire un visiteur en ILP.
 
 Par conséquent, notre solution est de définir une méthode eval dans chaque classe d'AST ILP. Cette méthode sera utilisée pour réaliser une traversée récursive de l'AST de haut en bas, ce qui permettra de produire le code de sortie.
 
@@ -603,14 +624,28 @@ l'ASTprogram est la structure la plus haute de l'arbre AST. Étant donné que IL
 Le point le plus intéressant ici, que nous voulons mettre en avant, est la ligne "__self.expression.eval(c)__". __Cela représente le processus récursif de l'appel de la méthode eval depuis le haut de l'arbre vers le bas.__ Pendant ce processus, nous transmettons le __contexte__ pour sauvegarder l'environnement contextuel lors du passage, utilisé pour déterminer la "destination" finale du résultat.
 
 Exemple de Code C génére Pour le code ILP ( false ):
-<img src="./image/codeC.png" alt="test2" style="width:200px;height:200px;">
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include "ilp.h"
+
+ILP_Object ilp_program ()
+{
+{
+ILP_Object ilptmp2;
+ilptmp2 = ILP_FALSE;
+return ilptmp2;
+
+}
+}
+```
 
 ##### 4.4.4.2 Visiteur en ILP : Normalizer
-Au cours du processus de compilation, nous devons également gérer le processus de "normalisation". En fait, la normalisation est une étape très importante lors de la compilation. Par exemple :
+Au cours du processus de compilation, nous devons également gérer le processus de "normalisation". Par exemple :
 
 Comme nous l'avons également introduit précédemment, lors de la compilation, nous créons des variables temporaires pour différentes valeurs, mais il y a un problème ici :
 
-Pour les variables locales à l'intérieur d'un bloc de code, comme les différents blocs de code ont des portées différentes, il est possible que des variables portant le même nom existent dans différents blocs. Cependant, lors de la compilation, nous pouvons facilement être confondus par ces variables locales homonymes. À ce moment-là, nous devons normaliser le code, __c'est-à-dire que nous devons générer un identifiant unique pour chaque variable locale dans les blocs de code__, qui sera utilisé pour l'identification lors de la compilation. Nous devons stocker cette correspondance entre l'ancien nom et le nouveau nom lors de la compilation. C'est ici que nous utilisons la structure hashmap que nous avons développée pour stocker cette relation de mappage.
+Pour les variables locales à l'intérieur d'un bloc de code, comme les différents blocs de code ont des portées différentes, il est possible que des variables portant le même nom existent dans différents blocs. Cependant, lors de la compilation, nous pouvons facilement être confondre par ces variables locales homonymes. À ce moment-là, nous devons normaliser le code, __c'est-à-dire que nous devons générer un identifiant unique pour chaque variable locale dans les blocs de code__, qui sera utilisé pour l'identification lors de la compilation. Nous devons stocker cette correspondance entre l'ancien nom et le nouveau nom lors de la compilation. C'est ici que nous utilisons la structure map que nous avons développée pour stocker cette relation de mappage.
 
 Exemple de gestion du normalisation:
 ASTblock (qui represente le bloc du code):
@@ -620,6 +655,8 @@ ASTblock (qui represente le bloc du code):
       ...
      method eval(context)
      (
+        let current = self.binding.head in
+        let valTmp = incrementAndGet() in
             ......
         let old_varName = to_string(current.value.variable.name) in
         let new_varName = to_string(old_varName+valTmp) in
@@ -632,25 +669,28 @@ ASTblock (qui represente le bloc du code):
             .......
 
 ```
-On peut voir ici que pour chaque variable locale dans les blocs de code, nous avons généré un nouveau nom unique, et nous avons stocké cette correspondance dans normalizationVariables, qui est une HashMap globale stockée dans le compilateur, utilisée pour gérer les informations globales.
+On peut voir ici que pour chaque variable locale dans les blocs de code, nous avons généré un nouveau nom unique, et nous avons stocké cette correspondance dans normalizationVariables, qui est une Map globale stockée dans le compilateur, utilisée pour gérer les informations globales.
 
 
 ##### 4.4.4.3 La premiere version du Compilateur en ILP
 Enfin, nous avons terminé tous les préparatifs, y compris la bibliothèque, les visiteurs (convertisseurs, compilateurs) et notre dernier travail consiste à intégrer et encapsuler tout le code pour les tests.
 Voici le processus de compilation du code ILP :
 
-1. Nous recevons normalement le code ILP.
-2. Nous utilisons ANTLR pour analyser le code ILP et générer un AST en Java.
+1. Nous recevons normalement le code ILP sous forme de code source textuel.
+2. Nous utilisons un parseur Java généré par ANTLR (avec la gestion des includes) pour analyser le code ILP et générer un AST en Java.
 3. À travers le convertisseur, nous transformons l'AST en Java en AST en ILP, produisant ainsi un nouveau code ILP.
 4. Nous incluons notre bibliothèque ILP développée (AST en ILP, liste chaînée, hashmap, classe NULL, etc.), ce qui génère un nouveau code ILP.
 5. Nous engageons le processus de compilation (ASTprogram.eval(contexte)), produisant un nouveau code ILP.
-6. Nous repassons par ANTLR pour analyser le nouveau code ILP, ce qui produit du code C.
-7. Nous compilons le code C généré et vérifions s'il y a des erreurs.
+6. Nous repassons par ANTLR pour analyser le nouveau code ILP, l'exécution de ce code ILP qui génère le code C.
+7. Nous compilons et exécutons le code C généré et vérifions s'il y a des erreurs.
    
-__Finalement, nous avons réussi à développer un compilateur capable de compiler du code ILP1 écrit en ILP.__
+__Finalement, nous avons réussi à développer un compilateur capable de compiler du code ILP1 écrit en ILP4.__
 
-### 4.5 Extensions interessant : Exception
-Au cours du développement du compilateur, nous avons découvert un autre aspect intéressant qui pourrait être utilisé pour l'extension, à savoir __"throws l'exception"__. Il est très courant pour un compilateur de détecter des erreurs et de les signaler en lançant des exceptions, mais pour notre première version du compilateur actuellement implémentée, en raison de contraintes de temps, nous n'avons pas ajouté de gestion des exceptions. Cependant, il reste très pertinent de réfléchir à l'ajout d'un mécanisme de lancement d'exceptions.
+### 4.5 Extension future intéressante : Exception
+Au cours du développement du compilateur, nous avons découvert un autre aspect intéressant qui pourrait être utilisé pour une extension future, à savoir __le signalement des erreurs par des exceptions (disponibles en ILP)__. Il est très courant pour un compilateur de détecter des erreurs et de les signaler en lançant des exceptions, mais pour notre première version du compilateur actuellement implémentée, en raison de contraintes de temps, nous n'avons pas ajouté de gestion des erreurs. 
+
+Cependant, il reste très pertinent de réfléchir à l'ajout d'un mécanisme de lancement d'exceptions.
+Sinon,la conséquence de ce manque : la compilation d'un code ILP incorrect va générer un fichier C qui fait, soit n'importe quoi, soit une erreur de compilation en C difficile à interprétée car reportée sur le code C généré et pas sur le code ILP original.
 
 La pratique de base spécifique est similaire à :
 Pendant la compilation, nous définissons différents types d'Exception, par exemple:
@@ -659,7 +699,7 @@ Ou encore:
 __Exception : erreur d'index pour Liste chaînée__.
 Une fois qu'une erreur est détectée lors de la compilation, nous pouvons renvoyer un type spécifique d'Exception pour informer de l'erreur.
 
-Un second point de réflexion plus profond et plus intéressant est de savoir où l'erreur se produit, c'est-à-dire que nous devons informer de __le numero de la ligne__ spécifique du code où l'erreur se produit lorsque nous lançons l'Exception.
+Un second point de réflexion plus profond et plus intéressant est de savoir où l'erreur se produit, c'est-à-dire que nous devons informer __du numéro de la ligne__ spécifique du code où l'erreur se produit lorsque nous lançons l'Exception.
 C'est un aspect très intéressant, spécifiquement pour notre projet actuel, le langage ILP. ANTLR, lors de l'analyse du code, dispose d'un compteur intégré pour calculer les numéros de ligne des différents codes. Si nous voulons implémenter cette fonctionnalité, nous devons explorer les fonctionnalités d'ANTLR pour récupérer ces informations internes.
 
 <div style="page-break-after: always;"></div>
@@ -671,16 +711,19 @@ Pour assurer une progression correcte du projet, nous avons continuellement écr
 Par exemple, comme nous vous l'avons montré précédemment, nous avons écrit plusieurs tests pour vérifier les structures telles que la liste chaînée.
 À chaque fois que nous avons développé une nouvelle structure ou finalisé une méthode AST, nous avons écrit plusieurs tests pour vérifier si les fonctionnalités associées fonctionnaient correctement.
 
-De même, pour certaines syntaxes/grammaires présentes dans ILP4 qui pourraient être ambiguës, nous avons également écrit des tests simples pour vérifier la validité de la syntaxe ILP4.
+De même, pour certaines syntaxes/grammaires présentes dans ILP1-ILP4 qui pourraient être ambiguës, nous avons également écrit des tests simples pour vérifier la validité de la syntaxe.
 
 La méthode de validation de ces tests repose principalement sur les tests d'interprétation et de compilation déjà existants pour ILP. Le critère de réussite de ces tests est de vérifier si le code ILP que nous avons entré génère des erreurs.
 
-<img src="./image/test2.png" alt="test2" style="width:250px;height:150px;">
-<img src="./image/test1.png" alt="test1" style="width:150px;height:50px;">
+Les nouveaux tests que nous avons créé dans le développement du projet:
+- les tests pour vérifier la validité de la syntaxe(ILP1-ILP4).[Dans le dossier: SamplesPSTL]
+- les tests pour valider les extensions (AST,liste chaînée,Map,NUll) que nous avons implementé [Dans les dossier : SamplesPSTL]
+- les tests pour tester la correction du convertisseur [Dans le dossier : SamplesPSTL2]
+- les tests pour tester la correction du compilateur [Dans les dossier: SamplesPSTL_compiler,SamplesPSTL_Compilateur,SamplesPSTL_C]
 
 
 #### 5.2 Validation du projet
-Pour valider notre projet, c'est-à-dire pour valider le compilateur que nous avons développé, nous avons utilisé des échantillons de tests ILP1. Il y a un total de 76 tests. Si le code C généré par notre compilateur pour ces 76 tests peut être compilé avec succès, cela prouve que nous avons réussi à développer un compilateur écrit en ILP pour compiler ILP1.
+Pour valider notre projet, c'est-à-dire pour valider le compilateur que nous avons développé, nous avons utilisé des échantillons de tests ILP1 déjà disponible dans la distribution ILP du cours. Il y a un total de 76 tests. Si le code C généré par notre compilateur pour ces 76 tests peut être compilé avec succès, cela montre que nous avons réussi à développer un compilateur écrit en ILP pour compiler ILP1.
 
 En fait, au début, seulement environ la moitié des tests ont réussi. En examinant les messages d'erreur de compilation, nous avons analysé les raisons et corrigé le code. Finalement, nous avons réussi à compiler les 76 tests ILP1.
 <img src="./image/test3.png" alt="test3" style="width:700px;height:30px;">
@@ -690,11 +733,12 @@ Nous avons déjà atteint l'objectif de base de ce projet, qui est de compléter
 #### 6.1 Conclusion du projet: Bootstrap 
 Le concept introduit ici est celui de __"bootstrap"__, c'est-à-dire que si nous voulons développer un compilateur pour ILP écrit en ILP lui-même, capable de compiler ILP, nous devons d'abord utiliser un autre langage de programmation de haut niveau existant pour aider au développement du fichier exécutable du compilateur initial, ici nous avons utilisé le langage C. 
 
-__Le langage C a joué le rôle de "pont" dans le développement du compilateur ILP__, c'est-à-dire que pour la version initiale du compilateur, le processus interne est le suivant : 
-- nous recevons du code ILP que nous transformons en code C, 
+__Le langage Java a joué le rôle de "pont" dans le développement du compilateur ILP__, c'est le langage d'implantation initial du compilateur et de l'interprète.
+c'est-à-dire que pour la version initiale du compilateur, le processus interne est le suivant : 
+- nous recevons du code ILP que nous transformons en code C (Le C est utilisé pour la bilbliothèque d'exécution), 
 - puis nous compilons le code C pour obtenir le résultat de la compilation. 
 
-Une fois que nous obtenons le fichier exécutable de cette première version du compilateur, nous n'avons plus besoin du langage C, car nous disposons désormais d'un fichier exécutable qui accepte le code ILP et produit un résultat. 
+Une fois que nous obtenons le fichier exécutable de cette première version du compilateur, nous n'avons plus besoin du langage Java, car nous disposons désormais d'un fichier exécutable qui accepte le code ILP et produit un résultat. 
 
 Ensuite, nous pouvons utiliser ce compilateur initial pour écrire un compilateur entièrement en langage ILP, que nous appelons la deuxième version du compilateur. 
 

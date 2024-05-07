@@ -54,7 +54,7 @@ Shiyao Chen
         - [4.2.2 Notre solution Pour "Include"](#422-notre-solution-pour-include)
         - [4.2.3 Avant de implementation](#423-avant-de-implementation)
         - [4.2.4 L'implementation de "Include"](#424-limplementation-de-include)
-        - [4.2.5 Pour aller plus loin](#425-pour-aller-plus-loin)
+        - [4.2.4 Pour aller plus loin](#pour-aller-plus-loin)
       - [4.3 Convertisseur de JAVA AST à ILP AST](#43-convertisseur-de-java-ast-à-ilp-ast)
         - [4.3.1 Implementation du convertisseur](#431-implementation-du-convertisseur)
         - [4.3.2 Difficultés rencontrées](#432-difficultés-rencontrées)
@@ -76,88 +76,104 @@ Shiyao Chen
 
 ## 1 Introduction  
 <div style="text-indent: 2em;">
-ILP est un petit langage dynamique, appartenant à la même catégorie que Python, avec des types de données de base (tels que les entiers et les chaînes), des opérations intégrées, des fonctions globales et de premier ordre, un système d'exceptions et un système d'objets basé sur les classes. 
+ILP est un petit langage dynamique pour l'enseignement qui est utilisé dans le cours DLP, appartenant à la même catégorie que Python, avec des types de données de base (tels que les entiers et les chaînes), des opérations intégrées, des fonctions globales et de premier ordre, un système d'exceptions et un système d'objets basé sur les classes. 
 Ce langage est stratifié en plusieurs niveaux, allant de ILP1 (sans fonctions, exceptions, ni classes) à ILP4 (implémentation complète).  
+
+<br>
+<br>
 
 ILP possède un interpréteur écrit en Java, et un compilateur également écrit en Java mais lié à la bibliothèque d'exécution C pour génerer les code en C.
 
-Notre projet vise à réimplémenter partiellement le langage ILP en utilisant ILP lui-même pour la réécriture. Par exemple, réécrire l'interpréteur ILP ou le compilateur qui compile ILP en C en utilisant le langage ILP. De plus, bien qu'ILP offre des fonctionnalités avancées, il est imparfait à certains égards, comme l'absence de structures de données complètes, un manque de mécanisme de gestion de fichiers, et des fonctionnalités de sortie plutôt limitées. Ainsi, l'un de nos objectifs est également de compléter autant que possible ces aspects.
+Notre projet vise à réimplémenter partiellement le langage ILP en utilisant ILP lui-même pour la réécriture. Par exemple, réécrire l'interpréteur ILP ou le compilateur qui compile ILP en C en utilisant le langage ILP. De plus, bien qu'ILP offre des fonctionnalités avancées, il est imparfait à certains égards, comme l'absence de structures de données complètes, un manque de mécanisme de gestion de fichiers, et des fonctionnalités de sortie plutôt limitées. 
 </div>
-<img src="./image/ILP.png" alt="sorbonne" style="width:400px;height:400px;">
 
-<br/>
-<br/>
-<br/>
+<br>
+<br>
 
-<div STYLE="page-break-after: always;"></div>
+#### 1.1 Schema du projet  
+<div style="text-indent: 2em;">
+ILP : schema du cours,avec le compilateur et l'interprète en Java.
+</div>
+<figure>
+<img src="./image/ILP.png" alt="sorbonne" style="width:300px;height:300px;">
+</figure>
+
+<br>
+<br>
+
+<div style="text-indent: 2em;">
+schema du notre projet : Implantation d’ILP en ILP
+</div>
+<figure>
+<img src="./image/schema.png" alt="sorbonne" style="width:650px;height:300px;">
+</figure>
+
+
+<!-- <div STYLE="page-break-after: always;"></div> -->
 
 ## 2 Travail attendu
 - Développer en ILP une structure de données pour représenter l’AST du langage ILP.
 
-- Développer en ILP, au fur et à mesure des besoins, une bibliothèque de structures de données générales (listes chaînées, tables d’association, etc.).
+- Développer en ILP, au fur et à mesure des besoins, une bibliothèque de structures de données générales (listes chaînées, tables d’association, etc).(Dans notre projet,nous avons implementé la liste chaînée,une structure de liste d'association)
 
 - Développer une méthode d’analyse syntaxique permettant de convertir un code source texte à la syntaxe ILPML en AST représenté en ILP.
 
-- Développer, au choix, un compilateur d’ILP vers C ou un interprète d’ILP, en ILP
+- Développer, au choix, un compilateur d’ILP vers C ou un interprète d’ILP, en ILP.(Dans notre projet,nous avons implementé le compilateur qui supporte ILP1)
 
-- Développer un mécanisme de gestion de programmes multi-fichiers en ILP
+- Développer un mécanisme de gestion de programmes multi-fichiers en ILP.(Dans notre projet,nous avons implementé un mécanisme de "Include")
 
-- Développer des tests pour valider la correction du compilateur ou d l'interprète
-
-<br/>
-<br/>
-<br/>
+- Développer des nouveaux tests pour valider l'implementation du ILP.Tester la correction du compilateur ou d l'interprète utilisant tests inclus dans ILP (tests de non-regression)
+  
+Démarche du projet : commencer par implanter ILP1, si le temps le permet, ajouter au fur et à mesure de nouveaux nœuds(ILP2-ILP4) en les testant.
 
 ## 3 Méthode  de Travail en Collaboration
 Pour mieux coordonner notre travail d'équipe et progresser plus efficacement dans notre projet, nous avons pris les mesures suivantes :
 
 1. Nous avons créé un dépôt GitHub pour partager le code.
-2. Nous avons un channel de discussion de groupe pour discuter des idées.
-3. Avant de commencer une nouvelle tâche, nous attribuons les tâches dans le channel de discussion pour travailler en parallèle.
+2. Nous avons un canal de discussion de groupe pour discuter des idées.
+3. Avant de commencer une nouvelle tâche, nous attribuons les tâches dans le canal de discussion pour travailler en parallèle.
 4. Organiser des réunions régulières (vendredi matin) avec M.Antoine Miné pour discuter de l'avancement du projet et résoudre les problèmes éventuels.
 
 En mettant en place ces mesures, nous pouvons améliorer la coordination et l'efficacité de notre travail d'équipe et avancer plus rapidement dans notre projet.
-
-<div STYLE="page-break-after: always;"></div>
 
 ## 4 Tâches réalisées et additionnelles
 ### 4.1 Départ du Projet
 <div style="text-indent: 2em;">
 
 ##### 4.1.1 AST
-Un __abrbre syntaxique abstrait (AST)__ est une structure de données arborescente représentant un programme. Chaque nœud interne représente une opération élémentaire du programme. Tels que if(else),while,class...
+Un __abrbre syntaxique abstrait (AST)__ est une structure de données arborescente représentant un programme. Chaque nœud (interne,feuille) représente une opération élémentaire du programme. Tels que if(else),while,class...
 
 
 ##### 4.1.2 Tâche initiale
 
 Donc notre __tâche initiale__ consiste à trouver une structure de données pour représenter l'arbre AST dans le langage ILP, différente de la structure AST.class déjà existante implémentée en Java. Cette fois-ci, nous devons utiliser le langage ILP pour construire ces nœuds. 
 
-##### 4.1.3 Notion NULL
+##### 4.1.3 Valeur NULL
 ILP n'a pas non plus de notion de null.Donc tout d'abord, nous aimerions mentionner ici notre tentative concernant la notion de NULL. Nous l'avons donc considéré comme une classe vide pour l'implémenter :
 ```
 class NULL extends Object {}
 ```
-Et ensuite,avec le conseil de M.Antoine Miné,nous pourrons réduire le test de nullité à un test de class:
+Et ensuite,avec le conseil de M.Antoine Miné,nous pourrons réduire le test de nullité à un test de type:
 ```
 function is_null(x) type_of(x) == "NULL"
 ```
   
-##### 4.1.4 Notion Liste chainée
+##### 4.1.4 Structure de liste simplement chaînée
 
 <div style="text-indent: 2em;">
 
-#####  Bibliothèque List Chainée
+#####  Bibliothèque de listes chaînées
 
 Une liste chaînée (Linked List) est une structure de données fondamentale qui organise les données sous forme de séquence de nœuds (Node). Chaque nœud contient deux parties : l'une pour stocker les données (telles que des entiers, des chaînes de caractères, etc.), et l'autre pour stocker une référence (ou pointeur) vers le nœud suivant de la séquence. À la fin de la liste chaînée, cette référence pointe vers une valeur nulle, indiquant qu'il n'y a plus de nœuds.
 
-#####  List Chainée implanté
+#####  Implantation dse listes chaînées
 
-Lors de l'implémentation de ces structures AST, nous avons rencontré un nouveau problème : ILP ne dispose pas d'une structure de données de type liste chaînée.
+Lors de l'implémentation de ces structures AST, nous avons rencontré un nouveau problème : ILP ne dispose pas d'une structure de données de type liste chaînée,et non plus de tableaux.
 
 Par exemple, pour des nœuds tels que ASTblock, ASTsequence, lorsque les paramètres dont ils ont besoin sont un tableau, en Java, nous pouvons simplement utiliser arguments[] pour les implémenter. Mais cela n'est pas possible dans ILP. Par conséquent, notre prochaine tâche consiste à développer une structure de données similaire à une liste chaînée.
 
 </div>
-Ici,dans la class du ASTsequence en Java,il existe une structure de tableau utilisé pour représenter la liste des instructions dans une séquence d'instructions:
+Ici,dans la class de l'ASTsequence en Java,il existe une structure de tableau utilisée pour représenter la liste des instructions dans une séquence d'instructions:
 
 ```
 public class ASTsequence extends ASTexpression implements IASTsequence {
@@ -175,47 +191,54 @@ La structure de liste chaînée que nous avons implémentée dans ILP :
 
 class ListNode extends Object {
     var value;  
-    var next;   
-    ...
+    var next;  
+    method setNext(v) 
+    method setValue(v) 
+}
 ```
 ```
 class List extends Object{
     var head;
 
-    // ajouter valeur a la fin du list
+    //creer une liste vide
+    method list_vide()
+    // ajouter valeur a la fin de la liste
     method add(value) 
     //verifier si la liste contient value
     method contains(value)
     method length()
+    }
 ```
 Nous avons également écrit quelques tests pour vérifier si la liste chaînée fonctionne correctement pour ces ASTs:
 
 ```
+
+
 let node = new ListNode(10,new NULL()) in
-   list = new List(node) ;
-   list.add(5);
-  list.head.next.value
+list = new List(node) ;
+list.add(5);
+list.head.next.value
 ```
 
-##### AST implanté en ILPML
+##### Implantation ILP des AST
 
 En utilisant le concept de classe déjà implémenté dans ILP4,la notion "Null" et la liste chainée que nous avons implantés, nous pouvons utiliser des classes pour construire des nœuds AST dans ILP
 
-Finalement, nous avons réussi à construire tous les nœuds AST basés du ILP1 en utilisant ILP lui-même
+Finalement, nous avons réussi à construire tous les nœuds AST basés du langage ILP1 en utilisant ILP lui-même
 
 </div>
 L'exemple AST et ASTexpression
 
 ```
-class AST { }
+class AST { method eval(contexte) }
 ```
 ```
 class ASTexpression extends AST { }
 ```
-Dans cet exemple, "ast" et "ast expression" sont deux classes vides(abstrait), mais elles sont extrêmement importantes car elles servent de point de départ et de base pour la construction de l'ensemble de l'arbre syntaxique abstrait (AST). 
+Dans cet exemple, "ast" et "ast expression" sont deux classes vides(abstraites), mais elles sont extrêmement importantes car elles servent de de racine pour la hiérarchie des nœuds d'AST (l'AST Java a les mêmes) pour la construction de l'ensemble de l'arbre syntaxique abstrait (AST). 
 De nombreuses autres classes AST suivantes, telles que "ast alternative" et "ast block", par exemple : `(if expression else expression) = expression`, sont toutes basées sur "ast expression".
 
-Evidemment, dans les développements ultérieurs, nous pouvons ajouter quelques méthodes génériques dans AST et ASTexpression pour simuler des __interfaces__ ou des __classes abstraites__. Par exemple, nous pouvons utiliser la méthode __collecterVarGlobal()__ pour collecter les variables globales, ce qui est très important. Ici, nous n'avons pas besoin de implanter directement la logique de cette méthode, nous la laissons vide. Dans les AST qui étendent ultérieurement l'AST, nous pouvons utiliser le mot-clé __"super"__ pour réécrire la logique spécifique de la méthode.
+Evidemment, dans les développements ultérieurs, nous allons ajouter quelques méthodes génériques dans AST et ASTexpression pour simuler des __interfaces__ ou des __classes abstraites__. Par exemple, nous pouvons utiliser la méthode __collecterVarGlobal()__ pour collecter les variables globales, ce qui est très important. Ici, nous n'avons pas besoin de l'implanter directement la logique de cette méthode, nous la laissons vide. Dans les AST qui étendent ultérieurement l'AST, nous pouvons utiliser l'héritage pour réécrire la logique spécifique de la méthode.
 
 
 Voici une autre exemple d'AST que nous avons implantés en ILPML:
@@ -223,28 +246,50 @@ Exemple de AST (if_else_)
 ```
 ASTalternative:
 class ASTalternative extends ASTexpression {
+    //if
     var condition;
+    //then
     var consequence;
+    //else
     var alternant;
 
     method isTernary () 
+    type_of(self.alternant) != "NULL";
 }
 ```
+La liste des nœuds ILP1 que nous avons implémenté:
+- AST
+- ASTexpression
+- ASTalternative
+- ASTprogram
+- ASTfloat
+- ASTsequence
+- ASTbinaryOperation
+- ASTinteger
+- ASTstring
+- ASTblock
+- ASTinvocation
+- ASTunaryOperation
+- ASTboolean
+- ASTnamed
+- ASTvariable
+- ASTconstant
+- ASToperator
 
 ### 4.2 Un mécanisme capable de compiler plusieurs fichiers 
 <div style="text-indent: 2em;">
 
-Maintenant que nous avons la structure de liste chaînée,la class NULL,des structures AST.  Mais nous ne voulons pas mettre tout le code dans un unique fichier,c'est lourd.Nous voulons le séparer en plusieurs fichiers.Cela rend le code plus maintenable et plus réutilisable.
+Nous avons maintenant la structure de liste chaînée,la class NULL,des structures AST.  Mais nous ne voulons pas mettre tout le code dans un unique fichier,c'est lourd.Nous voulons le séparer en plusieurs fichiers. Cela rend le code plus maintenable et plus réutilisable.
 
 Cela introduit __une notion de "bibliothèque"__.Ce concept est courant dans les langages de programmation modernes populaires, comme les modules en JavaScript, les packages en Java et les "include" en C.
 
-Dans ce projet, notre solution est inspirée par "Include" dans C.
+Dans ce projet, notre solution est inspirée par "Include" du langage C.
 
 </div>
 
 ##### 4.2.1 Notion "Include"
 <div style="text-indent: 2em;">
-Dans le langage C, "include" est une opération statique qui se produit avant la compilation du fichier. Le compilateur remplace le fichier inclus par son contenu textuel interne.
+En C, l'ouitil qui traite les 'include" s'apelle le préprocesseur. C'est une binaire séparé (cpp) qui traduit un fichier texte en un autre fichier texte, accepté par le compilateur. Il est appelé implicitement à chaque compilation.
 </div>
 
 ##### 4.2.2 Notre solution Pour "Include"
@@ -256,10 +301,11 @@ Dans notre projet, nous nous sommes inspirés de la fonctionnalité "include" et
 <br>
 
 * Nous avons ajouté un mot-clé "Include" dans la grammaire pour inclure un chemin.
-* Nous utilisons ANTLR pour analyser le contenu textuel du fichier inclus (code) - En fonction de Open/Read fichier.
+* Nous avons étendu un nouveau type d'AST : ASTincludeDefinition, utilisé pour représenter les inclusions.
+* Nous utilisons normalement le parseur antlr pour traiter le code. Chaque fois que nous rencontrons un nœud ASTincludeDefinition, nous analysons le contenu textuel du fichier inclus (code) - en fonction de l'ouverture/lecture du fichier.
 * Le fichier traité par ANTLR renvoie un arbre de syntaxe abstraite (AST) représentant le programme.
 * Après avoir traité tous les "include" et le texte actuel, nous obtenons une liste d'ASTprogramme.
-* Maintenant que nous avons une liste d'ASTprogram, notre tâche n'est pas encore terminée. Nous devons fusionner ces ASTprograms en un seul ASTprogram, de sorte que notre compilateur/interpréteur n'ait à traiter qu'un seul astprogram, ce qui équivaudrait à traiter le code de plusieurs fichiers précédents.
+* Maintenant que nous avons une liste d'ASTprogram, notre tâche n'est pas encore terminée. Nous devons fusionner ces ASTprograms en un seul ASTprogram, de sorte que notre compilateur/interpréteur n'ait à traiter qu'un seul ASTprogram, ce qui équivaudrait à traiter le code de plusieurs fichiers précédents.
 
 ##### 4.2.3 Avant de implementation
 <div style="text-indent: 2em;">
@@ -280,16 +326,16 @@ prog returns [com.paracamplus.ilp4.interfaces.IASTprogram node]
 
 ##### 4.2.4 L'implementation de "Include"
 Un aperçu de grammaire:
-```
+
 globalDef returns [com.paracamplus.ilp2.interfaces.IASTdeclaration node]
-    : def=includeDef #IncludeDefinition
+    __: def=includeDef #IncludeDefinition__
     | def=globalFunDef # GlobalFunctionDefinition
     | def=classDef # ClassDefinition
-    ;
-includeDef returns [com.paracamplus.pstl.interfaces.IASTincludeDefinition node]
-    :'include' body = STRING
-    ;
-```
+    ;   
+
+__includeDef returns [com.paracamplus.pstl.interfaces.IASTincludeDefinition node]__
+    __:'include' body = STRING__
+    __;__
 Un aperçu de implementation en JAVA:
 ```
 public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)  {
@@ -302,7 +348,7 @@ public Object visit(IASTincludeDefinition iast, ILexicalEnvironment lexenv)  {
 		return includeProgram;
 	}
 ```
-##### 4.2.5 Pour aller plus loin
+##### Pour aller plus loin
 <div style="text-indent: 2em;">
 Mais nous ne nous contentons pas de simplement implémenter un mécanisme d'inclusion. Finalement, nous avons réussi à mettre en œuvre un mécanisme d'inclusion imbriquée, ce qui signifie que notre inclusion finale peut s'appliquer aux inclusions des fichiers inclus. En d'autres termes, des inclusions multiples.
 </div>
@@ -310,21 +356,19 @@ Mais nous ne nous contentons pas de simplement implémenter un mécanisme d'incl
 
 ### 4.3 Convertisseur de JAVA AST à ILP AST
 <div style="text-indent: 2em;">
-Maintenant la prochaine etape de projet est de rechercher une méthode d’analyse syntaxique permettant de convertir un code source texte à la syntaxe ILPML en AST représenté en ILP.  
+Maintenant la prochaine étape de projet est de rechercher une méthode d’analyse syntaxique permettant de convertir un code source texte à la syntaxe ILPML en AST représenté en ILP.  
 </div>
-Il y a plusieurs possibilites:
+Il y a plusieurs possibilités:
 
 * Ecrire directement en ILP un analyseur syntaxique de type « récursif descendant »
-* développer un « backend » pour ANTLR, qui génère un code d’analyse
+* Développer un « backend » pour ANTLR, qui génère un code d’analyse
 syntaxique en ILP au lieu de Java, ce qui permettrait de réutiliser les fichiers de grammaire originaux d’ILP.
 * Ecrire en Java un convertisseur d’AST Java déjà construit en AST en ILP
 
 <div style="text-indent: 2em;">
 Finalement, nous avons décidé d'utiliser la troisième méthode, à savoir écrire une version Java d'un convertisseur, qui convertira la structure AST Java en la structure AST ILPML correspondante.  
 
-Parce que pour la première méthode, il faut étendre les capacités de manipulation des chaînes de caractères en ILP (recherche, extraction de caractères et de sous-chaînes, conversion en entier, etc.) Pour l'instant, ILP manque pas mal de choses pour implémenter un tel analyseur.
-
-Comparée à la deuxième méthode, la troisième solution semble être la plus réalisable et la plus claire pour nous. Notre idée est d'écrire un visiteur qui parcourt chaque AST Java et émet simultanément le code AST ILPML correspondant.
+Parce que c'est la solution la plus simple et la plus rapide à implanter, ce qui nous permet de nous concentrer sur la suite du projet : la génération de code.
 
 </div>
 
@@ -334,7 +378,7 @@ Comme nous l'avons mentionné ci-dessus, "convertisseur" est en fait similaire a
 
 Notre approche principale est donc la suivante : 
 
-Tout d'abord, nous écrivons un visiteur en Java. Ce visiteur est appliqué à l'arbre AST de Java déjà construit pour parcourir l'ensemble de l'arbre AST. Chaque fois que ce visiteur rencontre un AST de Java, il produira une structure AST de ILP équivalente que nous avons définie à l'avance dans la première étape du projet. De plus, dans le visiteur, nous définirons un constructeur de chaînes (String builder) pour collecter le code ILPML produit, facilitant les appels futurs.
+Tout d'abord, nous écrivons un visiteur en Java. Ce visiteur est appliqué à l'arbre AST de Java déjà construit pour parcourir l'ensemble de l'arbre AST. Chaque fois que ce visiteur rencontre un AST de Java, il génèrera du code ILP dont l'exécution instanciera le nœud AST ILP correspondant que nous avons défini à l'avance dans la première étape du projet. De plus, dans le visiteur, nous définirons un constructeur de chaînes (String builder) pour collecter le code ILPML produit, facilitant les appels futurs.
 
 Nous vous fournissons quelques exemples dans notre convertisseur pour vous aider à comprendre mieux:
 
@@ -353,7 +397,7 @@ public Object visit(IASTboolean iast,ILexicalEnvironment lexenv) {
     return null;
 }
 
--- l'ASTboolean en ILP predefini,ASTboolean herite un attribut "var value"
+-- l'ASTboolean et l'ASTconstant sont dans la bibliothèque d'AST ILP,ASTboolean herite un attribut "var value"
 pour stocker la valeur 
 class ASTconstant extends ASTexpression
 {
@@ -378,16 +422,23 @@ public Object visit(IASTunaryOperation iast, ILexicalEnvironment iLexicalEnviron
     return null;
 }
 ```
+Exemple de code ILP source, et le code ILP généré qui construit l'AST représentant ce source:
+```
+Code ILP source:
+5;6
+Code ILP généré:
+program = new ASTprogram(new ASTsequence((list1=new List(new NULL());list1.add(new ASTinteger(5));list1.add(new ASTinteger(6));list1)));
+```
 
 __Conclusion__:
-Depuis les deux exemples ci-dessus, nous pouvons voir que la logique principale du visiteur est d'extraire les valeurs des variables pertinentes de l'AST Java, puis de les attribuer à notre AST ILP prédéfini, et enfin de enregistrer le code ILP.
+Depuis les deux exemples ci-dessus, nous pouvons voir que la logique principale du visiteur est d'extraire les valeurs des variables pertinentes de l'AST Java, puis de les attribuer à notre AST ILP prédéfini, et enfin d'enregistrer le code ILP.
 
 
 ##### 4.3.2 Difficultés rencontrées
 
 Mais dans ce processus, nous avons également rencontré certaines situations difficiles à gérer, telles que l'utilisation des listes []. En Java, pour certaines variables d'attribut qui sont elles-mêmes des listes, Java peut les traiter facilement, par exemple en les déclarant comme String[] ou int[], mais si nous voulons convertir ces éléments en code ILP, nous devons appliquer notre propre structure de liste chaînée définie ici.
 
-Nous vous fournissons une exemple pour vous expliquer comment nous gérer ces attributs de liste dans le convertisseur:
+Nous vous fournissons une exemple pour vous expliquer comment nous avons géré ces attributs de liste dans le convertisseur:
 
 Exemple ASTsequence:
 
@@ -412,14 +463,13 @@ public Object visit(IASTsequence iast,ILexicalEnvironment lexenv) throws Evaluat
     return null;
 }
 ```
-Sequence représente une série d'expressions, donc dans ASTsequence, nous devons gérer les attributs de structure de liste. 
-Notre approche est la suivante : 
-En ILP, pour chaque endroit où nous avons besoin d'utiliser une liste, nous définissons une instance de liste chaînée. __Nous définissons cette instance de liste en la déclarant comme une variable globale__. La raison pour laquelle nous ne définissons pas la liste comme une variable locale à l'aide de __let .. in ..__ est que cela complexifierait le code, tandis que définir la liste comme une variable globale rend le code ILP plus claire.   
-
-Cependant, un problème se pose : chaque fois que nous avons besoin d'une liste, nous définissons une variable globale pour cette liste, de sorte que les noms de ces variables de liste ne peuvent pas être répétés. 
-
-Par conséquent, dans le convertisseur, nous introduisons un compteur : __compteur_liste__. À chaque fois que nous définissons une variable globale pour une liste, nous concatenons le nom de la liste à ce compteur pour produire un nom de variable unique. Ensuite, nous utilisons la méthode __add__ définie dans la liste pour remplir la liste que nous avons définie avec les valeurs de liste en Java. Enfin, dans la séquence ILP, nous retournons la variable globale de cette liste en tant qu'expression à cet endroit.
-
+La sequence représente une série d'expressions, donc dans ASTsequence, nous devons gérer les attributs de structure de liste. 
+Notre approche est :
+Lors de la génération du code ILP qui crée l'AST, si nous avons besoin d'utiliser une liste chaînée, nous créons dynamiquement des variables globales temporaires (en utilisant un identifiant unique pour les différencier). Par exemple,l'exemple qui utilise ASTsequence :
+```
+program = new ASTprogram(new ASTsequence((list1=new List(new NULL());list1.add(new ASTinteger(5));list1.add(new ASTinteger(6));list1)));
+```
+Ici, "list1" est la variable globale temporaire que nous avons créée dynamiquement.
 <div style="page-break-after: always;"></div>
 
 ### 4.4 Compilateur
